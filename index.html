@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
   :root{
     /* ---- Official CardCastle brand variables ---- */
     --bg-color:#0d0d0d;       /* Premium dark background */
@@ -45,16 +46,26 @@
     --radius-card:14px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;overflow-x:clip;}
   body{
     background:var(--bg);
     color:var(--parchment);
     font-family:'Tajawal','Manrope',sans-serif;
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
+    overflow-x:clip;
   }
   a{color:inherit;text-decoration:none;}
-  img{max-width:100%;display:block;}
+  img{max-width:100%;height:auto;display:block;}
+  :lang(ar), [lang="ar"], [dir="rtl"]{
+    font-family:'Tajawal',sans-serif;
+  }
+  h1:lang(ar), h2:lang(ar), h3:lang(ar),
+  h1[lang="ar"], h2[lang="ar"], h3[lang="ar"]{
+    font-family:'Tajawal',sans-serif;
+    font-weight:800;
+    letter-spacing:0;
+  }
   .wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,32px);}
   h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;}
   .eyebrow{
@@ -104,7 +115,7 @@
     padding: 13px 0;
   }
   .nav-link{font-family:'Manrope','Manrope',sans-serif;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#d1d5db;}
-  .announcement-bar{display:flex;align-items:center;justify-content:center;min-height:30px;padding:6px 14px;background:var(--brass);color:#17120a;text-align:center;font:700 12px 'Tajawal','Manrope',sans-serif;letter-spacing:.01em;}
+  .announcement-bar{display:flex;align-items:center;justify-content:center;min-height:34px;padding:8px 16px;background:var(--brass);color:#17120a;text-align:center;font:700 13px/1.5 'Tajawal',sans-serif;letter-spacing:0;direction:rtl;}
   .nav-inner {
     display: flex;
     align-items: center;
@@ -172,8 +183,8 @@
   .nav-link.active{color:var(--brass-bright);}
   .nav-link.active::after{transform:scaleX(1);}
   .nav-link:hover::after,.nav-link:focus-visible::after{transform:scaleX(1);}
-  .cart-trigger{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(229,184,66,.35);background:rgba(229,184,66,.08);color:var(--parchment);padding:9px 13px;border-radius:999px;cursor:pointer;font:700 13px 'Tajawal','Manrope',sans-serif;transition:transform .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease;white-space:nowrap;}
-  .cart-trigger:hover,.cart-trigger:focus-visible{border-color:var(--brass-bright);background:rgba(229,184,66,.16);color:var(--brass-bright);transform:scale(1.04);box-shadow:0 8px 22px rgba(229,184,66,.16);}
+  .cart-trigger{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(229,184,66,.48);background:rgba(229,184,66,.1);color:var(--parchment);padding:10px 18px;border-radius:999px;cursor:pointer;font:700 13px 'Manrope',sans-serif;letter-spacing:.04em;box-shadow:0 6px 18px rgba(0,0,0,.28), 0 0 0 1px rgba(229,184,66,.08);transition:transform .25s ease,background .25s ease,border-color .25s ease,box-shadow .25s ease,color .25s ease;white-space:nowrap;}
+  .cart-trigger:hover,.cart-trigger:focus-visible{border-color:var(--brass-bright);background:rgba(229,184,66,.2);color:var(--brass-bright);transform:translateY(-2px);box-shadow:0 12px 26px rgba(229,184,66,.22), 0 0 0 1px rgba(229,184,66,.18);}
   .cart-trigger svg{width:18px;height:18px;flex-shrink:0;}
   .cart-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 6px;border-radius:999px;background:var(--brass-bright);color:#17120a;font:800 11px 'Manrope',sans-serif;box-shadow:0 0 0 2px #17130f;}
   @media(max-width:859px){
@@ -230,10 +241,9 @@
   .hero {
     position: relative;
     overflow:hidden;
-    min-height:calc(100vh - 80px);
+    min-height:min(calc(100svh - 88px), 820px);
     display:flex;
     align-items:center;
-    justify-content:space-between;
     padding:clamp(24px,4vh,60px) 0;
     background: #0e0f11;
   }
@@ -246,16 +256,19 @@
     width:100%;
     max-width:1280px;
     margin:0 auto;
-    padding:0 2rem;
+    padding:0;
     display: grid;
-    grid-template-columns:minmax(0,1fr) minmax(440px,.95fr);
-    gap: clamp(28px,5vw,60px);
+    grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+    gap: clamp(20px,4vw,56px);
     align-items: center;
-    justify-content:space-between;
   }
-  @media(max-width:920px){
-    .hero-inner{grid-template-columns:1fr;gap:2.5rem;}
-    .hero-content{text-align:center;display:flex;flex-direction:column;align-items:center;}
+  .wrap.hero-inner{max-width:1280px;}
+  .hero-content{min-width:0;max-width:640px;}
+  @media(max-width:1024px){
+    .hero{min-height:0;}
+    .hero-inner{grid-template-columns:minmax(0,1fr);gap:2rem;}
+    .hero-content{max-width:none;text-align:center;display:flex;flex-direction:column;align-items:center;}
+    .hero p.lede{margin-left:auto;margin-right:auto;}
   }
   .hero-title{
     font-size:clamp(2.25rem, 4.9vw, 4.2rem);
@@ -280,39 +293,57 @@
     margin-bottom:clamp(16px,2.5vh,26px);
   }
   .hero-actions{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:0;}
-  .hero-social-proof{margin-top:clamp(10px,2vh,18px);color:#d1d5db;font:500 clamp(12px,1vw,14px) 'Manrope','Manrope',sans-serif;letter-spacing:.02em;}
+  .hero-social-proof{
+    display:inline-flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:clamp(14px,2vh,20px);
+    padding:9px 16px;
+    border:1px solid rgba(229,184,66,.32);
+    border-radius:999px;
+    background:rgba(229,184,66,.08);
+    color:#efe6d4;
+    font:600 clamp(13px,1.15vw,15px)/1.45 'Manrope',sans-serif;
+    letter-spacing:.01em;
+  }
   .trust-row{
     display:flex;
-    justify-content:space-between;
-    align-items:center;
+    justify-content:flex-start;
+    align-items:stretch;
     width:100%;
-    flex-wrap:nowrap;
-    gap:16px;
+    flex-wrap:wrap;
+    gap:12px 18px;
     padding-top:26px;
     margin-top:22px;
     border-top:1px solid var(--hairline);
   }
   .trust-item{
     display:flex;align-items:center;gap:8px;
-    font-size:1rem;font-weight:500;color:var(--parchment);
-    white-space:nowrap;
+    font-size:.95rem;font-weight:500;color:var(--parchment);
+    white-space:normal;
+    min-width:0;
   }
   .trust-item svg{width:17px;height:17px;color:var(--brass);flex-shrink:0;}
-  @media(max-width:640px){
-    .trust-row{flex-wrap:wrap;justify-content:flex-start;}
+  @media(max-width:1024px){
+    .trust-row{justify-content:center;}
   }
 
   /* floating 3D deck stack */
   .deck-stack{
     position:relative;
-    height:100%;
-    min-height:min(460px,55vh);
+    width:100%;
+    max-width:min(100%,560px);
+    margin-inline:auto;
+    min-height:clamp(280px,42vw,460px);
+    aspect-ratio:5 / 4;
     display:flex;align-items:center;justify-content:center;
-    padding-right:clamp(28px,4vw,72px);
+    padding:clamp(8px,2vw,24px);
     perspective:1600px;
     pointer-events:auto;
     isolation:isolate;
-    overflow:visible;
+    overflow:hidden;
   }
   .deck-stack::before{
     content:'';
@@ -328,11 +359,13 @@
   .deck-stack::after{content:'';position:absolute;inset:-36px -52px;z-index:0;pointer-events:auto;background:transparent;}
   .deck{
     position:absolute;
-    width:min(clamp(230px,26vw,360px),100%);
-    height:min(clamp(300px,34vw,470px),55vh);
+    width:min(58%, clamp(180px, 28vw, 320px));
+    max-width:100%;
+    height:auto;
+    aspect-ratio:23 / 30;
     border-radius:22px;
     display:flex;flex-direction:column;justify-content:space-between;
-    padding:30px;
+    padding:clamp(16px, 3vw, 30px);
     transform-style:preserve-3d;
     pointer-events:auto;
     cursor:pointer;
@@ -360,19 +393,19 @@
   .card-blue{
     z-index:5;
     opacity:1;
-    transform:rotate3d(0.3,-1,0,10deg) rotate(3deg) translate(-108px,-44px) scale(1);
+    transform:rotate3d(0.3,-1,0,10deg) rotate(3deg) translate(-18%,-10%) scale(1);
     box-shadow:0 34px 62px -26px rgba(0,0,0,0.75), 0 0 54px -14px rgba(201,162,39,0.4);
   }
   .card-red{
     z-index:3;
     opacity:0.96;
-    transform:rotate3d(0.3,-1,0,10deg) rotate(7deg) translate(72px,26px) scale(0.92);
+    transform:rotate3d(0.3,-1,0,10deg) rotate(7deg) translate(14%,8%) scale(0.92);
     box-shadow:0 26px 50px -24px rgba(0,0,0,0.65);
   }
   .card-green{
     z-index:1;
     opacity:0.9;
-    transform:rotate3d(0.3,-1,0,10deg) rotate(13deg) translate(158px,48px) scale(0.84);
+    transform:rotate3d(0.3,-1,0,10deg) rotate(13deg) translate(28%,14%) scale(0.84);
     box-shadow:0 20px 40px -22px rgba(0,0,0,0.55);
   }
   .card{position:absolute;pointer-events:auto;cursor:pointer;will-change:transform;transition:transform .35s cubic-bezier(.25,1,.5,1);}
@@ -383,17 +416,17 @@
     z-index:6;
     opacity:1;
     transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
-    transform:rotate3d(0.3,-1,0,6deg) rotate(16deg) translate(290px,-29px) scale(0.95);
+    transform:rotate3d(0.3,-1,0,6deg) rotate(16deg) translate(42%,-8%) scale(0.95);
     box-shadow:0 30px 60px -24px rgba(0,0,0,0.7);
   }
 
-  .deck-stack:hover .card-red{transform:rotate3d(0.3,-1,0,10deg) rotate(-7deg) translate(44px,26px) scale(.92);}
-  .deck-stack:hover .card-green{transform:rotate3d(0.3,-1,0,10deg) rotate(7deg) translate(186px,48px) scale(.84);}
-  .deck-stack:hover .card-blue{transform:rotate3d(0.3,-1,0,3deg) rotate(3deg) translate(-108px,-62px) scale(1.03);}
+  .deck-stack:hover .card-red{transform:rotate3d(0.3,-1,0,10deg) rotate(-7deg) translate(10%,8%) scale(.92);}
+  .deck-stack:hover .card-green{transform:rotate3d(0.3,-1,0,10deg) rotate(7deg) translate(32%,14%) scale(.84);}
+  .deck-stack:hover .card-blue{transform:rotate3d(0.3,-1,0,3deg) rotate(3deg) translate(-18%,-14%) scale(1.03);}
   .deck.is-selected{z-index:4;box-shadow:0 38px 70px -24px rgba(0,0,0,.82),0 0 48px -12px rgba(229,184,66,.4);}
-  .deck-stack .card-red.is-selected{transform:rotate3d(.2,-1,0,4deg) rotate(-2deg) translate3d(8px,-24px,0) scale(1.06);}
-  .deck-stack .card-green.is-selected{transform:rotate3d(.2,-1,0,4deg) rotate(2deg) translate3d(8px,-24px,0) scale(1.06);}
-  .deck-stack .card-blue.is-selected{transform:rotate3d(.2,-1,0,3deg) rotate(0deg) translate3d(0,-24px,0) scale(1.06);}
+  .deck-stack .card-red.is-selected{transform:rotate3d(.2,-1,0,4deg) rotate(-2deg) translate3d(2%,-6%,0) scale(1.06);}
+  .deck-stack .card-green.is-selected{transform:rotate3d(.2,-1,0,4deg) rotate(2deg) translate3d(2%,-6%,0) scale(1.06);}
+  .deck-stack .card-blue.is-selected{transform:rotate3d(.2,-1,0,3deg) rotate(0deg) translate3d(0,-6%,0) scale(1.06);}
 
   .deck-icon{font-size:36px;line-height:1;color:#FFFFFF;}
   .deck-party .deck-icon{color:#FFFFFF;}
@@ -418,7 +451,7 @@
   .deck > div{position:relative;z-index:1;}
   .deck-watermark{position:absolute;inset:12% 8% auto auto;width:72%;height:72%;z-index:0;opacity:.06;pointer-events:none;}
   .deck-watermark path,.deck-watermark circle,.deck-watermark line,.deck-watermark polyline{vector-effect:non-scaling-stroke;}
-  .deck-microcopy{display:block;margin-top:9px;color:rgba(255,255,255,.75);font:400 .75rem/1.4 'Tajawal',sans-serif;opacity:.75;direction:rtl;text-align:right;}
+  .deck-microcopy{display:block;margin-top:9px;color:rgba(255,255,255,.75);font:500 .8rem/1.5 'Tajawal',sans-serif;opacity:.9;direction:rtl;text-align:right;}
 
 
   /* ===== SECTION HEADS ===== */
@@ -495,7 +528,9 @@
     position:absolute;
     inset:0;
     width:100%;
-    height:100%;
+    max-width:100%;
+    height:auto;
+    max-height:100%;
     object-fit:contain;
     object-position:center;
     display:block;
@@ -647,10 +682,12 @@
   }
   @media(max-width:760px){.game-card.featured .card-inner{flex-direction:column;}}
   .game-card.featured .card-image-wrapper{
-    width:38%;height:auto;min-height:260px;aspect-ratio:auto;
+    width:38%;height:auto;min-height:260px;aspect-ratio:1 / 1;
     flex-shrink:0;
+    overflow:hidden;
   }
-  @media(max-width:760px){.game-card.featured .card-image-wrapper{width:100%;min-height:220px;}}
+  @media(max-width:760px){.game-card.featured .card-image-wrapper{width:100%;min-height:0;aspect-ratio:1 / 1;}}
+  .game-card.featured .card-img{max-width:100%;height:auto;max-height:100%;}
   .game-card.featured .card-content{justify-content:center;}
   .game-card.featured .card-title{font-size:30px;}
   .bundle-picker-backdrop{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:18px;opacity:0;pointer-events:none;transition:opacity .2s ease;}
@@ -1066,7 +1103,7 @@
     display:block;
     margin-bottom:14px;
     color:var(--muted);
-    font:700 12px 'Manrope',sans-serif;
+    font:700 12px 'Tajawal',sans-serif;
     letter-spacing:.03em;
     direction:rtl;
     text-align:right;
@@ -1090,7 +1127,7 @@
   .review-field input.invalid,.review-field textarea.invalid{border-color:rgba(241,138,138,.7);}
   .review-field .field-error{min-height:15px;text-align:right;}
   .review-stars-field{border:0;margin:0 0 14px;padding:0;direction:rtl;text-align:right;}
-  .review-stars-field legend{color:var(--muted);font:700 12px 'Manrope',sans-serif;padding:0;margin-bottom:8px;}
+  .review-stars-field legend{color:var(--muted);font:700 12px 'Tajawal',sans-serif;padding:0;margin-bottom:8px;}
   .star-input{display:flex;gap:6px;justify-content:flex-end;}
   .star-input .star{
     width:44px;height:44px;
@@ -1205,17 +1242,17 @@
     /* Shrink the deck cards so they don't overflow small viewports
        (the base .deck rule has a 300px floor) */
     .deck {
-        width: 230px;
-        height: 300px;
-        padding: 22px;
+        width:min(52%, 230px);
+        height:auto;
+        padding: 18px;
     }
-    .deck-stack{min-height:340px;overflow:visible;width:100%;padding-right:0;}
+    .deck-stack{min-height:280px;aspect-ratio:5 / 4;overflow:hidden;width:100%;max-width:420px;padding:8px;}
     .brand-tagline{display:none;}
     .hero-inner{padding-left:1rem;padding-right:1rem;}
     .hero-actions{width:100%;justify-content:center;}
     .hero-actions .btn{min-width:min(100%,280px);}
     .trust-row{flex-wrap:wrap;justify-content:center;text-align:center;}
-    .trust-item{flex:1 1 42%;min-width:135px;}
+    .trust-item{flex:1 1 42%;min-width:135px;justify-content:center;}
     .section-head{gap:14px;}
     .section-title{font-size:clamp(1.8rem,7vw,2.5rem);}
   }
@@ -1228,7 +1265,7 @@
     .nav-link{font-size:11px;letter-spacing:.05em;}
     .brand{min-width:0;gap:8px;}
     .brand-title{font-size:13px;}
-    .cart-trigger{padding:8px 10px;font-size:12px;}
+    .cart-trigger{padding:9px 14px;font-size:12px;}
     .cart-trigger svg{width:16px;height:16px;}
     .section{padding:64px 0;}
     .hero{padding:38px 0 46px;}
@@ -1252,7 +1289,7 @@
 </head>
 <body>
 
-<div class="announcement-bar" role="note">🚚 التوصيل مجاني لجميع المدن فوق 350 درهم | الدفع عند الاستلام</div>
+<div class="announcement-bar" role="note" lang="ar" dir="rtl">🚚 التوصيل مجاني لجميع المدن فوق 350 درهم | الدفع عند الاستلام</div>
 <header class="navbar">
   <div class="wrap nav-inner">
     <a href="#top" class="brand">
@@ -1304,11 +1341,11 @@
           </a>
           <a class="btn btn-ghost" href="#games">Explore the Decks</a>
         </div>
-        <p class="hero-social-proof" aria-label="Customer rating">⭐️⭐️⭐️⭐️⭐️ 4.9/5 | +1500 players and families in Morocco</p>
+        <p class="hero-social-proof" aria-label="Customer rating 4.9 out of 5">⭐️⭐️⭐️⭐️⭐️ 4.9/5 | +150+ families &amp; friend groups in Morocco</p>
         <div class="trust-row">
           <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg><span>Original, sealed decks</span></div>
-          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span>Same-day dispatch</span></div>
-          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.4-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.6-9.5 9-9.5 9Z"/></svg><span>Loved by 2,000+ tables</span></div>
+          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span>Fast 24-48h Delivery</span></div>
+          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.4-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.6-9.5 9-9.5 9Z"/></svg><span>Loved by 100+ cozy game nights</span></div>
         </div>
       </div>
 
@@ -1321,7 +1358,7 @@
           <div>
             <div class="deck-label">Deep Chats &amp; Mindfulness</div>
             <div class="deck-title">Mindful<br>essence.</div>
-            <span class="deck-microcopy">أسئلة كتقيس الروح</span>
+            <span class="deck-microcopy" lang="ar" dir="rtl">أسئلة كتقيس الروح</span>
           </div>
         </div>
         <div class="deck card card-red deck-connect card-middle" tabindex="0" role="button" data-category-target="romance" aria-label="Open Couples and Romance games">
@@ -1332,7 +1369,7 @@
           <div>
             <div class="deck-label">Couples &amp; Romance</div>
             <div class="deck-title">Deep<br>connections.</div>
-            <span class="deck-microcopy">جلسة صراحة وقرب</span>
+            <span class="deck-microcopy" lang="ar" dir="rtl">جلسة صراحة وقرب</span>
           </div>
         </div>
         <div class="deck card card-blue deck-party card-front" tabindex="0" role="button" data-category-target="parties" aria-label="Open Friends and Parties games">
@@ -1343,7 +1380,7 @@
           <div>
             <div class="deck-label">Friends &amp; Parties</div>
             <div class="deck-title">Think fast,<br>laugh faster.</div>
-            <span class="deck-microcopy">ضحك ولعب بلا حدود</span>
+            <span class="deck-microcopy" lang="ar" dir="rtl">ضحك ولعب بلا حدود</span>
           </div>
         </div>
       </div>
@@ -1819,7 +1856,7 @@
       <span class="eyebrow">Ready for a better game night?</span>
       <h2>Choose your deck. Start the conversation.</h2>
       <p>Message us on WhatsApp and we’ll confirm your order the same day. No account and no checkout form needed.</p>
-      <p class="cta-trust">✓ Delivery across Morocco &nbsp; ✓ Cash on delivery &nbsp; ✓ Same-day dispatch</p>
+      <p class="cta-trust">✓ Delivery across Morocco &nbsp; ✓ Cash on delivery &nbsp; ✓ Fast 24-48h Delivery</p>
       <a class="btn btn-primary" href="https://wa.me/212706086836" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.3A8.4 8.4 0 0 0 3.6 16l-1.1 4 4.1-1.1A8.4 8.4 0 1 0 17.6 6.3Zm-5.6 15a7 7 0 0 1-3.6-1l-.3-.1-2.6.7.7-2.5-.2-.3a7 7 0 1 1 6 3.2Zm3.8-5.2c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1s-.6.7-.7.9-.3.2-.5.1a5.7 5.7 0 0 1-1.7-1 6.3 6.3 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.4.4 0 0 0 0-.4c-.1-.1-.5-1.3-.7-1.7-.2-.5-.4-.4-.5-.4h-.4a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 1.9c0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 4 3.4a4.5 4.5 0 0 0 2.6.5 2.2 2.2 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3Z"/></svg>
         Message us on WhatsApp
