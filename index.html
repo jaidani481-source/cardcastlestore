@@ -4,10 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CardCastle Store — Premium Social Card Games</title>
+ <meta name="description" content="Premium conversation card games delivered across Morocco. Order sealed CardCastle decks with cash on delivery.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CardCastle Store — Premium Social Card Games">
+<meta property="og:description" content="Discover premium conversation decks for couples, friends, parties, and meaningful nights in Morocco.">
+<meta property="og:image" content="https://cardcastle.store/images/love-memories.jpg">
+<meta property="og:url" content="https://cardcastle.store/">
+<meta property="og:site_name" content="CardCastle Store">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CardCastle Store — Premium Social Card Games">
+<meta name="twitter:description" content="Premium conversation card games delivered across Morocco.">
+<meta name="twitter:image" content="https://cardcastle.store/images/love-memories.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
   :root{
     /* ---- Official CardCastle brand variables ---- */
     --bg-color:#0d0d0d;       /* Premium dark background */
@@ -19,6 +31,9 @@
     --couples-color:#6b1d2f;  /* Deep burgundy */
     --friends-color:#1a365d;  /* Deep navy/blue */
 
+    /* ---- Legacy variable names, now aliased to the brand set above
+       so every existing rule in the stylesheet inherits the new palette
+       without needing a risky line-by-line rewrite ---- */
     --bg:var(--bg-color);
     --surface:#1E1912;
     --surface-2:#241E15;
@@ -31,23 +46,33 @@
     --radius-card:14px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;overflow-x:clip;}
   body{
     background:var(--bg);
     color:var(--parchment);
-    font-family:'Manrope', 'Tajawal', sans-serif;
+    font-family:'Tajawal','Manrope',sans-serif;
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
+    overflow-x:clip;
   }
   a{color:inherit;text-decoration:none;}
-  img{max-width:100%;display:block;}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
-  h1,h2,h3{font-family:'Fraunces','Tajawal',serif;font-weight:500;letter-spacing:-0.01em;}
+  img{max-width:100%;height:auto;display:block;}
+  :lang(ar), [lang="ar"], [dir="rtl"]{
+    font-family:'Tajawal',sans-serif;
+  }
+  h1:lang(ar), h2:lang(ar), h3:lang(ar),
+  h1[lang="ar"], h2[lang="ar"], h3[lang="ar"]{
+    font-family:'Tajawal',sans-serif;
+    font-weight:800;
+    letter-spacing:0;
+  }
+  .wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,32px);}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;}
   .eyebrow{
-    font-family:'IBM Plex Mono',monospace;
+    font-family:'Manrope',monospace;
     font-size:0.95rem;
     font-weight:700;
-    letter-spacing:0.15em !important;
+    letter-spacing:0.15em;
     text-transform:uppercase;
     color:var(--brass);
   }
@@ -57,7 +82,7 @@
     gap:10px;
     padding:17px 32px;
     border-radius:999px;
-    font-family:'Manrope','Tajawal',sans-serif;
+    font-family:'Manrope',sans-serif;
     font-weight:700;
     font-size:16.5px;
     cursor:pointer;
@@ -79,147 +104,248 @@
   .btn svg{width:18px;height:18px;flex-shrink:0;}
 
   /* ===== NAV ===== */
-  header{
-    position:sticky;top:0;z-index:50;
-    background:rgba(18,18,18,0.8);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border-bottom:1px solid rgba(241,233,216,0.05);
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
-  nav.wrap{
-    display:flex !important;
-    justify-content:space-between !important;
-    align-items:center !important;
-    width:100% !important;
-    max-width:1400px !important;
-    margin:0 auto !important;
-    padding:1.2rem 4% !important;
+  .navbar {
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 13px 0;
   }
-  .logo{
-    display:flex;align-items:center;gap:12px;
-    font-family:'Manrope', sans-serif !important;
-    font-size:24px;
-    color:var(--parchment);
+  .nav-link{font-family:'Manrope','Manrope',sans-serif;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#d1d5db;}
+  .announcement-bar{display:flex;align-items:center;justify-content:center;min-height:34px;padding:8px 16px;background:var(--brass);color:#17120a;text-align:center;font:700 13px/1.5 'Tajawal',sans-serif;letter-spacing:0;direction:rtl;}
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  .logo svg{width:36px;height:36px;flex-shrink:0;}
-  .logo .brand-main{
-    font-family:'Manrope', sans-serif !important;
-    font-weight:700 !important;
-    color:#F1E9D8 !important;
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
   }
-  .gold-text{
-    font-family:'Manrope', system-ui, sans-serif !important;
-    font-style:normal !important;
-    color:#E2B714 !important;
-    font-weight:500 !important;
-    margin-left:6px !important;
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--brass-bright);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brass-bright);
+    background: rgba(201, 162, 39, 0.05);
+    flex-shrink: 0;
   }
-  .nav-links{display:flex;gap:38px;align-items:center;}
-  .nav-links a{
-    font-size:1.1rem;
-    letter-spacing:0.05em;
-    color:var(--text-secondary);font-weight:600;
-    transition:all 0.3s ease;
+  .logo-icon svg {
+    width: 22px;
+    height: 22px;
   }
-  .nav-links a:hover{
-    color:var(--brass-bright);
-    text-shadow:0 0 18px rgba(228,193,88,0.55);
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Manrope', sans-serif;
   }
-  .nav-cta{display:none;}
-  @media(min-width:860px){.nav-cta{display:inline-flex;}}
-  @media(max-width:859px){.nav-links{display:none;}}
+  .brand-title {
+    color: var(--parchment);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+  }
+  .brand-title span {
+    color: var(--brass-bright);
+    font-weight: 400;
+  }
+  .brand-tagline {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .nav-link {
+    position:relative;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition:color .2s ease;
+  }
+  .nav-link::after{content:'';position:absolute;left:0;right:0;bottom:-8px;height:2px;border-radius:2px;background:var(--brass-bright);transform:scaleX(0);transform-origin:center;transition:transform .25s ease;}
+  .nav-link:hover,.nav-link:focus-visible {
+    color: var(--brass-bright);
+  }
+  .nav-link.active{color:var(--brass-bright);}
+  .nav-link.active::after{transform:scaleX(1);}
+  .nav-link:hover::after,.nav-link:focus-visible::after{transform:scaleX(1);}
+  .cart-trigger{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(229,184,66,.48);background:rgba(229,184,66,.1);color:var(--parchment);padding:10px 18px;border-radius:999px;cursor:pointer;font:700 13px 'Manrope',sans-serif;letter-spacing:.04em;box-shadow:0 6px 18px rgba(0,0,0,.28), 0 0 0 1px rgba(229,184,66,.08);transition:transform .25s ease,background .25s ease,border-color .25s ease,box-shadow .25s ease,color .25s ease;white-space:nowrap;}
+  .cart-trigger:hover,.cart-trigger:focus-visible{border-color:var(--brass-bright);background:rgba(229,184,66,.2);color:var(--brass-bright);transform:translateY(-2px);box-shadow:0 12px 26px rgba(229,184,66,.22), 0 0 0 1px rgba(229,184,66,.18);}
+  .cart-trigger svg{width:18px;height:18px;flex-shrink:0;}
+  .cart-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 6px;border-radius:999px;background:var(--brass-bright);color:#17120a;font:800 11px 'Manrope',sans-serif;box-shadow:0 0 0 2px #17130f;}
+  @media(max-width:859px){
+    .nav-inner{flex-wrap:wrap;row-gap:10px;}
+    .nav-links{
+      display:flex;
+      order:3;
+      width:100%;
+      gap:22px;
+      overflow-x:auto;
+      overscroll-behavior-x:contain;
+      padding:4px 2px 3px;
+      scrollbar-width:none;
+    }
+    .nav-links::-webkit-scrollbar{display:none;}
+    .nav-link{flex:0 0 auto;white-space:nowrap;}
+  }
+
+  /* ===== CART DRAWER ===== */
+  .cart-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.68);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:199;}
+  .cart-backdrop.open{opacity:1;pointer-events:auto;}
+  .cart-drawer{position:fixed;z-index:200;top:0;right:0;width:min(440px,100%);height:100dvh;display:flex;flex-direction:column;background:#17130f;border-left:1px solid var(--hairline);transform:translateX(100%);transition:transform .3s ease;box-shadow:-22px 0 70px rgba(0,0,0,.42);}
+  .cart-drawer.open{transform:translateX(0);}
+  .cart-header{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--hairline);}
+  .cart-header h2{font-size:25px;}
+  .icon-button{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--hairline);border-radius:50%;background:transparent;color:var(--parchment);cursor:pointer;}
+  .icon-button:hover{border-color:var(--brass);color:var(--brass-bright);}
+  .icon-button svg{width:18px;height:18px;}
+  .cart-body{overflow:auto;padding:20px 24px;flex:1;}
+  .shipping-progress{padding:14px 16px;margin-bottom:18px;background:rgba(229,184,66,.08);border:1px solid rgba(229,184,66,.22);border-radius:12px;color:var(--text-secondary);font-size:13px;}
+  .progress-track{height:6px;margin-top:10px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;}
+  .progress-fill{height:100%;width:0;background:var(--brass);border-radius:inherit;transition:width .25s ease;}
+  .cart-empty{text-align:center;padding:42px 8px;color:var(--muted);}
+  .cart-item{display:grid;grid-template-columns:1fr auto;gap:10px;padding:16px 0;border-bottom:1px solid var(--hairline);}
+  .cart-item-title{font-family:'Fraunces',serif;font-size:18px;color:var(--parchment);}
+  .cart-item-price{color:var(--brass-bright);font-size:13px;margin-top:3px;}
+  .quantity-control{display:flex;align-items:center;gap:9px;margin-top:10px;}
+  .quantity-control button{width:25px;height:25px;border:1px solid var(--hairline);border-radius:50%;background:transparent;color:var(--parchment);cursor:pointer;}
+  .remove-item{align-self:start;color:var(--muted);background:none;border:0;cursor:pointer;font-size:12px;}
+  .remove-item:hover{color:#f18a8a;}
+  .cart-footer{padding:20px 24px;border-top:1px solid var(--hairline);}
+  .cart-total-row{display:flex;justify-content:space-between;font-weight:700;margin-bottom:16px;}
+  .cart-footer .btn{width:100%;justify-content:center;}
+  .checkout-panel{display:none;padding-top:24px;margin-top:24px;border-top:1px solid var(--hairline);}
+  .checkout-panel.open{display:block;}
+  .checkout-panel h3{font-size:23px;margin-bottom:14px;}
+  .checkout-field{display:block;margin-bottom:13px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.04em;}
+  .checkout-field input,.checkout-field select{display:block;width:100%;margin-top:6px;padding:12px 13px;border:1px solid var(--hairline);border-radius:9px;background:#211b15;color:var(--parchment);font:15px 'Manrope',sans-serif;}
+  .checkout-field input:focus,.checkout-field select:focus{outline:2px solid var(--brass);outline-offset:1px;}
+  .field-error{display:block;min-height:17px;margin-top:4px;color:#f18a8a;font-size:11px;font-weight:400;}
+  .checkout-note{font-size:12px;color:var(--muted);margin:4px 0 14px;}
 
   /* ===== HERO ===== */
-  .hero{
-    position:relative;
-    min-height:calc(100vh - 80px);
-    display:flex;
-    align-items:center;
-    padding:clamp(1.5rem, 3vw, 2.5rem) 0;
+  .hero {
+    position: relative;
     overflow:hidden;
-    border-bottom:1px solid var(--hairline);
-  }
-  .hero-bg{
-    position:absolute;inset:0;
-    opacity:0.5;
-    pointer-events:none;
-  }
-  .hero-inner{
-    position:relative;z-index:1;
-    display:grid;
-    grid-template-columns:1.1fr 0.9fr;
-    gap:5rem !important;
-    align-items:center;
-    width:100% !important;
-    max-width:1440px !important;
-    margin:0 auto;
-    padding:0 4%;
-    box-sizing:border-box;
-    height:calc(100vh - 80px - clamp(3rem, 6vw, 5rem));
-    max-height:800px;
-  }
-  @media(max-width:920px){
-    .hero-inner{grid-template-columns:1fr;height:auto;max-height:none;padding:0 6%;gap:2.5rem !important;}
-    .hero{min-height:auto;}
-    .hero-copy{margin-right:0 !important;}
-  }
-  .hero-copy{
+    min-height:min(calc(100svh - 88px), 820px);
     display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    height:100%;
-    margin-right:3rem !important;
+    align-items:center;
+    padding:clamp(24px,4vh,60px) 0;
+    background: #0e0f11;
   }
-  .hero-copy-top{display:flex;flex-direction:column;justify-content:center;flex:1;}
-  .hero h1{
-    font-size:clamp(2.6rem, 4.9vw, 4.2rem);
+  .hero::before,.hero::after{content:'';position:absolute;top:18%;width:22vw;height:64%;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.45;}
+  .hero::before{left:-14vw;background:rgba(140,47,57,.22);}
+  .hero::after{right:-14vw;background:rgba(229,184,66,.16);}
+  .hero-inner {
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
+    padding:0;
+    display: grid;
+    grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+    gap: clamp(20px,4vw,56px);
+    align-items: center;
+  }
+  .wrap.hero-inner{max-width:1280px;}
+  .hero-content{min-width:0;max-width:640px;}
+  @media(max-width:1024px){
+    .hero{min-height:0;}
+    .hero-inner{grid-template-columns:minmax(0,1fr);gap:2rem;}
+    .hero-content{max-width:none;text-align:center;display:flex;flex-direction:column;align-items:center;}
+    .hero p.lede{margin-left:auto;margin-right:auto;}
+  }
+  .hero-title{
+    font-size:clamp(2.25rem, 4.9vw, 4.2rem);
     font-weight:600;
     line-height:1.07;
     margin:14px 0 16px;
     color:var(--parchment);
   }
-  .hero h1 em{
-    font-style:italic;
-    color:var(--brass-bright);
+  .hero-accent {
+    color: var(--brass-bright);
+    font-style: italic;
+    font-family:'Fraunces','Fraunces',serif;
+    display: block;
+    margin-top: 8px;
   }
   .hero p.lede{
-    font-size:19px;
+    font-size:clamp(15px,1.45vw,19px);
     font-weight:500;
     line-height:1.58;
     color:var(--text-secondary);
     max-width:56ch;
-    margin-bottom:26px;
+    margin-bottom:clamp(16px,2.5vh,26px);
   }
   .hero-actions{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:0;}
+  .hero-social-proof{
+    display:inline-flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:clamp(14px,2vh,20px);
+    padding:9px 16px;
+    border:1px solid rgba(229,184,66,.32);
+    border-radius:999px;
+    background:rgba(229,184,66,.08);
+    color:#efe6d4;
+    font:600 clamp(13px,1.15vw,15px)/1.45 'Manrope',sans-serif;
+    letter-spacing:.01em;
+  }
   .trust-row{
     display:flex;
-    justify-content:space-between;
-    align-items:center;
+    justify-content:flex-start;
+    align-items:stretch;
     width:100%;
-    flex-wrap:nowrap;
-    gap:16px;
+    flex-wrap:wrap;
+    gap:12px 18px;
     padding-top:26px;
     margin-top:22px;
     border-top:1px solid var(--hairline);
   }
   .trust-item{
     display:flex;align-items:center;gap:8px;
-    font-size:1rem !important;font-weight:500;color:var(--parchment);
-    white-space:nowrap;
-    font-family:'Tajawal','Manrope',sans-serif;
+    font-size:.95rem;font-weight:500;color:var(--parchment);
+    white-space:normal;
+    min-width:0;
   }
   .trust-item svg{width:17px;height:17px;color:var(--brass);flex-shrink:0;}
-  @media(max-width:640px){
-    .trust-row{flex-wrap:wrap;justify-content:flex-start;}
+  @media(max-width:1024px){
+    .trust-row{justify-content:center;}
   }
 
   /* floating 3D deck stack */
   .deck-stack{
     position:relative;
-    height:100%;
-    min-height:460px;
+    width:100%;
+    max-width:min(100%,560px);
+    margin-inline:auto;
+    min-height:clamp(280px,42vw,460px);
+    aspect-ratio:5 / 4;
     display:flex;align-items:center;justify-content:center;
+    padding:clamp(8px,2vw,24px);
     perspective:1600px;
+    pointer-events:auto;
+    isolation:isolate;
+    overflow:visible;
   }
   .deck-stack::before{
     content:'';
@@ -227,21 +353,26 @@
     width:82%;height:82%;
     left:50%;top:50%;
     transform:translate(-50%,-50%);
-    background:radial-gradient(closest-side, rgba(201,162,39,0.32), rgba(140,47,57,0.18) 60%, transparent 80%);
+    background:radial-gradient(circle, rgba(234,179,8,0.15) 0%, transparent 70%);
     filter:blur(70px);
     z-index:0;
     pointer-events:none;
   }
+  .deck-stack::after{content:'';position:absolute;inset:-36px -52px;z-index:0;pointer-events:auto;background:transparent;}
   .deck{
     position:absolute;
-    width:clamp(300px, 26vw, 360px) !important;
-    height:clamp(392px, 34vw, 470px);
+    width:min(58%, clamp(180px, 28vw, 320px));
+    max-width:100%;
+    height:auto;
+    aspect-ratio:23 / 30;
     border-radius:22px;
     display:flex;flex-direction:column;justify-content:space-between;
-    padding:30px;
+    padding:clamp(16px, 3vw, 30px);
     transform-style:preserve-3d;
+    pointer-events:auto;
     cursor:pointer;
-    transition:transform 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.5s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s ease;
+    will-change:transform;
+    transition:transform .35s cubic-bezier(.25,1,.5,1), opacity .4s ease, box-shadow .4s ease;
   }
   .deck-mindful{
     background:linear-gradient(150deg,#0E2620 0%,#1D4A3B 55%,#081712 100%);
@@ -252,71 +383,94 @@
     border:1px solid rgba(151,196,224,0.35);
   }
   .deck-connect{
+    z-index:2;
     background:linear-gradient(150deg,#4A1620 0%,var(--couples-color) 55%,#2A0F14 100%);
     border:1px solid rgba(228,193,88,0.45);
   }
+  .deck-party{z-index:3;}
+  .deck-mindful{z-index:1;}
   .deck:focus-visible{outline:2px solid var(--brass-bright);outline-offset:5px;}
 
-  /* 3D Stack Z-Indexes */
-  .card-front{
-    z-index:5 !important;
+  /* Gentle continuous float so the fan feels alive even before the user hovers */
+  @keyframes cardFloat{
+    0%,100%{ --floatY:0px; }
+    50%{ --floatY:-9px; }
+  }
+  .card-blue,.card-red,.card-green{
+    animation:cardFloat 5.6s ease-in-out infinite;
+  }
+  .card-red{animation-delay:.6s;}
+  .card-green{animation-delay:1.2s;}
+  .deck-stack:hover .card-blue,.deck-stack:hover .card-red,.deck-stack:hover .card-green,
+  .card.is-selected{animation-play-state:paused;}
+  @media(prefers-reduced-motion:reduce){
+    .card-blue,.card-red,.card-green{animation:none;}
+  }
+
+  /* Fixed card positions. Hover changes only the color-specific transform. */
+  .card-blue{
+    z-index:5;
     opacity:1;
-    transform:rotate3d(0.3,-1,0,10deg) rotate(3deg) translate(-108px,-44px) scale(1);
+    transform:rotate3d(0.3,-1,0,10deg) rotate(3deg) translate(-18%,calc(-10% + var(--floatY,0px))) scale(1);
     box-shadow:0 34px 62px -26px rgba(0,0,0,0.75), 0 0 54px -14px rgba(201,162,39,0.4);
   }
-  .card-middle{
-    z-index:3 !important;
+  .card-red{
+    z-index:3;
     opacity:0.96;
-    transform:rotate3d(0.3,-1,0,10deg) rotate(7deg) translate(72px,26px) scale(0.92);
+    transform:rotate3d(0.3,-1,0,10deg) rotate(7deg) translate(14%,calc(8% + var(--floatY,0px))) scale(0.92);
     box-shadow:0 26px 50px -24px rgba(0,0,0,0.65);
   }
-  .card-back{
-    z-index:1 !important;
+  .card-green{
+    z-index:1;
     opacity:0.9;
-    transform:rotate3d(0.3,-1,0,10deg) rotate(13deg) translate(158px,48px) scale(0.84);
+    transform:rotate3d(0.3,-1,0,10deg) rotate(13deg) translate(28%,calc(14% + var(--floatY,0px))) scale(0.84);
     box-shadow:0 20px 40px -22px rgba(0,0,0,0.55);
   }
+  .card{position:absolute;pointer-events:auto;cursor:pointer;will-change:transform;transition:transform .35s cubic-bezier(.25,1,.5,1);}
+  .card-blue{z-index:3;}
+  .card-red{z-index:2;}
+  .card-green{z-index:1;}
   .card-drawing{
-    z-index:6 !important;
+    z-index:6;
     opacity:1;
     transition:transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
-    transform:rotate3d(0.3,-1,0,6deg) rotate(16deg) translate(290px,-29px) scale(0.95);
+    transform:rotate3d(0.3,-1,0,6deg) rotate(16deg) translate(42%,-8%) scale(0.95);
     box-shadow:0 30px 60px -24px rgba(0,0,0,0.7);
   }
 
-  /* front-card hover */
-  .card-front.deck-connect:hover{
-    transform:rotate3d(0.3,-1,0,4deg) rotate(0deg) translate(-108px,-55px) scale(1.03);
-    box-shadow:0 40px 74px -26px rgba(0,0,0,0.8), 0 0 68px -12px rgba(201,162,39,0.55), 0 0 40px -10px rgba(140,47,57,0.5);
-  }
-  .card-front.deck-party:hover{
-    transform:rotate3d(0.3,-1,0,4deg) rotate(0deg) translate(-108px,-55px) scale(1.03);
-    box-shadow:0 40px 74px -26px rgba(0,0,0,0.8), 0 0 68px -12px rgba(120,175,214,0.55);
-  }
-  .card-front.deck-mindful:hover{
-    transform:rotate3d(0.3,-1,0,4deg) rotate(0deg) translate(-108px,-55px) scale(1.03);
-    box-shadow:0 40px 74px -26px rgba(0,0,0,0.8), 0 0 68px -12px rgba(120,200,170,0.55);
-  }
-  .card-middle:hover, .card-back:hover{filter:brightness(1.18);}
+  .deck-stack:hover .card-red{transform:rotate3d(0.3,-1,0,10deg) rotate(-7deg) translate(10%,8%) scale(.92);}
+  .deck-stack:hover .card-green{transform:rotate3d(0.3,-1,0,10deg) rotate(7deg) translate(32%,14%) scale(.84);}
+  .deck-stack:hover .card-blue{transform:rotate3d(0.3,-1,0,3deg) rotate(3deg) translate(-18%,-14%) scale(1.03);}
+  .deck.is-selected{z-index:4;box-shadow:0 38px 70px -24px rgba(0,0,0,.82),0 0 48px -12px rgba(229,184,66,.4);}
+  .deck-stack .card-red.is-selected{transform:rotate3d(.2,-1,0,4deg) rotate(-2deg) translate3d(2%,-6%,0) scale(1.06);}
+  .deck-stack .card-green.is-selected{transform:rotate3d(.2,-1,0,4deg) rotate(2deg) translate3d(2%,-6%,0) scale(1.06);}
+  .deck-stack .card-blue.is-selected{transform:rotate3d(.2,-1,0,3deg) rotate(0deg) translate3d(0,-6%,0) scale(1.06);}
 
   .deck-icon{font-size:36px;line-height:1;color:#FFFFFF;}
+  .deck-party .deck-icon{color:#FFFFFF;}
+  .deck-connect .deck-icon{color:#FFFFFF;}
   .deck-label{
-    font-family:'Tajawal','IBM Plex Mono',monospace;
-    font-size:13px;letter-spacing:0.08em;
+    font-family:'Manrope',monospace;
+    font-size:11.5px;letter-spacing:0.13em;
     text-transform:uppercase;
-    font-weight:700;
-    opacity:0.95;
+    font-weight:500;
+    opacity:0.92;
   }
   .deck-mindful .deck-label{color:#A9EBD1;}
   .deck-party .deck-label{color:#CFEBFB;}
   .deck-connect .deck-label{color:#FBD9DE;}
   .deck-title{
-    font-family:'Tajawal','Fraunces',serif;
-    font-weight:700;
+    font-family:'Fraunces',serif;
+    font-weight:600;
     font-size:25px;
-    line-height:1.2;
+    line-height:1.18;
     color:#FFFFFF;
   }
+  .deck > div{position:relative;z-index:1;}
+  .deck-watermark{position:absolute;inset:12% 8% auto auto;width:72%;height:72%;z-index:0;opacity:.06;pointer-events:none;}
+  .deck-watermark path,.deck-watermark circle,.deck-watermark line,.deck-watermark polyline{vector-effect:non-scaling-stroke;}
+  .deck-microcopy{display:block;margin-top:9px;color:rgba(255,255,255,.75);font:500 .8rem/1.5 'Tajawal',sans-serif;opacity:.9;direction:rtl;text-align:right;}
+
 
   /* ===== SECTION HEADS ===== */
   .section{padding:96px 0;}
@@ -325,6 +479,8 @@
   .section-head p{color:var(--muted);font-size:16.5px;margin-top:14px;}
 
   /* ===== GAME GRID ===== */
+  #games{scroll-margin-top:120px;}
+  /* ---- filter tabs ---- */
   .filter-row{
     display:flex;gap:10px;flex-wrap:wrap;
     margin-bottom:44px;
@@ -348,25 +504,26 @@
   }
   .filter-tab:focus-visible{outline:2px solid var(--brass-bright);outline-offset:3px;}
 
+  /* ---- grid + glass cards ---- */
   .game-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));
     gap:30px;
   }
   .game-card{
     position:relative;
     grid-column:span 1;
-    border-radius:22px;
-    padding:1px;
-    background:linear-gradient(155deg, rgba(201,162,39,0.35), rgba(241,233,216,0.06) 40%, rgba(140,47,57,0.25));
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:16px;
+    background:rgba(30,25,18,0.72);
     transition:transform 0.3s cubic-bezier(0.25,0.8,0.25,1), box-shadow 0.3s ease, opacity .3s ease;
     opacity:1;
   }
   .game-card .card-inner{
     position:relative;
     height:100%;
-    border-radius:21px;
-    background:rgba(30,25,18,0.72);
+    border-radius:15px;
+    background:transparent;
     backdrop-filter:blur(18px);
     -webkit-backdrop-filter:blur(18px);
     display:flex;flex-direction:column;
@@ -378,54 +535,111 @@
   }
   .game-card.fade-out{opacity:0;transform:scale(.94);pointer-events:none;}
 
-  .card-visual{
+  .card-image-wrapper{
     position:relative;
-    height:150px;
-    display:flex;align-items:flex-start;justify-content:space-between;
-    padding:20px 22px;
+    width:100%;
+    aspect-ratio:1/1;
     overflow:hidden;
+    background:var(--surface-2);
   }
-  .visual-romance{background:radial-gradient(120% 140% at 20% 0%, #5C2430, var(--couples-color) 75%);}
-  .visual-parties{background:radial-gradient(120% 140% at 20% 0%, #2A4A78, var(--friends-color) 75%);}
-  .visual-mindfulness{background:radial-gradient(120% 140% at 20% 0%, #2E6F5C, #12261F 75%);}
-  .visual-bundle{background:linear-gradient(120deg, #4A2E0C, #C9A227 55%, #8C2F39);}
-  .card-visual .glyph{
-    font-family:'Fraunces',serif;
-    font-size:88px;
-    line-height:1;
-    color:rgba(255,255,255,0.24);
+  .card-img{
     position:absolute;
-    right:6px;bottom:-18px;
+    inset:0;
+    width:100%;
+    max-width:100%;
+    height:auto;
+    max-height:100%;
+    object-fit:contain;
+    object-position:center;
+    display:block;
+    background:var(--surface-2);
+    transition:opacity .35s ease, transform .5s cubic-bezier(.2,.8,.2,1);
   }
-  .card-visual .card-index{
-    font-family:'Fraunces',serif;
-    font-size:16px;
-    color:rgba(241,233,216,0.85);
-    line-height:1.15;
-    position:relative;z-index:1;
+  .game-card:hover .card-img{transform:scale(1.05);}
+  .how-well-card .card-img{object-fit:cover;object-position:center 46%;}
+  @keyframes placeholderPulse{
+    0%,100%{opacity:1;}
+    50%{opacity:.72;}
   }
-  .card-visual .card-index .suit{color:var(--brass-bright);}
+  .placeholder-pulse{animation:placeholderPulse 2.6s ease-in-out infinite;}
+  .game-card:hover .placeholder-pulse{animation-play-state:paused;opacity:1;}
+  @media(prefers-reduced-motion:reduce){
+    .placeholder-pulse{animation:none;}
+  }
+  .product-badge{
+    position:absolute;
+    top:16px;
+    left:16px;
+    z-index:2;
+    padding:7px 12px;
+    border:1px solid rgba(229,184,66,.45);
+    border-radius:999px;
+    background:rgba(13,13,13,.78);
+    color:#ffe39a;
+    font:700 12px 'Tajawal','Manrope',sans-serif;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+  }
+  /* "chain" reveal used when cycling through a product's photos on hover:
+     shrink+fade the outgoing photo, then pop the next one in with a slight overshoot */
+  .card-img.chain-out{
+    opacity:0;
+    transform:scale(0.82);
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .card-img.chain-in{
+    opacity:1;
+    transform:scale(1.12);
+    transition:opacity .26s ease, transform .26s cubic-bezier(.34,1.56,.64,1);
+  }
   .badge-value{
-    position:relative;z-index:1;
-    font-family:'IBM Plex Mono',monospace;
+    font-family:'Manrope',monospace;
     font-size:11px;letter-spacing:0.06em;
     background:rgba(20,17,13,0.55);
     color:var(--brass-bright);
     padding:6px 12px;
     border-radius:999px;
     border:1px solid rgba(241,233,216,0.25);
-    align-self:flex-start;
+  }
+  .badge-overlay{
+    position:absolute;
+    top:16px;left:16px;
+    z-index:2;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
   }
 
-  .card-body{padding:26px 26px 28px;display:flex;flex-direction:column;flex:1;}
-  .game-card h3{
-    font-size:25px;
+  .card-content{padding:26px 26px 28px;display:flex;flex-direction:column;flex:1;cursor:pointer;}
+  .card-title{
+    font-family:'Manrope','Manrope',sans-serif;
+    font-size:21px;
+    font-weight:700;
     line-height:1.15;
     color:var(--parchment);
     margin-bottom:14px;
+    overflow-wrap:anywhere;
   }
-  .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-  .pill{
+  .product-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px;color:var(--muted);font-size:12px;}
+  .product-category{color:var(--brass-bright);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+  .product-rating{white-space:nowrap;color:#f8df91;display:inline-flex;align-items:center;gap:5px;}
+  .product-rating .stars{letter-spacing:1px;font-size:12.5px;}
+  .product-rating b{color:var(--parchment);font-weight:800;}
+  .card-price{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;font-family:'Tajawal','Manrope',sans-serif;}
+  .card-price del{color:var(--muted);font-size:15px;text-decoration:line-through;text-decoration-thickness:2px;}
+  .card-price strong{color:var(--brass-bright);font-size:23px;font-weight:800;line-height:1;}
+  .price-save{
+    font:800 12px 'Tajawal','Manrope',sans-serif;
+    letter-spacing:.04em;
+    color:#1b1608;
+    background:linear-gradient(135deg,#f7d98a,#e5b842);
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:999px;
+    padding:5px 10px;
+    white-space:nowrap;
+  }
+  .free-shipping-badge{display:inline-flex;align-items:center;gap:6px;width:max-content;max-width:100%;margin-bottom:14px;padding:7px 12px;border:1px solid rgba(229,184,66,.5);border-radius:999px;background:rgba(229,184,66,.16);color:#ffe39a;font:700 12px 'Tajawal','Manrope',sans-serif;}
+  .card-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:0;}
+  .tag{
     font-size:12.5px;font-weight:700;
     text-transform:uppercase;
     letter-spacing:0.08em;
@@ -436,10 +650,22 @@
     border-radius:999px;
     white-space:nowrap;
   }
-  .desc{
+  /* description hidden by default; reveals on card hover, or tap (via .revealed class) for touch */
+  .card-desc{
     font-size:16.5px;
     line-height:1.6;
     color:var(--text-secondary);
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+    margin-top:0;margin-bottom:0;
+    transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;
+  }
+  .game-card:hover .card-desc,
+  .game-card.revealed .card-desc{
+    max-height:220px;
+    opacity:1;
+    margin-top:16px;
     margin-bottom:24px;
   }
   .btn-order{
@@ -453,6 +679,7 @@
     border-radius:999px;
     transition:background .25s ease, color .25s ease, border-color .25s ease, transform .15s ease;
   }
+  .btn-order:hover{background:var(--brass);border-color:var(--brass);color:#17120a;transform:translateY(-2px);}
   .btn-order svg{width:16px;height:16px;transition:transform .25s ease;}
   .game-card:hover .btn-order{
     background:var(--brass);
@@ -470,68 +697,37 @@
   .game-card.featured .card-inner{
     flex-direction:row;
     background:rgba(26,21,14,0.82);
-    overflow:visible;
   }
   @media(max-width:760px){.game-card.featured .card-inner{flex-direction:column;}}
-  .game-card.featured .card-visual{
-    width:38%;height:auto;min-height:220px;
+  .game-card.featured .card-image-wrapper{
+    width:38%;height:auto;min-height:260px;aspect-ratio:1 / 1;
     flex-shrink:0;
-    align-items:center;
-    overflow:visible;
+    overflow:hidden;
   }
-  @media(max-width:760px){.game-card.featured .card-visual{width:100%;min-height:150px;}}
-  .game-card.featured .glyph{font-size:130px;right:-4px;bottom:-30px;color:rgba(255,255,255,0.08);}
-  .game-card.featured .card-body{justify-content:center;}
-
-  /* 3D bundle box mockup */
-  .bundle-box{
-    position:absolute;
-    left:50%;
-    bottom:-26px;
-    transform:translateX(-50%);
-    width:132px;
-    z-index:3;
-    filter:drop-shadow(0 0 32px rgba(201,162,39,0.35));
-  }
-  .bundle-box .box-lid{
-    width:144px;
-    height:26px;
-    margin-left:-6px;
-    background:linear-gradient(100deg,#F0D77A,#C9A227 55%,#8C6A15);
-    border-radius:6px 6px 2px 2px;
-    transform:perspective(240px) rotateX(52deg);
-    transform-origin:bottom;
-    box-shadow:0 8px 16px -6px rgba(0,0,0,0.55);
-    position:relative;
-    z-index:2;
-  }
-  .bundle-box .box-front{
-    width:132px;
-    height:106px;
-    margin-top:-4px;
-    background:linear-gradient(165deg,#1F1A10,#050402);
-    border:1px solid rgba(201,162,39,0.55);
-    border-radius:4px 4px 9px 9px;
-    box-shadow:0 30px 50px -18px rgba(0,0,0,0.75);
-    display:flex;align-items:center;justify-content:center;
-    position:relative;
-    z-index:1;
-  }
-  .bundle-box .box-emblem{
-    font-family:'Fraunces',serif;
-    font-size:14px;
-    letter-spacing:0.06em;
-    color:var(--brass-bright);
-    text-align:center;
-    line-height:1.35;
-  }
-  @media(max-width:760px){.bundle-box{bottom:-18px;width:112px;}
-    .bundle-box .box-lid{width:122px;height:22px;}
-    .bundle-box .box-front{width:112px;height:88px;}
-  }
-  .game-card.featured h3{font-size:30px;}
+  @media(max-width:760px){.game-card.featured .card-image-wrapper{width:100%;min-height:0;aspect-ratio:1 / 1;}}
+  .game-card.featured .card-img{max-width:100%;height:auto;max-height:100%;}
+  .game-card.featured .card-content{justify-content:center;}
+  .game-card.featured .card-title{font-size:30px;}
+  .bundle-picker-backdrop{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:18px;opacity:0;pointer-events:none;transition:opacity .2s ease;}
+  .bundle-picker-backdrop.open{opacity:1;pointer-events:auto;}
+  .bundle-picker{width:min(520px,100%);max-height:min(680px,92vh);overflow:auto;padding:26px;border:1px solid var(--hairline);border-radius:18px;background:#17130f;box-shadow:0 24px 80px rgba(0,0,0,.55);}
+  .bundle-picker h3{font-size:26px;margin-bottom:8px;}
+  .bundle-picker p{color:var(--muted);font-size:14px;margin-bottom:18px;}
+  .bundle-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+  .bundle-option{display:flex;align-items:center;gap:9px;padding:11px 12px;border:1px solid var(--hairline);border-radius:10px;color:var(--parchment);font-size:14px;cursor:pointer;}
+  .bundle-option:has(input:checked){border-color:var(--brass);background:rgba(229,184,66,.12);}
+  .bundle-option input{accent-color:var(--brass);}
+  .bundle-picker-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
+  .bundle-picker-error{min-height:20px;margin-top:10px;color:#f3a4a4;font-size:13px;}
+  @media(max-width:520px){.bundle-options{grid-template-columns:1fr;}}
 
   /* ===== HOW IT WORKS ===== */
+  #how{
+    min-height:calc(100svh - 78px);
+    display:flex;
+    align-items:center;
+    scroll-margin-top:78px;
+  }
   .steps{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -547,7 +743,7 @@
     padding:36px 32px;
   }
   .step .num{
-    font-family:'IBM Plex Mono',monospace;
+    font-family:'Manrope',monospace;
     color:var(--brass);
     font-size:13px;
     margin-bottom:16px;
@@ -563,164 +759,655 @@
     padding:80px 0;
     text-align:center;
   }
+  #contact{scroll-margin-top:78px;}
   .cta-band h2{font-size:clamp(28px,4vw,40px);margin-bottom:16px;}
   .cta-band p{color:var(--muted);font-size:17px;margin-bottom:32px;max-width:52ch;margin-left:auto;margin-right:auto;}
+  .cta-band .cta-trust{color:var(--brass-bright);font-size:14px;font-weight:700;letter-spacing:.02em;margin-top:-12px;margin-bottom:28px;max-width:none;}
+
+  /* ===== CUSTOMER PHOTO REVIEWS ===== */
+  #reviews{scroll-margin-top:120px;}
+  #reviews .section-head{max-width:720px;}
+  .reviews-title{
+    font-family:'Tajawal','Fraunces',serif;
+    font-weight:800;
+    line-height:1.28;
+    margin-top:14px;
+    color:var(--parchment);
+  }
+  .reviews-title .reviews-title-ar{display:block;direction:rtl;text-align:right;}
+  .reviews-title .reviews-title-en{
+    display:block;
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:.82em;
+    margin-top:6px;
+  }
+  .reviews-summary{
+    display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;
+    margin-top:18px;
+    padding:9px 16px;
+    border:1px solid rgba(229,184,66,.45);
+    border-radius:999px;
+    background:rgba(229,184,66,.1);
+    color:#ffe39a;
+    font:700 14px 'Tajawal','Manrope',sans-serif;
+  }
+  .reviews-summary b{color:var(--brass-bright);font-family:'Manrope',monospace;font-size:13px;}
+
+  /* ---- wallet cashback banner (glassmorphism) ---- */
+  .wallet-banner{
+    position:relative;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:clamp(18px,3vw,40px);flex-wrap:wrap;
+    margin-bottom:52px;
+    padding:clamp(22px,3vw,32px);
+    border:1px solid rgba(229,184,66,.34);
+    border-radius:22px;
+    background:linear-gradient(135deg,rgba(201,162,39,.18) 0%,rgba(241,233,216,.05) 42%,rgba(140,47,57,.16) 100%);
+    backdrop-filter:blur(18px) saturate(150%);
+    -webkit-backdrop-filter:blur(18px) saturate(150%);
+    box-shadow:0 30px 70px -34px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.07);
+    overflow:hidden;
+  }
+  .wallet-banner::before{content:'';position:absolute;top:-42%;left:-10%;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(229,184,66,.3),transparent 68%);filter:blur(30px);pointer-events:none;}
+  .wallet-banner::after{content:'';position:absolute;right:-8%;bottom:-48%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(140,47,57,.32),transparent 70%);filter:blur(34px);pointer-events:none;}
+  .wallet-banner-text{position:relative;z-index:1;flex:1 1 340px;min-width:0;}
+  .wallet-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:7px 15px;
+    border:1px solid rgba(229,184,66,.5);
+    border-radius:999px;
+    background:rgba(13,13,13,.55);
+    color:#ffe39a;
+    font:800 12px 'Manrope',monospace;
+    letter-spacing:.08em;text-transform:uppercase;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+  }
+  .wallet-headline{
+    margin:16px 0 10px;
+    font-family:'Tajawal','Fraunces',serif;
+    font-size:clamp(23px,3vw,33px);font-weight:800;line-height:1.3;
+    color:var(--parchment);
+    direction:rtl;text-align:left;
+  }
+  .wallet-desc{
+    color:var(--text-secondary);
+    font:500 15px/1.75 'Tajawal','Manrope',sans-serif;
+    direction:rtl;text-align:left;
+    max-width:60ch;
+  }
+  .wallet-banner-actions{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
+  .btn-wallet{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:16px 26px;
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:999px;
+    background:linear-gradient(120deg,var(--brass) 0%,var(--brass-bright) 55%,#fff3c4 100%);
+    color:#17120a;
+    font:800 16px 'Tajawal','Manrope',sans-serif;
+    direction:rtl;cursor:pointer;
+    box-shadow:0 18px 40px -18px rgba(229,184,66,.85);
+    transition:transform .22s ease, box-shadow .22s ease, filter .22s ease;
+  }
+  .btn-wallet:hover,.btn-wallet:focus-visible{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 26px 52px -20px rgba(229,184,66,.95);}
+  .btn-wallet:focus-visible{outline:2px solid var(--brass-bright);outline-offset:3px;}
+  .wallet-note{color:rgba(203,195,178,.78);font:600 12px/1.6 'Tajawal','Manrope',sans-serif;direction:rtl;max-width:34ch;}
+
+  /* ---- empty state: no approved reviews yet (minimal — the wallet-banner above already carries the CTA) ---- */
+  .reviews-empty-state{
+    display:block;
+    text-align:center;direction:rtl;
+    color:var(--muted);
+    font:500 15px/1.7 'Tajawal','Manrope',sans-serif;
+    padding:20px 0 8px;
+  }
+  .reviews-empty-state[hidden]{display:none;}
+  .reviews-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:24px;
+  }
+  .reviews-grid[hidden]{display:none;}
+  .stars-dim{color:rgba(248,223,145,.3);}
+  .review-card{
+    display:flex;flex-direction:column;
+    min-width:0;
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:16px;
+    background:rgba(30,25,18,0.72);
+    overflow:hidden;
+    transition:transform .3s cubic-bezier(.25,.8,.25,1), box-shadow .3s ease;
+  }
+  .review-card:hover{transform:translateY(-4px);box-shadow:0 28px 48px -28px rgba(0,0,0,.78);}
+  .review-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:#211b15;}
+  .review-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.8,.2,1);}
+  .review-card:hover .review-photo img{transform:scale(1.05);}
+  .photo-tag{
+    position:absolute;left:12px;bottom:12px;
+    padding:6px 12px;
+    border:1px solid rgba(229,184,66,.4);
+    border-radius:999px;
+    background:rgba(13,13,13,.78);
+    color:#ffe39a;
+    font:700 11.5px 'Tajawal','Manrope',sans-serif;
+    direction:rtl;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+  }
+  .review-body{padding:20px 22px 24px;display:flex;flex-direction:column;gap:11px;flex:1;}
+  .review-stars{color:#f8df91;font-size:17px;line-height:1;letter-spacing:.1em;}
+  .review-person{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .review-name{direction:rtl;font:700 16px 'Tajawal','Manrope',sans-serif;color:var(--parchment);}
+  .review-verified{
+    display:inline-flex;align-items:center;
+    padding:5px 11px;
+    border:1px solid rgba(93,196,138,.4);
+    border-radius:999px;
+    background:rgba(93,196,138,.14);
+    color:#9fe0b6;
+    font:700 11.5px 'Tajawal','Manrope',sans-serif;
+    direction:rtl;
+    white-space:nowrap;
+  }
+  .review-text{
+    direction:rtl;
+    text-align:right;
+    color:var(--text-secondary);
+    font:400 16px/1.75 'Tajawal','Manrope',sans-serif;
+  }
+  /* the 4th review is a wide highlight: photo left, words right */
+  .review-card.review-wide{grid-column:1 / -1;flex-direction:row;}
+  .review-card.review-wide .review-photo{width:38%;flex-shrink:0;aspect-ratio:4/3;}
+  .review-card.review-wide .review-body{justify-content:center;padding:28px 30px;}
+  .review-card.review-wide .review-text{font-size:17.5px;}
 
   /* ===== FOOTER ===== */
-  footer{padding:56px 0 40px;}
+  footer{padding:64px 0 28px;border-top:1px solid var(--hairline);background:rgba(19,16,12,.6);}
   .footer-grid{
-    display:flex;justify-content:space-between;align-items:flex-start;
-    flex-wrap:wrap;gap:32px;
-    padding-bottom:32px;
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1.15fr 1.2fr;
+    gap:clamp(24px,3.5vw,44px);
+    padding-bottom:38px;
     border-bottom:1px solid var(--hairline);
-    margin-bottom:24px;
   }
-  .footer-links{display:flex;gap:30px;flex-wrap:wrap;}
-  .footer-links a{font-size:14px;color:var(--muted);}
-  .footer-links a:hover{color:var(--parchment);}
+  .footer-logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .footer-logo .brand-main{font:700 17px 'Manrope','Manrope',sans-serif;color:var(--parchment);letter-spacing:.4px;}
+  .footer-logo .gold-text{color:var(--brass-bright);font:400 17px 'Manrope','Manrope',sans-serif;}
+  .footer-about{color:var(--muted);font-size:14.5px;max-width:36ch;}
+  .footer-social{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+  .social-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:9px 15px;
+    border:1px solid var(--hairline);
+    border-radius:999px;
+    background:rgba(241,233,216,.04);
+    color:var(--text-secondary);
+    font:600 13px 'Manrope',sans-serif;
+    transition:color .22s ease,border-color .22s ease,background .22s ease,transform .22s ease;
+  }
+  .social-pill svg{width:16px;height:16px;flex-shrink:0;}
+  .social-pill:hover,.social-pill:focus-visible{border-color:var(--brass);background:rgba(229,184,66,.1);color:var(--brass-bright);transform:translateY(-2px);}
+  .footer-col h4{
+    font-family:'Manrope',monospace;
+    font-size:12px;font-weight:700;
+    letter-spacing:.13em;text-transform:uppercase;
+    color:var(--brass);
+    margin-bottom:16px;
+  }
+  .footer-nav{display:flex;flex-direction:column;gap:11px;}
+  .footer-nav a{font-size:14.5px;color:var(--muted);transition:color .2s ease;}
+  .footer-nav a:hover,.footer-nav a:focus-visible{color:var(--brass-bright);}
+
+  .guarantee-list{display:flex;flex-direction:column;gap:11px;}
+  .guarantee{
+    display:flex;align-items:center;gap:10px;
+    padding:11px 14px;
+    border:1px solid rgba(229,184,66,.28);
+    border-radius:12px;
+    background:rgba(229,184,66,.07);
+    color:var(--parchment);
+    font:600 14px 'Tajawal','Manrope',sans-serif;
+    direction:rtl;
+  }
+  .footer-contact{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
+  .footer-wa{
+    display:inline-flex;align-items:center;gap:11px;
+    padding:12px 16px;
+    border:1px solid rgba(229,184,66,.4);
+    border-radius:14px;
+    background:rgba(229,184,66,.09);
+    color:var(--parchment);
+    transition:border-color .22s ease,background .22s ease,transform .22s ease;
+  }
+  .footer-wa:hover,.footer-wa:focus-visible{border-color:var(--brass-bright);background:rgba(229,184,66,.16);transform:translateY(-2px);}
+  .footer-wa svg{width:20px;height:20px;color:var(--brass-bright);flex-shrink:0;}
+  .footer-wa b{display:block;font:700 15px 'Manrope',sans-serif;letter-spacing:.01em;}
+  .footer-wa small{display:block;margin-top:2px;color:var(--muted);font:500 11.5px 'Manrope',sans-serif;}
+  .location-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:9px 14px;
+    border:1px solid var(--hairline);
+    border-radius:999px;
+    color:var(--muted);
+    font:600 13px 'Manrope',sans-serif;
+  }
   .footer-bottom{
-    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:14px;
+    padding-top:22px;
     font-size:13px;color:var(--muted);
   }
+  .footer-legal-links{display:flex;gap:20px;flex-wrap:wrap;}
+  .footer-legal-links a{transition:color .2s ease;}
+  .footer-legal-links a:hover,.footer-legal-links a:focus-visible{color:var(--brass-bright);}
+  .footer-legal{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:22px;
+    margin-top:24px;padding-top:24px;
+    border-top:1px dashed rgba(241,233,216,.14);
+  }
+  .footer-legal article{scroll-margin-top:96px;}
+  .footer-legal h4{
+    font-family:'Manrope',monospace;
+    font-size:11px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;
+    color:var(--text-secondary);
+    margin-bottom:8px;
+  }
+  .footer-legal p{font-size:12.5px;line-height:1.65;color:rgba(203,195,178,.78);}
 
+  /* ---- reviews: admin toolbar ---- */
+  .admin-bar{
+    display:none;align-items:center;gap:12px;flex-wrap:wrap;
+    margin-top:20px;padding:12px 16px;
+    border:1px dashed rgba(229,184,66,.5);
+    border-radius:14px;
+    background:rgba(229,184,66,.08);
+    color:#ffe39a;
+    font:700 13px 'Manrope',sans-serif;
+  }
+  #reviews.admin-mode .admin-bar{display:flex;}
+  .admin-bar .admin-btn{padding:7px 14px;font-size:12.5px;}
+  .admin-hint{color:rgba(203,195,178,.75);font-weight:500;}
+  #reviews-title{cursor:default;user-select:none;}
+
+  /* ---- review card extras ---- */
+  .review-meta{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    color:rgba(203,195,178,.82);
+    font:500 12.5px 'Manrope',monospace;
+  }
+  .review-phone-raw{color:#9fe0b6;}
+  .review-status{
+    display:inline-flex;align-items:center;gap:6px;width:max-content;
+    padding:5px 12px;border-radius:999px;
+    border:1px solid rgba(229,184,66,.5);
+    background:rgba(229,184,66,.14);
+    color:#ffe39a;
+    font:700 11.5px 'Tajawal','Manrope',sans-serif;
+    direction:rtl;
+  }
+  .review-card.is-pending{border-color:rgba(229,184,66,.42);}
+  .review-card.is-pending .review-photo img{opacity:.85;}
+  .review-photo.no-photo{
+    display:grid;place-items:center;gap:8px;
+    padding:18px;
+    background:linear-gradient(140deg,#241E15,#17130f);
+    color:var(--muted);
+    font:600 12.5px 'Tajawal','Manrope',sans-serif;
+    text-align:center;
+    direction:rtl;
+  }
+  .review-photo.no-photo .no-photo-icon{font-size:26px;line-height:1;}
+  .review-admin{display:none;gap:10px;flex-wrap:wrap;margin-top:6px;}
+  #reviews.admin-mode .review-admin{display:flex;}
+  .admin-btn{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:8px 15px;
+    border:1px solid var(--hairline);
+    border-radius:999px;
+    background:rgba(241,233,216,.05);
+    color:var(--parchment);
+    font:700 12.5px 'Manrope',sans-serif;
+    cursor:pointer;
+    transition:transform .18s ease, background .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .admin-btn:hover,.admin-btn:focus-visible{transform:translateY(-1px);}
+  .admin-btn:focus-visible{outline:2px solid var(--brass-bright);outline-offset:2px;}
+  .admin-btn.approve{border-color:rgba(93,196,138,.5);background:rgba(93,196,138,.14);color:#9fe0b6;}
+  .admin-btn.approve:hover{background:rgba(93,196,138,.24);}
+  .admin-btn.delete{border-color:rgba(241,138,138,.45);background:rgba(241,138,138,.12);color:#f5a3a3;}
+  .admin-btn.delete:hover{background:rgba(241,138,138,.22);}
+
+  /* ---- review submission modal (dark glassmorphism) ---- */
+  .review-modal-backdrop{
+    position:fixed;inset:0;z-index:300;
+    display:none;
+    background:rgba(5,4,3,.72);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+  }
+  .review-modal-backdrop.open{display:block;}
+  .review-modal{
+    position:fixed;z-index:301;
+    top:50%;left:50%;
+    transform:translate(-50%,-46%);
+    display:none;
+    width:min(560px,calc(100vw - 28px));
+    max-height:min(92dvh,780px);
+    overflow:auto;
+    padding:26px clamp(18px,3vw,30px) 28px;
+    border:1px solid rgba(241,233,216,.18);
+    border-radius:20px;
+    background:linear-gradient(160deg,rgba(40,32,23,.88),rgba(19,16,12,.92));
+    backdrop-filter:blur(20px) saturate(150%);
+    -webkit-backdrop-filter:blur(20px) saturate(150%);
+    box-shadow:0 40px 90px -30px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.06);
+    opacity:0;
+    transition:opacity .25s ease, transform .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .review-modal.open{display:block;opacity:1;transform:translate(-50%,-50%);}
+  .review-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px;}
+  .review-modal-head h3{
+    font-family:'Tajawal','Fraunces',serif;
+    font-size:23px;font-weight:800;
+    color:var(--parchment);
+    direction:rtl;
+  }
+  .review-modal-head p{margin-top:7px;color:var(--muted);font:500 13px/1.6 'Tajawal','Manrope',sans-serif;direction:rtl;max-width:40ch;}
+  .review-field{
+    display:block;
+    margin-bottom:14px;
+    color:var(--muted);
+    font:700 12px 'Tajawal',sans-serif;
+    letter-spacing:.03em;
+    direction:rtl;
+    text-align:right;
+  }
+  .review-field input[type="text"],
+  .review-field input[type="tel"],
+  .review-field textarea{
+    display:block;width:100%;margin-top:7px;
+    padding:12px 14px;
+    border:1px solid var(--hairline);
+    border-radius:11px;
+    background:rgba(24,20,15,.86);
+    color:var(--parchment);
+    font:15px 'Tajawal','Manrope',sans-serif;
+  }
+  .review-field input[type="text"],
+  .review-field textarea{direction:rtl;text-align:right;}
+  .review-field input[type="tel"]{direction:ltr;text-align:left;font-family:'Manrope',monospace;}
+  .review-field textarea{min-height:108px;resize:vertical;line-height:1.7;}
+  .review-field input:focus,.review-field textarea:focus{outline:2px solid var(--brass);outline-offset:1px;}
+  .review-field input.invalid,.review-field textarea.invalid{border-color:rgba(241,138,138,.7);}
+  .review-field .field-error{min-height:15px;text-align:right;}
+  .review-stars-field{border:0;margin:0 0 14px;padding:0;direction:rtl;text-align:right;}
+  .review-stars-field legend{color:var(--muted);font:700 12px 'Tajawal',sans-serif;padding:0;margin-bottom:8px;}
+  .star-input{display:flex;gap:6px;justify-content:flex-end;}
+  .star-input .star{
+    width:44px;height:44px;
+    display:grid;place-items:center;
+    border:1px solid var(--hairline);
+    border-radius:12px;
+    background:rgba(241,233,216,.04);
+    color:rgba(248,223,145,.32);
+    font-size:20px;line-height:1;
+    cursor:pointer;
+    transition:transform .16s ease, background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .star-input .star:hover{transform:translateY(-2px) scale(1.04);}
+  .star-input .star.active{color:#f8df91;background:rgba(229,184,66,.16);border-color:rgba(229,184,66,.5);}
+  .star-input .star:focus-visible{outline:2px solid var(--brass-bright);outline-offset:2px;}
+  .review-upload-hint{display:block;margin-top:8px;color:rgba(203,195,178,.72);font:500 12px/1.5 'Manrope',sans-serif;}
+  .review-upload input[type="file"]{
+    display:block;width:100%;margin-top:7px;
+    padding:10px 12px;
+    border:1px dashed rgba(241,233,216,.3);
+    border-radius:11px;
+    background:rgba(24,20,15,.6);
+    color:var(--muted);
+    font:600 12.5px 'Manrope',sans-serif;
+    cursor:pointer;
+    direction:ltr;
+  }
+  .review-upload input[type="file"]::file-selector-button{
+    margin-right:12px;padding:8px 14px;
+    border:1px solid rgba(229,184,66,.45);
+    border-radius:999px;
+    background:rgba(229,184,66,.14);
+    color:#ffe39a;
+    font:700 12.5px 'Manrope',sans-serif;
+    cursor:pointer;
+  }
+  #review-image-preview{
+    display:block;width:100%;max-height:190px;
+    object-fit:cover;
+    margin-top:12px;
+    border:1px solid var(--hairline);
+    border-radius:12px;
+  }
+  #review-image-preview[hidden]{display:none;}
+  .review-submit{width:100%;justify-content:center;margin-top:6px;direction:rtl;}
+  .review-form-note{margin-top:12px;min-height:19px;font:600 13px/1.5 'Manrope',sans-serif;text-align:center;direction:rtl;}
+  .review-form-note.ok{color:#9fe0b6;}
+  .review-form-note.err{color:#f5a3a3;}
+  .reviews-toast{
+    position:fixed;left:50%;bottom:26px;z-index:302;
+    display:none;
+    transform:translate(-50%,18px);
+    padding:12px 20px;
+    border:1px solid rgba(229,184,66,.45);
+    border-radius:999px;
+    background:rgba(19,16,12,.94);
+    color:#ffe39a;
+    font:700 13px 'Manrope',sans-serif;
+    box-shadow:0 20px 40px -22px rgba(0,0,0,.9);
+  }
+  .reviews-toast.open{display:block;transform:translate(-50%,0);transition:transform .25s ease;}
+
+  /* ---- responsive: reviews + footer ---- */
+  @media(max-width:1024px){
+    .reviews-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  @media(max-width:760px){
+    .review-card.review-wide{flex-direction:column;}
+    .review-card.review-wide .review-photo{width:100%;}
+    .review-card.review-wide .review-body{padding:22px 22px 26px;}
+    .wallet-banner{flex-direction:column;align-items:stretch;}
+    .wallet-banner-actions{align-items:stretch;}
+    .btn-wallet{width:100%;justify-content:center;}
+    .footer-grid{padding-bottom:30px;}
+    .footer-legal{grid-template-columns:minmax(0,1fr);gap:18px;}
+  }
+  @media(max-width:620px){
+    .reviews-grid{grid-template-columns:minmax(0,1fr);gap:18px;}
+    .reviews-title{font-size:26px;}
+    .reviews-summary{width:100%;justify-content:center;text-align:center;}
+    .review-text{font-size:15.5px;}
+    .footer-grid{grid-template-columns:minmax(0,1fr);gap:28px;}
+    .footer-bottom{flex-direction:column;align-items:flex-start;}
+    .footer-legal-links{gap:14px;}
+    .review-modal{padding:20px 16px 22px;max-height:94dvh;border-radius:18px;}
+    .review-modal-head h3{font-size:20px;}
+    .star-input{gap:5px;}
+    .star-input .star{width:100%;height:42px;border-radius:10px;font-size:19px;}
+    .admin-bar{flex-direction:column;align-items:flex-start;}
+    .reviews-toast{left:14px;right:14px;bottom:18px;transform:translate(0,18px);text-align:center;}
+    .reviews-toast.open{transform:translate(0,0);}
+    .wallet-banner{flex-direction:column;align-items:stretch;margin-bottom:36px;border-radius:18px;}
+    .wallet-headline{text-align:center;margin-top:14px;}
+    .wallet-desc{text-align:center;}
+    .wallet-banner-actions{align-items:stretch;}
+    .btn-wallet{width:100%;justify-content:center;padding:15px 20px;font-size:15.5px;}
+    .wallet-note{max-width:none;text-align:center;}
+    .reviews-empty-state{padding:30px 20px;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none; animation:none; scroll-behavior:auto;}
+  }
   @media (max-width: 768px) {
-    .hero-container {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 3rem !important;
-        align-items: center !important;
-        text-align: center !important;
-        padding: 20px !important;
-    }
-    .hero-title {
-        font-size: 2.5rem !important;
-        line-height: 1.2 !important;
-    }
-    .cards-stack-wrapper {
-        width: 100% !important;
-        max-width: 290px !important;
-        margin: 0 auto !important;
-    }
+    /* Wrap bottom features vertically on small screens */
     .features-container {
-        flex-direction: column !important;
-        gap: 15px !important;
-        align-items: center !important;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
     }
+    /* Shrink the deck cards so they don't overflow small viewports
+       (the base .deck rule has a 300px floor) */
     .deck {
-        width: 230px !important;
-        height: 300px !important;
-        padding: 22px !important;
+        width:min(52%, 230px);
+        height:auto;
+        padding: 18px;
     }
+    .deck-stack{min-height:280px;aspect-ratio:5 / 4;overflow:visible;width:100%;max-width:420px;padding:8px;}
+    .brand-tagline{display:none;}
+    .hero-inner{padding-left:1rem;padding-right:1rem;}
+    .hero-actions{width:100%;justify-content:center;}
+    .hero-actions .btn{min-width:min(100%,280px);}
+    .trust-row{flex-wrap:wrap;justify-content:center;text-align:center;}
+    .trust-item{flex:1 1 42%;min-width:135px;justify-content:center;}
+    .section-head{gap:14px;}
+    .section-title{font-size:clamp(1.8rem,7vw,2.5rem);}
+  }
+  @media (max-width:430px){
+    html,body{width:100%;overflow-x:hidden;}
+    .wrap{padding-left:14px;padding-right:14px;}
+    .navbar{padding:10px 0;}
+    .nav-inner{gap:10px;}
+    .nav-links{gap:18px;}
+    .nav-link{font-size:11px;letter-spacing:.05em;}
+    .brand{min-width:0;gap:8px;}
+    .brand-title{font-size:13px;}
+    .cart-trigger{padding:9px 14px;font-size:12px;}
+    .cart-trigger svg{width:16px;height:16px;}
+    .section{padding:64px 0;}
+    .hero{padding:38px 0 46px;}
+    .hero-title{font-size:clamp(2.25rem,12vw,3.1rem);}
+    .hero p.lede{font-size:16px;}
+    .hero-actions,.filter-row{width:100%;}
+    .hero-actions .btn,.filter-tab{width:100%;justify-content:center;}
+    .trust-item{font-size:.88rem;white-space:normal;}
+    .game-grid{grid-template-columns:minmax(0,1fr);gap:18px;}
+    .game-card,.game-card.featured{min-width:0;width:100%;}
+    .card-content{padding:20px 18px 22px;}
+    .card-title{font-size:22px;}
+    .game-card.featured .card-title{font-size:26px;}
+    .btn-order{width:100%;padding:13px 14px;}
+    .steps{grid-template-columns:minmax(0,1fr);}
+    .cart-drawer{width:100%;}
+    .cart-header,.cart-body,.cart-footer{padding-left:16px;padding-right:16px;}
+    .checkout-field input,.checkout-field select{font-size:16px;}
   }
 </style>
+<base target="_blank">
 </head>
 <body>
 
-<header>
-  <nav class="wrap">
-    <a href="#top" class="brand-logo-container" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-      <span class="castle-gate-frame" style="
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-top-left-radius: 50% 40%;
-        border-top-right-radius: 50% 40%;
-        border: 1.5px solid var(--accent-color);
-        padding: 4px 6px;
-        background: rgba(229, 184, 66, 0.05);
-        height: 44px;
-        width: 44px;
-        box-sizing: border-box;
-        overflow: hidden;
-      ">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'%3E%3Cpath d='M6 28V13L16 5L26 13V28' stroke='%23E5B842' stroke-width='1.6' stroke-linejoin='round'/%3E%3Crect x='13' y='19' width='6' height='9' stroke='%23E5B842' stroke-width='1.6'/%3E%3Cpath d='M16 9L18.5 13.5H13.5L16 9Z' fill='%23E5B842' fill-opacity='0.55'/%3E%3C/svg%3E" alt="CardCastle" style="height: 100%; width: auto; object-fit: contain;" />
-      </span>
-
-      <div style="display: flex; flex-direction: column;">
-        <span style="font-family: 'Manrope', sans-serif !important; font-weight: 700; color: var(--text-primary); font-size: 1.2rem; line-height: 1.1;">
-          CardCastle <span style="font-weight: 300; color: var(--accent-color);">Store</span>
-        </span>
-        <span style="font-size: 9px; letter-spacing: 0.15em; font-weight: 500; opacity: 0.6; text-transform: uppercase; margin-top: 2px;">
-          BUILDING CONNECTIONS
-        </span>
+<header class="site-header">
+<div class="announcement-bar" role="note" lang="ar" dir="rtl">🚚 التوصيل مجاني لجميع المدن فوق 350 درهم | الدفع عند الاستلام</div>
+<div class="navbar">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand">
+      <div class="logo-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25 25V15H35V20H42V15H58V20H65V15H75V25C75 25 75 75 75 80C75 85 70 85 70 85H30C30 85 25 85 25 80C25 75 25 25 25 25Z" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M30 32H70" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+          <path d="M30 40H70" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+          <path d="M42 85V60C42 55 46 50 50 50C54 50 58 55 58 60V85" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">CARDCASTLE <span>STORE</span></span>
+        <span class="brand-tagline">BUILDING CONNECTIONS</span>
       </div>
     </a>
-    <div class="nav-links">
-      <a href="#games">Games</a>
-      <a href="#how">How it works</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <a class="btn btn-primary nav-cta" href="https://wa.me/212706086836" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.3A8.4 8.4 0 0 0 3.6 16l-1.1 4 4.1-1.1A8.4 8.4 0 1 0 17.6 6.3Zm-5.6 15a7 7 0 0 1-3.6-1l-.3-.1-2.6.7.7-2.5-.2-.3a7 7 0 1 1 6 3.2Zm3.8-5.2c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1s-.6.7-.7.9-.3.2-.5.1a5.7 5.7 0 0 1-1.7-1 6.3 6.3 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.4.4 0 0 0 0-.4c-.1-.1-.5-1.3-.7-1.7-.2-.5-.4-.4-.5-.4h-.4a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 1.9c0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 4 3.4a4.5 4.5 0 0 0 2.6.5 2.2 2.2 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3Z"/></svg>
-      Order on WhatsApp
-    </a>
-  </nav>
+
+    <nav class="nav-links">
+      <a href="#games" class="nav-link">Games</a>
+      <a href="#how" class="nav-link">How it works</a>
+      <a href="#reviews" class="nav-link">Reviews</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+    <button class="cart-trigger" id="cart-trigger" type="button" aria-label="Open shopping cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6.1"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+      Cart <span class="cart-count" id="cart-count">0</span>
+    </button>
+  </div>
+</div>
 </header>
 
 <main id="top">
 
+  <!-- ===== HERO (no card-suit watermarks anywhere) ===== -->
   <!-- ===== HERO ===== -->
   <section class="hero">
-    <svg class="hero-bg" width="100%" height="100%" viewBox="0 0 1180 600" preserveAspectRatio="xMidYMid slice">
-      <text x="60" y="120" font-family="Fraunces, serif" font-size="220" fill="#C9A227" opacity="0.04">♠</text>
-      <text x="900" y="480" font-family="Fraunces, serif" font-size="260" fill="#8C2F39" opacity="0.05">♥</text>
-    </svg>
-    <div class="hero-inner hero-container">
-      <div class="hero-copy">
-        <div class="hero-copy-top">
-          <span class="eyebrow">Premium decks · one castle</span>
-          <h1 class="hero-title">Re-Imagine. Connect. <em>Create Unforgettable Nights.</em></h1>
-          <p class="lede">CardCastle Store curates a premium collection of social and communication card decks. Whether you're looking for deep connections with your partner, fast-paced laughter with friends, or soulful mindfulness — we have the perfect deck for every gathering.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="https://wa.me/212706086836" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.3A8.4 8.4 0 0 0 3.6 16l-1.1 4 4.1-1.1A8.4 8.4 0 1 0 17.6 6.3Zm-5.6 15a7 7 0 0 1-3.6-1l-.3-.1-2.6.7.7-2.5-.2-.3a7 7 0 1 1 6 3.2Zm3.8-5.2c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1s-.6.7-.7.9-.3.2-.5.1a5.7 5.7 0 0 1-1.7-1 6.3 6.3 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.4.4 0 0 0 0-.4c-.1-.1-.5-1.3-.7-1.7-.2-.5-.4-.4-.5-.4h-.4a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 1.9c0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 4 3.4a4.5 4.5 0 0 0 2.6.5 2.2 2.2 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3Z"/></svg>
-              Order on WhatsApp
-            </a>
-            <a class="btn btn-ghost" href="#games">Explore the Decks</a>
-          </div>
+    <div class="wrap hero-inner">
+      <div class="hero-content">
+        <span class="eyebrow">PREMIUM DECKS • ONE CASTLE</span>
+        <h1 class="hero-title">
+          Connect.<br>
+          Re-Imagine.<br>
+          <em class="hero-accent">Create Unforgettable Nights.</em>
+        </h1>
+        <p class="lede">CardCastle Store curates a premium collection of social and communication card decks. Whether you're looking for deep connections with your partner, fast-paced laughter with friends, or soulful mindfulness — we have the perfect deck for every gathering.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://wa.me/212706086836" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.3A8.4 8.4 0 0 0 3.6 16l-1.1 4 4.1-1.1A8.4 8.4 0 1 0 17.6 6.3Zm-5.6 15a7 7 0 0 1-3.6-1l-.3-.1-2.6.7.7-2.5-.2-.3a7 7 0 1 1 6 3.2Zm3.8-5.2c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1s-.6.7-.7.9-.3.2-.5.1a5.7 5.7 0 0 1-1.7-1 6.3 6.3 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.4.4 0 0 0 0-.4c-.1-.1-.5-1.3-.7-1.7-.2-.5-.4-.4-.5-.4h-.4a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 1.9c0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 4 3.4a4.5 4.5 0 0 0 2.6.5 2.2 2.2 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3Z"/></svg>
+            Order on WhatsApp
+          </a>
+          <a class="btn btn-ghost" href="#games">Explore the Decks</a>
         </div>
-        <div class="trust-row features-container">
-          <div class="trust-item">★ ★ ★ ★ ★ 4.9/5 | 150+ families &amp; friend groups in Morocco</div>
-          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg>Original, sealed decks</div>
-          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Fast 24-48h Delivery</div>
-          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.4-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.6-9.5 9-9.5 9Z"/></svg>Loved by 100+ cozy game nights</div>
+        <p class="hero-social-proof" aria-label="Customer rating 4.9 out of 5">⭐️⭐️⭐️⭐️⭐️ 4.9/5 | 150+ families &amp; friend groups in Morocco</p>
+        <div class="trust-row">
+          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg><span>Original, sealed decks</span></div>
+          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span>Fast 24-48h Delivery</span></div>
+          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.4-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.6-9.5 9-9.5 9Z"/></svg><span>Loved by 100+ cozy game nights</span></div>
         </div>
       </div>
-      <div class="deck-stack cards-stack-wrapper" id="deck-stack">
-        <div class="deck deck-mindful card-back" tabindex="0" role="button" aria-label="Bring Deep Chats and Mindfulness deck to front">
+
+      <div class="deck-stack" id="deck-stack">
+        <div class="deck card card-green deck-mindful card-back" tabindex="0" role="button" data-category-target="mindfulness" aria-label="Open Deep Chats and Mindfulness games">
+          <svg class="deck-watermark" viewBox="0 0 240 300" fill="none" aria-hidden="true"><circle cx="120" cy="150" r="82" stroke="#F7D98A" stroke-width="1.5"/><path d="M120 75c-28 24-42 51-42 78 0 38 20 66 42 72 22-6 42-34 42-72 0-27-14-54-42-78Z" stroke="#F7D98A" stroke-width="1.5"/><path d="M120 225V104M120 151c-17-18-34-25-52-25M120 151c17-18 34-25 52-25M120 184c-13-12-26-17-39-17M120 184c13-12 26-17 39-17" stroke="#F7D98A" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div>
-            <svg width="50" height="50" viewBox="0 0 36 36" fill="none">
-              <path d="M18 26c-5-2-8-6-8-11 3 1 6 3 8 6 2-3 5-5 8-6 0 5-3 9-8 11Z" fill="#A9EBD1"/>
-              <path d="M18 26c-3-3-4-7-3-11 2 1.5 4 4 5 7 1-3 3-5.5 5-7 1 4 0 8-3 11Z" fill="#5FBE93" opacity="0.85"/>
-              <circle cx="18" cy="27" r="2.4" fill="#FFFFFF"/>
-            </svg>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true"><path d="M18 28c-7-3-11-8-11-14 5 1 9 4 11 8 2-4 6-7 11-8 0 6-4 11-11 14Z" stroke="#F7D98A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 28V12M18 21c-3-4-6-6-9-7M18 21c3-4 6-6 9-7" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
           <div>
-            <div class="deck-label">جلسة صراحة ورقي</div>
+            <div class="deck-label">Deep Chats &amp; Mindfulness</div>
             <div class="deck-title">Mindful<br>essence.</div>
+            <span class="deck-microcopy" lang="ar" dir="rtl">أسئلة كتقيس الروح</span>
           </div>
         </div>
-        <div class="deck deck-party card-middle" tabindex="0" role="button" aria-label="Bring Friends and Parties deck to front">
+        <div class="deck card card-red deck-connect card-middle" tabindex="0" role="button" data-category-target="romance" aria-label="Open Couples and Romance games">
+          <svg class="deck-watermark" viewBox="0 0 240 300" fill="none" aria-hidden="true"><path d="M120 218c-12-34-66-55-66-103 0-25 34-39 66-8 32-31 66-17 66 8 0 48-54 69-66 103Z" stroke="#F7D98A" stroke-width="1.5"/><path d="M120 107c-22 9-35 24-35 43 0 23 15 43 35 58 20-15 35-35 35-58 0-19-13-34-35-43Z" stroke="#FFFFFF" stroke-width="1.5" opacity=".8"/></svg>
           <div>
-            <svg width="48" height="48" viewBox="0 0 34 34" fill="none"><circle cx="8" cy="9" r="2" fill="#FFFFFF"/><circle cx="20" cy="6" r="1.6" fill="#FFFFFF"/><circle cx="26" cy="14" r="2.2" fill="#FFFFFF"/><circle cx="14" cy="18" r="1.4" fill="#FFFFFF"/><path d="M6 24 L28 8" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/></svg>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true"><path d="M18 29C13 24 7 21 7 14c0-4 3-7 7-7 2 0 4 1 4 3 0-2 2-3 4-3 4 0 7 3 7 7 0 7-6 10-11 15Z" stroke="#F7D98A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17c2-2 4-2 6 0 2-2 4-2 6 0" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
           <div>
-            <div class="deck-label">ضحك ولعب بلا حدود</div>
-            <div class="deck-title">Think fast,<br>laugh faster.</div>
-          </div>
-        </div>
-        <div class="deck deck-connect card-front" tabindex="0" role="button" aria-label="Bring Couples and Romance deck to front">
-          <div>
-            <span class="deck-icon">♥</span>
-          </div>
-          <div>
-            <div class="deck-label">لحظات دافئة للزوجين</div>
+            <div class="deck-label">Couples &amp; Romance</div>
             <div class="deck-title">Deep<br>connections.</div>
+            <span class="deck-microcopy" lang="ar" dir="rtl">جلسة صراحة وقرب</span>
+          </div>
+        </div>
+        <div class="deck card card-blue deck-party card-front" tabindex="0" role="button" data-category-target="parties" aria-label="Open Friends and Parties games">
+          <svg class="deck-watermark" viewBox="0 0 240 300" fill="none" aria-hidden="true"><path d="M120 28v244M28 150h184M55 85l130 130M185 85 55 215" stroke="#F7D98A" stroke-width="1.5"/><circle cx="120" cy="150" r="48" stroke="#FFFFFF" stroke-width="1.5"/><circle cx="120" cy="150" r="90" stroke="#F7D98A" stroke-width="1.5" stroke-dasharray="3 9"/></svg>
+          <div>
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M17 4v8M17 22v8M4 17h8M22 17h8M7.8 7.8l5.7 5.7M20.5 20.5l5.7 5.7M26.2 7.8l-5.7 5.7M13.5 20.5l-5.7 5.7" stroke="#F7D98A" stroke-width="1.5" stroke-linecap="round"/><path d="m17 10 1.8 5.2L24 17l-5.2 1.8L17 24l-1.8-5.2L10 17l5.2-1.8L17 10Z" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="deck-label">Friends &amp; Parties</div>
+            <div class="deck-title">Think fast,<br>laugh faster.</div>
+            <span class="deck-microcopy" lang="ar" dir="rtl">ضحك ولعب بلا حدود</span>
           </div>
         </div>
       </div>
     </div>
   </section>
+
 
   <!-- ===== GAME GRID ===== -->
   <section class="section" id="games">
@@ -742,14 +1429,26 @@
 
         <div class="game-card" data-category="romance">
           <div class="card-inner">
-            <div class="card-visual visual-romance">
-              <span class="card-index">A<br><span class="suit">♠</span></span>
-              <span class="glyph">♥</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/daba%20daba.png&quot;,&quot;images/love-memories-4.avif&quot;,&quot;images/love-memories-5.avif&quot;,&quot;images/love-memories-8.avif&quot;]">
+              <img src="images/daba%20daba.png" alt="Love Memories conversation cards" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>Love Memories</h3>
-              <div class="pill-row"><span class="pill">2 Players</span><span class="pill">30–60 Mins</span></div>
-              <p class="desc">Premium 50-prompt deck to share intimate love memories and enhance closeness.</p>
+            <div class="card-content">
+              <h3 class="card-title">Love Memories</h3>
+              <div class="product-meta">
+                <span class="product-category">Couples &amp; Romance</span>
+                <span class="product-rating" aria-label="Rated 4.9 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.9</b> (3 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>249 DH</del>
+                <strong>149 DH</strong>
+                <span class="price-save">Save 40%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">2 PLAYERS</span>
+                <span class="tag">30–60 MINS</span>
+              </div>
+              <p class="card-desc">Premium 50-prompt deck to share intimate love memories and enhance closeness.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20Love%20Memories." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -757,14 +1456,26 @@
 
         <div class="game-card" data-category="romance">
           <div class="card-inner">
-            <div class="card-visual visual-romance">
-              <span class="card-index">2<br><span class="suit">♠</span></span>
-              <span class="glyph">♥</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/love-whispers.avif&quot;,&quot;images/love-whispers-2.avif&quot;,&quot;images/love-whispers-3.avif&quot;,&quot;images/love-whispers-4.avif&quot;,&quot;images/love-whispers-5.avif&quot;,&quot;images/love-whispers-6.avif&quot;,&quot;images/love-whispers-7.avif&quot;]">
+              <img src="images/love-whispers.avif" alt="Love Whispers 55 couple conversation cards by Mirthquake" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>Love Whispers</h3>
-              <div class="pill-row"><span class="pill">2 Players</span><span class="pill">20–45 Mins</span></div>
-              <p class="desc">55 playful questions and fun challenges to spark deep date night connections.</p>
+            <div class="card-content">
+              <h3 class="card-title">Love Whispers</h3>
+              <div class="product-meta">
+                <span class="product-category">Couples &amp; Romance</span>
+                <span class="product-rating" aria-label="Rated 4.8 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.8</b> (5 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>249 DH</del>
+                <strong>149 DH</strong>
+                <span class="price-save">Save 40%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">2 PLAYERS</span>
+                <span class="tag">20–45 MINS</span>
+              </div>
+              <p class="card-desc">55 playful questions and fun challenges to spark deep date night connections.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20Love%20Whispers." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -772,14 +1483,26 @@
 
         <div class="game-card" data-category="romance">
           <div class="card-inner">
-            <div class="card-visual visual-romance">
-              <span class="card-index">3<br><span class="suit">♠</span></span>
-              <span class="glyph">♥</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/88-conversation-starters.avif&quot;,&quot;images/88-conversation-starters-2.avif&quot;,&quot;images/88-conversation-starters-5.avif&quot;,&quot;images/88-conversation-starters-6.avif&quot;,&quot;images/88-conversation-starters-7.avif&quot;,&quot;images/88-conversation-starters-8.avif&quot;,&quot;images/88-conversation-starters-9.avif&quot;]">
+              <img src="images/88-conversation-starters.avif" alt="88 Great Conversation Starters deck for husbands and wives" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>88 Great Conversation Starters</h3>
-              <div class="pill-row"><span class="pill">2 Players</span><span class="pill">30–60 Mins</span></div>
-              <p class="desc">88 excellent conversation keys tailored for husbands &amp; wives.</p>
+            <div class="card-content">
+              <h3 class="card-title">88 Great Conversation Starters</h3>
+              <div class="product-meta">
+                <span class="product-category">Couples &amp; Romance</span>
+                <span class="product-rating" aria-label="Rated 4.9 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.9</b> (6 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>269 DH</del>
+                <strong>159 DH</strong>
+                <span class="price-save">Save 41%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">2 PLAYERS</span>
+                <span class="tag">30–60 MINS</span>
+              </div>
+              <p class="card-desc">88 excellent conversation keys tailored for husbands &amp; wives.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%2088%20Great%20Conversation%20Starters." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -787,14 +1510,26 @@
 
         <div class="game-card" data-category="romance">
           <div class="card-inner">
-            <div class="card-visual visual-romance">
-              <span class="card-index">4<br><span class="suit">♠</span></span>
-              <span class="glyph">♥</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/couple-connection-cards.avif&quot;,&quot;images/couple-connection-cards-2.avif&quot;,&quot;images/couple-connection-cards-3.avif&quot;,&quot;images/couple-connection-cards-4.avif&quot;,&quot;images/couple-connection-cards-5.avif&quot;,&quot;images/couple-connection-cards-6.avif&quot;,&quot;images/couple-connection-cards-7.avif&quot;]">
+              <img src="images/couple-connection-cards.avif" alt="Couple Connection Cards set of 50 relationship cards" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>Couple Connection Cards</h3>
-              <div class="pill-row"><span class="pill">2 Players</span><span class="pill">15–45 Mins</span></div>
-              <p class="desc">50 relationship-enhancing cards to strengthen emotional intimacy.</p>
+            <div class="card-content">
+              <h3 class="card-title">Couple Connection Cards</h3>
+              <div class="product-meta">
+                <span class="product-category">Couples &amp; Romance</span>
+                <span class="product-rating" aria-label="Rated 4.8 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.8</b> (3 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>249 DH</del>
+                <strong>149 DH</strong>
+                <span class="price-save">Save 40%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">2 PLAYERS</span>
+                <span class="tag">15–45 MINS</span>
+              </div>
+              <p class="card-desc">50 relationship-enhancing cards to strengthen emotional intimacy.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20Couple%20Connection%20Cards." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -802,14 +1537,26 @@
 
         <div class="game-card" data-category="romance">
           <div class="card-inner">
-            <div class="card-visual visual-romance">
-              <span class="card-index">5<br><span class="suit">♠</span></span>
-              <span class="glyph">♥</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/fdc0022f-f08a-4904-a9d4-219d94f2f337.avif&quot;,&quot;images/5818bc1d-7655-4840-998d-067ccdf78376.avif&quot;,&quot;images/ddc06f3b-7187-4074-bee6-6f70e18df6e3.avif&quot;,&quot;images/694a7935-b06d-487e-b6c4-52812cd577c3.avif&quot;,&quot;images/d147bd97-56f6-4180-9f3b-4f41f77d5912.avif&quot;,&quot;images/c6879c20-3d0d-4a07-975c-b33933137cc9.avif&quot;,&quot;images/81b425db-469f-4576-aaef-7f912c3c6773.avif&quot;,&quot;images/dffe2835-e977-4797-b595-60a9f75c8cd6.avif&quot;,&quot;images/70e2989d02f87d98a1afd97e91d1f2ab.avif&quot;,&quot;images/4639719e-e7cf-4bc6-8009-8c08c726483a.avif&quot;,&quot;images/ccd728cd-2612-4088-a4e5-9554171f4969.avif&quot;]">
+              <img src="images/fdc0022f-f08a-4904-a9d4-219d94f2f337.avif" alt="Couples Chat bonding deck for couples" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>Couples Chat</h3>
-              <div class="pill-row"><span class="pill">2 Players</span><span class="pill">20–45 Mins</span></div>
-              <p class="desc">An engaging bonding deck to discover your partner on a whole new level.</p>
+            <div class="card-content">
+              <h3 class="card-title">Couples Chat</h3>
+              <div class="product-meta">
+                <span class="product-category">Couples &amp; Romance</span>
+                <span class="product-rating" aria-label="Rated 4.7 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.7</b> (7 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>239 DH</del>
+                <strong>149 DH</strong>
+                <span class="price-save">Save 42%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">2 PLAYERS</span>
+                <span class="tag">20–45 MINS</span>
+              </div>
+              <p class="card-desc">An engaging bonding deck to discover your partner on a whole new level.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20Couples%20Chat." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -817,14 +1564,26 @@
 
         <div class="game-card" data-category="romance">
           <div class="card-inner">
-            <div class="card-visual visual-romance">
-              <span class="card-index">6<br><span class="suit">♠</span></span>
-              <span class="glyph">♥</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/5298417f-fc1e-4af1-b5bb-521563347dec.avif&quot;,&quot;images/8526b666-8d2f-4c85-beef-47768f42766e.avif&quot;,&quot;images/a0d61c1f-0e98-4e9f-b30a-89be597c1483.avif&quot;,&quot;images/7446180b-da90-4637-bb7f-031b9cfb8b98.avif&quot;,&quot;images/803191aa-9ec7-485d-b043-26916cfb30fb.avif&quot;,&quot;images/a115e71b-bec5-4110-8774-14482a1e6503.avif&quot;,&quot;images/30cc773f-36e1-4756-8169-196a0b0171e2.avif&quot;,&quot;images/97552b4e-cd42-4d78-8b2a-807da50c1e27.avif&quot;]">
+              <img src="images/5298417f-fc1e-4af1-b5bb-521563347dec.avif" alt="Soulmate Question Deck - photos coming soon" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>Soulmate Question Deck</h3>
-              <div class="pill-row"><span class="pill">2 Players</span><span class="pill">30–60 Mins</span></div>
-              <p class="desc">50 deep prompt cards designed to navigate external stress and grow closer together.</p>
+            <div class="card-content">
+              <h3 class="card-title">Soulmate Question Deck</h3>
+              <div class="product-meta">
+                <span class="product-category">Couples &amp; Romance</span>
+                <span class="product-rating" aria-label="Rated 4.9 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.9</b> (4 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>249 DH</del>
+                <strong>149 DH</strong>
+                <span class="price-save">Save 40%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">2 PLAYERS</span>
+                <span class="tag">30–60 MINS</span>
+              </div>
+              <p class="card-desc">50 deep prompt cards designed to navigate external stress and grow closer together.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20Soulmate%20Question%20Deck." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -832,29 +1591,53 @@
 
         <div class="game-card" data-category="romance">
           <div class="card-inner">
-            <div class="card-visual visual-romance">
-              <span class="card-index">7<br><span class="suit">♠</span></span>
-              <span class="glyph">♥</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/cba6efa667322a1aaef438b557a3af32.avif&quot;,&quot;images/01ad37c4-bd10-11ef-a4e8-0a580a660e6a.avif&quot;,&quot;images/44ecb5e9-6f50-43cb-9442-b6ea0e6000d1.avif&quot;,&quot;images/6e507fc2-354a-4d1c-a589-a7644d51eb5c.avif&quot;,&quot;images/3ef6b9bc-1614-47f8-9d70-dc9b66643e42.avif&quot;,&quot;images/30fb90dc-c703-4feb-913b-775d0e16b88d.avif&quot;,&quot;images/4e2fa49f-0e91-4b06-8aba-9c43e6f05d45.avif&quot;,&quot;images/38a7ae5c-cadc-43f7-b811-62035d5500f0.avif&quot;]">
+              <img src="images/cba6efa667322a1aaef438b557a3af32.avif" alt="Date Night Code" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>Talk, Flirt, Dare!</h3>
-              <div class="pill-row"><span class="pill">2 Players</span><span class="pill">20–60 Mins</span></div>
-              <p class="desc">The ultimate 3-level romance game featuring thoughtful conversation, fun flirtation, and exciting challenges.</p>
-              <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20Talk,%20Flirt,%20Dare!" target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <div class="card-content">
+              <h3 class="card-title">Date Night Code</h3>
+              <div class="product-meta">
+                <span class="product-category">Couples &amp; Romance</span>
+                <span class="product-rating" aria-label="Rated 4.8 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.8</b> (8 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>249 DH</del>
+                <strong>149 DH</strong>
+                <span class="price-save">Save 40%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">2 PLAYERS</span>
+                <span class="tag">30–60 MINS</span>
+              </div>
+              <p class="card-desc">50 thoughtful prompts designed to make date night more connected, playful, and memorable.</p>
+              <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20Date%20Night%20Code." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
         </div>
 
-        <div class="game-card" data-category="parties">
+        <div class="game-card how-well-card" data-category="parties">
           <div class="card-inner">
-            <div class="card-visual visual-parties">
-              <span class="card-index">8<br><span class="suit">♠</span></span>
-              <span class="glyph">♣</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/7ed46f6f0197527e3167d2e1fe4d7c2b.jpg&quot;,&quot;images/9b6ae98a-071f-431b-b2c4-74587c42d7f1.avif&quot;,&quot;images/aad52cf9-beb2-4d3f-9e1a-653390d989ab.avif&quot;,&quot;images/70fdf363-c2a8-4747-a509-c78e1c157d90.avif&quot;,&quot;images/80795e69-2614-4a74-a2c8-aa405498c92d.avif&quot;,&quot;images/b659bced-4e9d-4de3-856a-73c1001a6f03.avif&quot;,&quot;images/90b79796-3e9c-4daf-ba89-126b31ee2cef.avif&quot;]">
+              <img src="images/7ed46f6f0197527e3167d2e1fe4d7c2b.jpg" alt="How Well Do You Know Me? after dinner amusements card game" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>How Well Do You Know Me?</h3>
-              <div class="pill-row"><span class="pill">3–10 Players</span><span class="pill">20–40 Mins</span></div>
-              <p class="desc">50 hilarious after-dinner brainteasers to test how well family &amp; friends actually know each other.</p>
+            <div class="card-content">
+              <h3 class="card-title">How Well Do You Know Me?</h3>
+              <div class="product-meta">
+                <span class="product-category">Friends &amp; Parties</span>
+                <span class="product-rating" aria-label="Rated 4.9 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.9</b> (5 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>249 DH</del>
+                <strong>149 DH</strong>
+                <span class="price-save">Save 40%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">3–10 PLAYERS</span>
+                <span class="tag">20–40 MINS</span>
+              </div>
+              <p class="card-desc">50 hilarious after-dinner brainteasers to test how well family &amp; friends actually know each other.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20How%20Well%20Do%20You%20Know%20Me." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -862,14 +1645,26 @@
 
         <div class="game-card" data-category="parties">
           <div class="card-inner">
-            <div class="card-visual visual-parties">
-              <span class="card-index">9<br><span class="suit">♠</span></span>
-              <span class="glyph">♣</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/thing%20fast%201.avif&quot;,&quot;images/thing%20fast.avif&quot;,&quot;images/thing%20fast3.avif&quot;,&quot;images/thing%20fast4.avif&quot;,&quot;images/thing%20fast5.avif&quot;,&quot;images/thing%20fast6.avif&quot;,&quot;images/9219a289-7ef0-40c6-a12a-23b62e17d017.avif&quot;,&quot;images/594b1a3e-6da5-4601-8c2f-0490f3db4ab6.avif&quot;,&quot;images/d7035dcb-9587-4d89-8c10-f93300653898.avif&quot;]">
+              <img src="images/thing%20fast%201.avif" alt="Think Fast! party card game - photos coming soon" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>Think Fast!</h3>
-              <div class="pill-row"><span class="pill">3–12 Players</span><span class="pill">15–30 Mins</span></div>
-              <p class="desc">A high-energy, double-sided 89 Q&amp;A card game perfect for parties and social gatherings.</p>
+            <div class="card-content">
+              <h3 class="card-title">Think Fast!</h3>
+              <div class="product-meta">
+                <span class="product-category">Friends &amp; Parties</span>
+                <span class="product-rating" aria-label="Rated 4.8 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.8</b> (6 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>249 DH</del>
+                <strong>159 DH</strong>
+                <span class="price-save">Save 40%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">3–12 PLAYERS</span>
+                <span class="tag">15–30 MINS</span>
+              </div>
+              <p class="card-desc">A high-energy, double-sided 89 Q&amp;A card game perfect for parties and social gatherings.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20Think%20Fast." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -877,14 +1672,26 @@
 
         <div class="game-card" data-category="mindfulness">
           <div class="card-inner">
-            <div class="card-visual visual-mindfulness">
-              <span class="card-index">10<br><span class="suit">♠</span></span>
-              <span class="glyph">♦</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/35a6d9e0-b6bd-42b2-8c05-6759f3d40489.avif&quot;,&quot;images/87f40fcc-7eda-4beb-b323-1f856e5900f3.avif&quot;,&quot;images/0e5b7110-32d9-4b01-82bf-b1c8f11beea2.avif&quot;,&quot;images/f67b2026-c82a-4f7d-80bb-d7b6432e4c1a.avif&quot;,&quot;images/a43189ce-78b9-4b07-a4f6-00eae1961bb9.avif&quot;,&quot;images/c396ec01-cfbd-4650-ac87-35b3973e3e96.avif&quot;,&quot;images/29635e6e-d418-4851-97a9-ab68596eee1f.avif&quot;]">
+              <img src="images/35a6d9e0-b6bd-42b2-8c05-6759f3d40489.avif" alt="She Is 52-card mindfulness and affirmation deck" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>She Is</h3>
-              <div class="pill-row"><span class="pill">1–4 Players</span><span class="pill">15–30 Mins</span></div>
-              <p class="desc">52 positive mindfulness and emotional healing affirmation cards designed for daily self-care.</p>
+            <div class="card-content">
+              <h3 class="card-title">She Is</h3>
+              <div class="product-meta">
+                <span class="product-category">Deep Chats</span>
+                <span class="product-rating" aria-label="Rated 4.9 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.9</b> (3 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>239 DH</del>
+                <strong>149 DH</strong>
+                <span class="price-save">Save 42%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">1–4 PLAYERS</span>
+                <span class="tag">15–30 MINS</span>
+              </div>
+              <p class="card-desc">52 positive mindfulness and emotional healing affirmation cards designed for daily self-care.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20She%20Is." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -892,14 +1699,26 @@
 
         <div class="game-card" data-category="mindfulness">
           <div class="card-inner">
-            <div class="card-visual visual-mindfulness">
-              <span class="card-index">J<br><span class="suit">♠</span></span>
-              <span class="glyph">♦</span>
+            <div class="card-image-wrapper" data-images="[&quot;images/4bf42132-1781-4b7d-ad42-06191ea19a8a.avif&quot;,&quot;images/d936127524df247c581052b6e65df571.avif&quot;,&quot;images/f26b92f0-5e43-4cf5-a6f5-2d90c96e8a33.avif&quot;,&quot;images/1c8c4e7d-deb2-4354-b0dd-84326b8794dc.avif&quot;,&quot;images/45c44f5e-170b-46df-8c46-0064285e7fd8.avif&quot;,&quot;images/fcd77fff-ed64-4b92-9694-219a6d638232.avif&quot;,&quot;images/6fa2ea19-b0d6-461c-8952-b4da8a744e14.avif&quot;,&quot;images/78e751a0-306d-40e0-b528-1b34ad7ee310.avif&quot;]">
+              <img src="images/4bf42132-1781-4b7d-ad42-06191ea19a8a.avif" alt="Let's Dig Deeper deep conversation cards" class="card-img" loading="lazy">
             </div>
-            <div class="card-body">
-              <h3>Let's Dig Deeper</h3>
-              <div class="pill-row"><span class="pill">2–6 Players</span><span class="pill">40–60 Mins</span></div>
-              <p class="desc">50 high-impact deep conversation cards to challenge and align partner dynamics.</p>
+            <div class="card-content">
+              <h3 class="card-title">Let's Dig Deeper</h3>
+              <div class="product-meta">
+                <span class="product-category">Deep Chats</span>
+                <span class="product-rating" aria-label="Rated 4.8 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>4.8</b> (7 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>249 DH</del>
+                <strong>149 DH</strong>
+                <span class="price-save">Save 40%</span>
+              </div>
+              <span class="free-shipping-badge">Free shipping on 350 DH+ orders</span>
+              <div class="card-tags">
+                <span class="tag">2–6 PLAYERS</span>
+                <span class="tag">40–60 MINS</span>
+              </div>
+              <p class="card-desc">50 high-impact deep conversation cards to challenge and align partner dynamics.</p>
               <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20Let's%20Dig%20Deeper." target="_blank" rel="noopener">Order on WhatsApp<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
@@ -907,22 +1726,27 @@
 
         <div class="game-card featured" data-category="bundle">
           <div class="card-inner">
-            <div class="card-visual visual-bundle">
-              <span class="card-index">K<br><span class="suit">♠</span></span>
-              <span class="glyph">♛</span>
-              <div class="bundle-box" aria-hidden="true">
-                <div class="box-lid"></div>
-                <div class="box-front">
-                  <span class="box-emblem">CARDCASTLE<br>ROYAL</span>
-                </div>
-              </div>
+            <div class="card-image-wrapper" data-images="[&quot;images/ChatGPT%20Image%2025%20sept.%202026,%2021_43_59.png&quot;]">
+              <img src="images/ChatGPT%20Image%2025%20sept.%202026,%2021_43_59.png" alt="The Royal Full Bundle pack" class="card-img" loading="lazy">
+              <span class="badge-value badge-overlay free-shipping-badge">Free shipping · Best value</span>
             </div>
-            <div class="card-body">
-              <span class="badge-value" style="margin-bottom:16px;">Best value · free shipping</span>
-              <h3>The Royal Full Bundle</h3>
-              <div class="pill-row"><span class="pill">Unlimited Players</span><span class="pill">Infinite Fun</span></div>
-              <p class="desc">Get every card game in our collection packed in a luxurious collector's box with a massive discount and free shipping.</p>
-              <a class="btn-order" href="https://wa.me/212706086836?text=Hi!%20I'd%20like%20to%20order%20The%20Royal%20Full%20Bundle." target="_blank" rel="noopener">Order the bundle<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <div class="card-content">
+              <h3 class="card-title">The Royal Full Bundle</h3>
+              <div class="product-meta">
+                <span class="product-category">Complete collection</span>
+                <span class="product-rating" aria-label="Rated 5.0 out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>5.0</b> (4 reviews)</span>
+              </div>
+              <div class="card-price">
+                <del>699 DH</del>
+                <strong>549 DH</strong>
+                <span class="price-save">Choose 4 cards</span>
+              </div>
+              <div class="card-tags">
+                <span class="tag">4 CARDS</span>
+                <span class="tag">YOUR CHOICE</span>
+              </div>
+              <p class="card-desc">Choose any 4 card games from the collection and get your personalized pack for 549 DH.</p>
+              <a class="btn-order" href="#bundle-picker">Choose 4 cards<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
           </div>
         </div>
@@ -958,15 +1782,105 @@
     </div>
   </section>
 
+  <!-- ===== CUSTOMER PHOTO REVIEWS ===== -->
+  <section class="section" id="reviews">
+    <div class="wrap">
+      <!-- ===== 15 DH WALLET CASHBACK BANNER ===== -->
+      <div class="wallet-banner" id="wallet-banner">
+        <div class="wallet-banner-text">
+          <span class="wallet-badge">🪙 15 DH CASHBACK REWARD</span>
+          <h3 class="wallet-headline" dir="rtl" lang="ar">ربح 15 DH فـ CardCastle Wallet ديالك! 📸</h3>
+          <p class="wallet-desc" dir="rtl" lang="ar">دخل رقم الهاتف ديالك، صور طلبك فاش يوصلك، وخلي رأيك الصريح لتفعيل 15 درهم كخصم فوري لطلبك القادم.</p>
+        </div>
+        <div class="wallet-banner-actions">
+          <button class="btn-wallet" type="button" data-reviews-open="1">📸 خلي رأيك وخود 15 DH</button>
+          <span class="wallet-note" dir="rtl" lang="ar">كايتفعل الرصيد من بعد ما نتحققو من الصورة ورقم الطلب.</span>
+        </div>
+      </div>
+
+
+      <div class="section-head">
+        <span class="eyebrow">Verified buyer photos</span>
+        <h2 class="reviews-title" id="reviews-title" title="Click 5x to toggle admin mode">
+          <span class="reviews-title-ar" dir="rtl" lang="ar">شنو كايقولو الزبناء ديالنا</span>
+          <span class="reviews-title-en">What Our Players Say</span>
+        </h2>
+        <p class="reviews-summary" id="reviews-summary">مازال ما كايناش مراجعات موثقة — كل مراجعة كاتنشر من بعد ما نتحققو من الطلب والصورة ✅</p>
+        <div class="admin-bar" id="admin-bar">
+          <span class="admin-hint" dir="rtl" lang="ar">🔐 Admin mode — راجع وقبل ولا رفض المراجعات قبل ما تبان للناس.</span>
+          <button class="admin-btn delete" id="admin-exit" type="button">Exit admin mode</button>
+        </div>
+      </div>
+
+      <p class="reviews-empty-state" id="reviews-empty-state" dir="rtl" lang="ar">ماكاينينش مراجعات بعد — كن أول واحد.</p>
+
+      <div class="reviews-grid" id="reviews-grid"></div>
+
+      <!-- ===== REVIEW SUBMISSION MODAL (dark glassmorphism) ===== -->
+      <div class="review-modal-backdrop" id="review-modal-backdrop"></div>
+      <div class="review-modal" id="review-modal" role="dialog" aria-modal="true" aria-labelledby="review-modal-title" aria-hidden="true">
+        <div class="review-modal-head">
+          <div>
+            <h3 id="review-modal-title">خلّي رأيك فـ اللعبة</h3>
+            <p>شارك التقييم ديالك والصورة من بعد التوصيل. رقم الهاتف كايتخبا أوتوماتيكياً (مثال: 0661***567) وكل مراجعة كنراجعوها قبل النشر.</p>
+          </div>
+          <button class="icon-button" id="review-modal-close" type="button" aria-label="إغلاق النافذة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+        </div>
+
+        <form id="review-form" novalidate>
+          <label class="review-field">الاسم الكامل *
+            <input id="review-name" name="name" type="text" autocomplete="name" placeholder="مثال: أيوب" required>
+            <span class="field-error" id="review-name-error"></span>
+          </label>
+
+          <label class="review-field">رقم الهاتف *
+            <input id="review-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0612345678" required>
+            <span class="review-upload-hint">كايتبقى مخفي — غير أول 4 أرقام وآخر 3 كايبانو للعموم.</span>
+            <span class="field-error" id="review-phone-error"></span>
+          </label>
+
+          <fieldset class="review-stars-field">
+            <legend>التقييم ديالك *</legend>
+            <div class="star-input" id="review-stars" role="radiogroup" aria-label="التقييم من 5 نجوم">
+              <button class="star" type="button" data-value="1" role="radio" aria-checked="false" aria-label="نجمة 1">★</button>
+              <button class="star" type="button" data-value="2" role="radio" aria-checked="false" aria-label="نجمة 2">★</button>
+              <button class="star" type="button" data-value="3" role="radio" aria-checked="false" aria-label="نجمة 3">★</button>
+              <button class="star" type="button" data-value="4" role="radio" aria-checked="false" aria-label="نجمة 4">★</button>
+              <button class="star" type="button" data-value="5" role="radio" aria-checked="false" aria-label="نجمة 5">★</button>
+            </div>
+            <span class="field-error" id="review-stars-error"></span>
+          </fieldset>
+
+          <label class="review-field">الرأي ديالك *
+            <textarea id="review-comment" name="comment" placeholder="كيفاش كانت التجربة؟ واش وصلاتك بالوقت؟ شكون لعب معاك؟" required></textarea>
+            <span class="field-error" id="review-comment-error"></span>
+          </label>
+
+          <label class="review-field review-upload">صورة ديالك *
+            <input id="review-image" name="photo" type="file" accept="image/*" required>
+            <span class="review-upload-hint">خاصة صورة ديال الطلب (JPG / PNG / WEBP — الحد الأقصى 1.5MB) باش نتحققو ونتفعلو 15 DH فـ الـ Wallet.</span>
+          </label>
+          <img id="review-image-preview" alt="معاينة الصورة" hidden>
+          <span class="field-error" id="review-image-error"></span>
+
+          <button class="btn btn-primary review-submit" type="submit">نشر المراجعة</button>
+          <p class="review-form-note" id="review-form-note"></p>
+        </form>
+      </div>
+      <div class="reviews-toast" id="reviews-toast" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
   <!-- ===== CTA BAND ===== -->
   <section class="cta-band" id="contact">
     <div class="wrap">
-      <span class="eyebrow">Ready when you are</span>
-      <h2>Deal yourself in.</h2>
-      <p>No account, no checkout form — just a message. We'll confirm your order and get it moving the same day.</p>
+      <span class="eyebrow">Ready for a better game night?</span>
+      <h2>Choose your deck. Start the conversation.</h2>
+      <p>Message us on WhatsApp and we’ll confirm your order the same day. No account and no checkout form needed.</p>
+      <p class="cta-trust">✓ Delivery across Morocco &nbsp; ✓ Cash on delivery &nbsp; ✓ Fast 24-48h Delivery</p>
       <a class="btn btn-primary" href="https://wa.me/212706086836" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.3A8.4 8.4 0 0 0 3.6 16l-1.1 4 4.1-1.1A8.4 8.4 0 1 0 17.6 6.3Zm-5.6 15a7 7 0 0 1-3.6-1l-.3-.1-2.6.7.7-2.5-.2-.3a7 7 0 1 1 6 3.2Zm3.8-5.2c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1s-.6.7-.7.9-.3.2-.5.1a5.7 5.7 0 0 1-1.7-1 6.3 6.3 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.4.4 0 0 0 0-.4c-.1-.1-.5-1.3-.7-1.7-.2-.5-.4-.4-.5-.4h-.4a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 1.9c0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 4 3.4a4.5 4.5 0 0 0 2.6.5 2.2 2.2 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3Z"/></svg>
-        Message us: +212 706 086 836
+        Message us on WhatsApp
       </a>
     </div>
   </section>
@@ -976,82 +1890,311 @@
 <footer>
   <div class="wrap">
     <div class="footer-grid">
-      <a href="#top" class="logo">
-        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 28V13L16 5L26 13V28" stroke="#C9A227" stroke-width="1.6" stroke-linejoin="round"/>
-          <rect x="13" y="19" width="6" height="9" stroke="#C9A227" stroke-width="1.6"/>
-          <path d="M16 9L18.5 13.5H13.5L16 9Z" fill="#8C2F39"/>
-        </svg>
-        <span class="brand-main">CardCastle</span><span class="gold-text">Store</span>
-      </a>
-      <div class="footer-links">
-        <a href="#games">Games</a>
-        <a href="#how">How it works</a>
-        <a href="https://wa.me/212706086836" target="_blank" rel="noopener">WhatsApp</a>
+      <div class="footer-col">
+        <a href="#top" class="footer-logo" aria-label="CardCastle Store — back to top">
+          <span class="logo-icon">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M25 25V15H35V20H42V15H58V20H65V15H75V25C75 25 75 75 75 80C75 85 70 85 70 85H30C30 85 25 85 25 80C25 75 25 25 25 25Z" stroke="#e5b842" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M30 32H70" stroke="#e5b842" stroke-width="5" stroke-linecap="round"/>
+              <path d="M30 40H70" stroke="#e5b842" stroke-width="5" stroke-linecap="round"/>
+              <path d="M42 85V60C42 55 46 50 50 50C54 50 58 55 58 60V85" stroke="#e5b842" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span><span class="brand-main">CardCastle</span><span class="gold-text"> Store</span></span>
+        </a>
+        <p class="footer-about">Premium conversation card decks for couples, families and friends — delivered across Morocco with cash on delivery.</p>
+        <div class="footer-social">
+          <a class="social-pill" href="https://wa.me/212706086836" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 6.3A8.4 8.4 0 0 0 3.6 16l-1.1 4 4.1-1.1A8.4 8.4 0 1 0 17.6 6.3Zm-5.6 15a7 7 0 0 1-3.6-1l-.3-.1-2.6.7.7-2.5-.2-.3a7 7 0 1 1 6 3.2Zm3.8-5.2c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1s-.6.7-.7.9-.3.2-.5.1a5.7 5.7 0 0 1-1.7-1 6.3 6.3 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.4.4 0 0 0 0-.4c-.1-.1-.5-1.3-.7-1.7-.2-.5-.4-.4-.5-.4h-.4a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 1.9c0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 4 3.4a4.5 4.5 0 0 0 2.6.5 2.2 2.2 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3Z"/></svg>WhatsApp
+          </a>
+          <a class="social-pill" href="https://www.instagram.com/playfulcardhub?stkn=MWk4NDB6ajJicTExcg%3D%3D&utm_source=qr" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>Instagram
+          </a>
+          <a class="social-pill" href="https://www.tiktok.com/@cardcastlestore" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.3 2 1.5 3.4 3.4 3.7v2.4c-1.3.1-2.5-.2-3.6-.9v5.9a5.6 5.6 0 1 1-5.6-5.6c.3 0 .6 0 .9.1v2.5a3.1 3.1 0 1 0 2.2 3V3h2.7Z"/></svg>TikTok
+          </a>
+        </div>
+      </div>
+
+      <nav class="footer-col" aria-label="Footer navigation">
+        <h4>Quick navigation</h4>
+        <div class="footer-nav">
+          <a href="#games">Games</a>
+          <a href="#how">How it works</a>
+          <a href="#reviews">Customer reviews</a>
+          <a href="https://wa.me/212706086836?text=Hi!%20I%20want%20to%20order%20from%20CardCastle%20Store." target="_blank" rel="noopener">Order via WhatsApp</a>
+        </div>
+      </nav>
+
+      <div class="footer-col">
+        <h4>COD guarantees</h4>
+        <div class="guarantee-list">
+          <span class="guarantee">🚚 Fast delivery in 24–48 hours</span>
+          <span class="guarantee">📦 Cash on delivery (COD)</span>
+          <span class="guarantee">💯 Quality guaranteed</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Support &amp; location</h4>
+        <div class="footer-contact">
+          <a class="footer-wa" href="https://wa.me/212706086836" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 6.3A8.4 8.4 0 0 0 3.6 16l-1.1 4 4.1-1.1A8.4 8.4 0 1 0 17.6 6.3Zm-5.6 15a7 7 0 0 1-3.6-1l-.3-.1-2.6.7.7-2.5-.2-.3a7 7 0 1 1 6 3.2Zm3.8-5.2c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1s-.6.7-.7.9-.3.2-.5.1a5.7 5.7 0 0 1-1.7-1 6.3 6.3 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.4l.3-.4.2-.3a.4.4 0 0 0 0-.4c-.1-.1-.5-1.3-.7-1.7-.2-.5-.4-.4-.5-.4h-.4a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 1.9c0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 4 3.4a4.5 4.5 0 0 0 2.6.5 2.2 2.2 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3Z"/></svg>
+            <span><b>+212 706 086 836</b><small>WhatsApp orders · 9:00 – 21:00, 7 days</small></span>
+          </a>
+          <span class="location-badge">📍 Casablanca, Morocco</span>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 CardCastle Store. All decks sold as novelty items.</span>
-      <span>Casablanca, Morocco</span>
+      <div class="footer-legal-links">
+        <a href="#privacy">Privacy policy</a>
+        <a href="#terms">Terms &amp; conditions</a>
+        <a href="#returns">Returns &amp; refunds</a>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <article id="privacy">
+        <h4>Privacy policy</h4>
+        <p>We only keep the name, phone number and city needed to deliver your order. Nothing is sold or shared with third parties beyond the delivery courier.</p>
+      </article>
+      <article id="terms">
+        <h4>Terms &amp; conditions</h4>
+        <p>Decks are sold as novelty conversation games, not as professional advice. All prices are in MAD and every order is confirmed by WhatsApp before dispatch.</p>
+      </article>
+      <article id="returns">
+        <h4>Returns &amp; refunds</h4>
+        <p>Report a damaged or wrong deck within 48h of delivery and we replace it free of charge. Unopened decks can be returned within 7 days for a refund.</p>
+      </article>
     </div>
   </div>
 </footer>
 
-<!-- ===== CARD SHUFFLE ANIMATION SCRIPT ===== -->
+<div class="cart-backdrop" id="cart-backdrop"></div>
+<aside class="cart-drawer" id="cart-drawer" aria-labelledby="cart-title" aria-hidden="true">
+  <div class="cart-header">
+    <h2 id="cart-title">Your cart</h2>
+    <button class="icon-button" id="cart-close" type="button" aria-label="Close cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="cart-body">
+    <div class="shipping-progress" id="shipping-progress">Add 350 DH more for FREE shipping 🚚<div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div></div>
+    <div id="cart-items"><p class="cart-empty">Your cart is waiting for its first game night.</p></div>
+    <form class="checkout-panel" id="checkout-form" novalidate>
+      <h3>Cash on delivery</h3>
+      <p class="checkout-note">We will confirm your order by WhatsApp before dispatch.</p>
+      <label class="checkout-field">FULL NAME<input id="customer-name" name="name" autocomplete="name" required><span class="field-error" id="name-error"></span></label>
+      <label class="checkout-field">MOROCCAN PHONE<input id="customer-phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="06 12 34 56 78" required><span class="field-error" id="phone-error"></span></label>
+      <label class="checkout-field">CITY<select id="customer-city" name="city" required><option value="">Select your city</option><option>Casablanca</option><option>Rabat</option><option>Marrakech</option><option>Tanger</option><option>Agadir</option><option>Fes</option><option>Meknes</option><option>Oujda</option><option>Kenitra</option><option>El Jadida</option><option>Other Moroccan city</option></select><span class="field-error" id="city-error"></span></label>
+      <button class="btn btn-primary" id="whatsapp-order" type="submit">Commander via WhatsApp</button>
+    </form>
+  </div>
+  <div class="cart-footer"><div class="cart-total-row"><span>Delivery</span><span id="cart-delivery">0 DH</span></div><div class="cart-total-row"><span>Total</span><span id="cart-total">0 DH</span></div><button class="btn btn-primary" id="checkout-start" type="button">Continue to COD checkout</button></div>
+</aside>
+
+
+<script>
+  // Tap-to-reveal description on touch devices (hover already handles desktop)
+  document.querySelectorAll('.game-card .card-content').forEach(content => {
+    content.addEventListener('click', (e) => {
+      if (e.target.closest('.btn-order')) return; // let the WhatsApp link work normally
+      content.closest('.game-card').classList.toggle('revealed');
+    });
+  });
+</script>
+
 <script>
 (function(){
-  var stack = document.getElementById('deck-stack');
-  if(!stack) return;
-  var order = Array.prototype.slice.call(stack.querySelectorAll('.deck'));
-  order.sort(function(a,b){
-    var rank = { 'card-front':0, 'card-middle':1, 'card-back':2 };
-    var ra = rank[[].find.call(a.classList,function(c){return rank.hasOwnProperty(c);})];
-    var rb = rank[[].find.call(b.classList,function(c){return rank.hasOwnProperty(c);})];
-    return ra - rb;
-  });
-
-  var shuffling = false;
-
-  function applyStack(){
-    var stateClasses = ['card-front','card-middle','card-back','card-drawing'];
-    order.forEach(function(el, i){
-      stateClasses.forEach(function(c){ el.classList.remove(c); });
-      el.classList.add(i === 0 ? 'card-front' : i === 1 ? 'card-middle' : 'card-back');
-    });
+  const phonePattern = /^0[5-7]\d{8}$/;
+  const shippingThreshold = 350;
+  const shippingFee = 35;
+  const cart = [];
+  const cardCounts = {
+    'Love Memories':50,'Love Whispers':55,'88 Great Conversation Starters':88,
+    'Couple Connection Cards':50,'Couples Chat':50,'Soulmate Question Deck':50,
+    'Date Night Code':50,'How Well Do You Know Me?':50,'Think Fast!':89,
+    'She Is':52,"Let's Dig Deeper":50
+  };
+  const priceForCardCount = count => count <= 60 ? 149 : count <= 90 ? 159 : 169;
+  const prices = Object.assign(
+    { 'The Royal Full Bundle':549 },
+    Object.keys(cardCounts).reduce((result, name) => {
+      result[name] = priceForCardCount(cardCounts[name]);
+      return result;
+    }, {})
+  );
+  const oldPrices = {
+    'Love Memories':249,'Love Whispers':249,'88 Great Conversation Starters':269,
+    'Couple Connection Cards':249,'Couples Chat':239,'Soulmate Question Deck':249,
+    'Date Night Code':249,'How Well Do You Know Me?':249,'Think Fast!':249,
+    'She Is':239,"Let's Dig Deeper":249,'The Royal Full Bundle':699
+  };
+  const productMeta = {
+    'Love Memories':{category:'Couples & Romance',rating:'4.9',reviews:'3',badge:'🔥 Best seller'},
+    'Love Whispers':{category:'Couples & Romance',rating:'4.8',reviews:'5',badge:'✨ Popular'},
+    '88 Great Conversation Starters':{category:'Couples & Romance',rating:'4.9',reviews:'6',badge:'❤️ For couples'},
+    'Couple Connection Cards':{category:'Couples & Romance',rating:'4.8',reviews:'3',badge:'💛 New favorite'},
+    'Couples Chat':{category:'Couples & Romance',rating:'4.7',reviews:'7',badge:'💬 Easy start'},
+    'Soulmate Question Deck':{category:'Couples & Romance',rating:'4.9',reviews:'4',badge:'🌙 Deep connection'},
+    'Date Night Code':{category:'Couples & Romance',rating:'4.8',reviews:'8',badge:'🔥 Best seller'},
+    'How Well Do You Know Me?':{category:'Friends & Parties',rating:'4.9',reviews:'5',badge:'🎉 Party pick'},
+    'Think Fast!':{category:'Friends & Parties',rating:'4.8',reviews:'6',badge:'⚡ Crowd favorite'},
+    'She Is':{category:'Deep Chats',rating:'4.9',reviews:'3',badge:'🌿 Mindful pick'},
+    "Let's Dig Deeper":{category:'Deep Chats',rating:'4.8',reviews:'7',badge:'🧠 Go deeper'},
+    'The Royal Full Bundle':{category:'Choose 4 cards',rating:'5.0',reviews:'4',badge:'👑 Best value'}
+  };
+  const drawer = document.getElementById('cart-drawer');
+  const backdrop = document.getElementById('cart-backdrop');
+  const items = document.getElementById('cart-items');
+  const total = document.getElementById('cart-total');
+  const deliveryTotal = document.getElementById('cart-delivery');
+  const count = document.getElementById('cart-count');
+  const progress = document.getElementById('shipping-progress');
+  const checkoutForm = document.getElementById('checkout-form');
+  const checkoutStart = document.getElementById('checkout-start');
+  const money = value => value.toLocaleString('fr-MA') + ' DH';
+  const subtotal = () => cart.reduce((sum,item) => sum + item.price * item.quantity, 0);
+  const delivery = () => subtotal() > 0 && subtotal() < shippingThreshold ? shippingFee : 0;
+  function openCart(){drawer.classList.add('open');backdrop.classList.add('open');drawer.setAttribute('aria-hidden','false');}
+  function closeCart(){drawer.classList.remove('open');backdrop.classList.remove('open');drawer.setAttribute('aria-hidden','true');}
+  function render(){
+    const value = subtotal();
+    count.textContent = cart.reduce((sum,item) => sum + item.quantity, 0);
+    deliveryTotal.textContent = delivery() ? money(delivery()) : 'FREE';
+    total.textContent = money(value + delivery());
+    progress.innerHTML = (value >= shippingThreshold ? 'You unlocked FREE shipping 🚚' : 'Add ' + money(Math.max(shippingThreshold - value, 0)) + ' more for FREE shipping 🚚') + '<div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>';
+    document.getElementById('progress-fill').style.width = Math.min(value / shippingThreshold * 100, 100) + '%';
+    if(!cart.length){items.innerHTML = '<p class="cart-empty">Your cart is waiting for its first game night.</p>';checkoutForm.classList.remove('open');return;}
+    items.innerHTML = cart.map((item,index) => '<div class="cart-item"><div><div class="cart-item-title">'+item.name+'</div><div class="cart-item-price">'+money(item.price)+' each</div><div class="quantity-control"><button type="button" data-action="minus" data-index="'+index+'" aria-label="Decrease quantity">−</button><span>'+item.quantity+'</span><button type="button" data-action="plus" data-index="'+index+'" aria-label="Increase quantity">+</button></div></div><button class="remove-item" type="button" data-action="remove" data-index="'+index+'">Remove</button></div>').join('');
   }
-
-  function bringToFront(el){
-    if(shuffling) return;
-    var idx = order.indexOf(el);
-    if(idx === 0) return;
-    shuffling = true;
-
-    var stateClasses = ['card-front','card-middle','card-back'];
-    stateClasses.forEach(function(c){ el.classList.remove(c); });
-    el.classList.add('card-drawing');
-
-    setTimeout(function(){
-      order.splice(idx, 1);
-      order.unshift(el);
-      applyStack();
-      shuffling = false;
-    }, 350);
-  }
-
-  order.forEach(function(el){
-    el.addEventListener('mouseenter', function(){ bringToFront(el); });
-    el.addEventListener('focus', function(){ bringToFront(el); });
-    el.addEventListener('keydown', function(e){
-      if(e.key === 'Enter' || e.key === ' '){
-        e.preventDefault();
-        bringToFront(el);
-      }
-    });
+  document.querySelectorAll('.card-img[loading="lazy"]').forEach(image => { image.decoding = 'async'; });
+  document.querySelectorAll('#game-grid .game-card').forEach(card => {
+    const name = card.querySelector('.card-title').textContent.trim();
+    const tags = card.querySelector('.card-tags');
+    if(!tags || !prices[name]) return;
+    const meta = productMeta[name] || {category:'Card game',rating:'4.8',reviews:'3',badge:'Popular'};
+    const imageWrapper = card.querySelector('.card-image-wrapper');
+    if(!imageWrapper.querySelector('.product-badge')){
+      const badge = document.createElement('span');
+      badge.className = 'product-badge';
+      badge.textContent = meta.badge;
+      imageWrapper.appendChild(badge);
+    }
+    // Rating + price rows are already written in the markup so the card is complete
+    // before JS runs; here they stay in sync with the single source of truth
+    // (prices / oldPrices / productMeta).
+    let productMetaRow = card.querySelector('.product-meta');
+    if(!productMetaRow){
+      productMetaRow = document.createElement('div');
+      productMetaRow.className = 'product-meta';
+      tags.parentNode.insertBefore(productMetaRow, tags);
+    }
+    productMetaRow.innerHTML = '<span class="product-category">'+meta.category+'</span><span class="product-rating" aria-label="Rated '+meta.rating+' out of 5"><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span><b>'+meta.rating+'</b> ('+meta.reviews+' reviews)</span>';
+    let price = card.querySelector('.card-price');
+    if(!price){
+      price = document.createElement('div');
+      price.className = 'card-price';
+      tags.insertAdjacentElement('beforebegin', price);
+    }
+    const save = Math.round((1 - prices[name] / oldPrices[name]) * 100);
+    price.innerHTML = '<del>'+oldPrices[name]+' DH</del><strong>'+prices[name]+' DH</strong><span class="price-save">Save '+save+'%</span>';
+    if(name !== 'The Royal Full Bundle' && !card.querySelector('.free-shipping-badge')){
+      const badge = document.createElement('span');
+      badge.className = 'free-shipping-badge';
+      badge.textContent = 'Free shipping on 350 DH+ orders';
+      price.insertAdjacentElement('afterend', badge);
+    }
+    const orderButton = card.querySelector('.btn-order');
+    orderButton.innerHTML = 'Add to Cart<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   });
+  function addItem(name){const existing = cart.find(item => item.name === name);if(existing) existing.quantity++;else cart.push({name,price:prices[name] || 149,quantity:1});render();openCart();checkoutForm.classList.add('open');checkoutForm.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  const bundleChoices = Object.keys(prices).filter(name => name !== 'The Royal Full Bundle');
+  const bundleBackdrop = document.createElement('div');
+  bundleBackdrop.className = 'bundle-picker-backdrop';
+  bundleBackdrop.innerHTML = '<div class="bundle-picker" role="dialog" aria-modal="true" aria-labelledby="bundle-picker-title"><h3 id="bundle-picker-title">Build your 4-card pack</h3><p>Choose exactly 4 different card games for 549 DH.</p><div class="bundle-options">' + bundleChoices.map(name => '<label class="bundle-option"><input type="checkbox" value="' + name.replace(/"/g,'&quot;') + '"> <span>' + name + '</span></label>').join('') + '</div><div class="bundle-picker-error" aria-live="polite"></div><div class="bundle-picker-actions"><button type="button" class="btn btn-ghost" data-bundle-cancel>Cancel</button><button type="button" class="btn btn-primary" data-bundle-confirm>Add pack to cart</button></div></div>';
+  document.body.appendChild(bundleBackdrop);
+  const bundleError = bundleBackdrop.querySelector('.bundle-picker-error');
+  function closeBundlePicker(){bundleBackdrop.classList.remove('open');}
+  function openBundlePicker(){bundleBackdrop.classList.add('open');bundleBackdrop.querySelectorAll('input').forEach(input => {input.checked = false;});bundleError.textContent = '';}
+  bundleBackdrop.addEventListener('click', event => {
+    if(event.target === bundleBackdrop || event.target.closest('[data-bundle-cancel]')) closeBundlePicker();
+    if(!event.target.closest('[data-bundle-confirm]')) return;
+    const selected = Array.from(bundleBackdrop.querySelectorAll('input:checked')).map(input => input.value);
+    if(selected.length !== 4){bundleError.textContent = 'Please choose exactly 4 cards.';return;}
+    addItem('4-Card Pack: ' + selected.join(', '));
+    cart[cart.length - 1].price = 549;
+    closeBundlePicker();
+    render();
+  });
+  document.addEventListener('keydown', event => {if(event.key === 'Escape') closeBundlePicker();});
+  document.getElementById('cart-trigger').addEventListener('click',openCart);
+  document.getElementById('cart-close').addEventListener('click',closeCart);
+  backdrop.addEventListener('click',closeCart);
+  document.addEventListener('keydown',event => {if(event.key === 'Escape') closeCart();});
+  document.getElementById('game-grid').addEventListener('click',event => {
+    const button = event.target.closest('.btn-order');
+    if(!button) return;
+    event.preventDefault();
+    const name = button.closest('.card-inner').querySelector('.card-title').textContent.trim();
+    if(name === 'The Royal Full Bundle'){openBundlePicker();return;}
+    addItem(name);
+  });
+  items.addEventListener('click',event => {
+    const button = event.target.closest('[data-action]');
+    if(!button) return;
+    const index = Number(button.dataset.index);
+    if(button.dataset.action === 'plus') cart[index].quantity++;
+    if(button.dataset.action === 'minus') cart[index].quantity--;
+    if(button.dataset.action === 'remove' || cart[index].quantity < 1) cart.splice(index,1);
+    render();
+  });
+  checkoutStart.addEventListener('click',() => {if(cart.length){checkoutForm.classList.add('open');checkoutForm.scrollIntoView({behavior:'smooth',block:'nearest'});}});
+  const phone = document.getElementById('customer-phone');
+  phone.addEventListener('input',() => {const normalized = phone.value.replace(/[\s-]/g,'').replace(/^\+212/,'0');document.getElementById('phone-error').textContent = normalized && !phonePattern.test(normalized) ? 'Use 06, 07, 05 or +212 followed by 9 digits.' : '';});
+  checkoutForm.addEventListener('submit',event => {
+    event.preventDefault();
+    const name = document.getElementById('customer-name').value.trim();
+    const phoneValue = phone.value.replace(/[\s-]/g,'').replace(/^\+212/,'0');
+    const city = document.getElementById('customer-city').value;
+    document.getElementById('name-error').textContent = name ? '' : 'Please enter your full name.';
+    document.getElementById('phone-error').textContent = phonePattern.test(phoneValue) ? '' : 'Use 06, 07, 05 or +212 followed by 9 digits.';
+    document.getElementById('city-error').textContent = city ? '' : 'Please select your city.';
+    if(!name || !phonePattern.test(phoneValue) || !city) return;
+    const button = document.getElementById('whatsapp-order');
+    button.disabled = true;button.textContent = 'Preparing your order...';
+    const lines = cart.map(item => '- '+item.name+' x'+item.quantity+' = '+money(item.price * item.quantity));
+    const message = ['Bonjour CardCastle, je voudrais commander :','',lines.join('\n'),'','Sous-total: '+money(subtotal()),'Livraison: '+(delivery() ? money(delivery()) : 'Gratuite'),'Total: '+money(subtotal()+delivery()),'','Nom: '+name,'Téléphone: '+phone.value,'Ville: '+city].join('\n');
+    window.location.href = 'https://wa.me/212706086836?text=' + encodeURIComponent(message);
+  });
+  render();
 })();
 </script>
 
-<!-- ===== FILTER TABS SCRIPT ===== -->
+<script>
+  document.querySelectorAll('.deck[data-category-target]').forEach(deck => {
+    const openCategory = () => {
+      document.querySelectorAll('.deck.is-selected').forEach(selected => selected.classList.remove('is-selected'));
+      deck.classList.add('is-selected');
+      // let the card visibly rise to the front of the fan before the page scrolls away
+      window.setTimeout(() => {
+        const category = deck.dataset.categoryTarget;
+        const filterTab = document.querySelector('.filter-tab[data-filter="' + category + '"]');
+        if(filterTab) filterTab.click();
+        const games = document.getElementById('games');
+        if(games) games.scrollIntoView({behavior:'smooth',block:'start'});
+      }, 450);
+    };
+    deck.addEventListener('click', openCategory);
+    deck.addEventListener('keydown', event => {
+      if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault();
+        openCategory();
+      }
+    });
+  });
+</script>
+
 <script>
 (function(){
   var tabs = document.querySelectorAll('.filter-tab');
@@ -1066,7 +2209,7 @@
 
       cards.forEach(function(card){
         var cat = card.getAttribute('data-category');
-        var show = filter === 'all' || cat === filter || cat === 'bundle';
+        var show = filter === 'all' || cat === filter;
         if(show){
           card.style.display = '';
           requestAnimationFrame(function(){
@@ -1085,5 +2228,527 @@
   });
 })();
 </script>
-</body>
-</html>
+
+<script>
+/* ===== CUSTOMER REVIEWS: submit → mask → owner moderation ===== */
+(function(){
+  'use strict';
+
+  const STORE_KEY  = 'cardcastle_reviews_v1';      // fallback storage until REVIEWS_API_URL is configured
+  const MAX_PHOTO_BYTES = 1.5 * 1024 * 1024;       // 1.5 MB is plenty for a phone photo
+  const PHONE_PATTERN = /^0[567]\d{8}$/;           // 05/06/07 + 8 digits (matches the error message below)
+
+  /* ---- shared backend (optional) ----
+     Paste your deployed Google Apps Script Web App URL here to make reviews
+     visible to EVERY visitor, submitted from ANY phone/computer, with approval
+     done by editing the Google Sheet directly (see the setup guide provided
+     alongside this file). Leave empty ('') to keep the current same-device-only
+     localStorage behavior — nothing breaks either way. */
+  const REVIEWS_API_URL = '';
+
+  /* Phone masking utility — 0661234567 -> 0661***567. */
+  function maskPhone(value){
+    const digits = String(value == null ? '' : value).replace(/\D/g,'').replace(/^212/,'0');
+    if(!digits) return '—';
+    const length = digits.length;
+    if(length >= 10) return digits.slice(0,4) + '***' + digits.slice(-3);
+    if(length >= 6)  return digits.slice(0,2) + '*'.repeat(length - 4) + digits.slice(-2);
+    if(length >= 3)  return digits.slice(0,1) + '*'.repeat(length - 2) + digits.slice(-1);
+    return digits.charAt(0) + '*'.repeat(Math.max(length - 1, 1));
+  }
+
+  /* Everything user-written goes through this before it lands in innerHTML */
+  const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
+  const today = () => new Intl.DateTimeFormat('fr-MA',{day:'2-digit',month:'short',year:'numeric'}).format(new Date());
+
+  /* ---- DOM refs ---- */
+  const section      = document.getElementById('reviews');
+  const grid         = document.getElementById('reviews-grid');
+  if(!section || !grid) return;
+  const emptyState   = document.getElementById('reviews-empty-state');
+  const summaryEl    = document.getElementById('reviews-summary');
+  const title        = document.getElementById('reviews-title');
+  const backdropEl   = document.getElementById('review-modal-backdrop');
+  const modal        = document.getElementById('review-modal');
+  const form         = document.getElementById('review-form');
+  const note         = document.getElementById('review-form-note');
+  const toastEl      = document.getElementById('reviews-toast');
+  const nameInput    = document.getElementById('review-name');
+  const phoneInput   = document.getElementById('review-phone');
+  const commentInput = document.getElementById('review-comment');
+  const imageInput   = document.getElementById('review-image');
+  const preview      = document.getElementById('review-image-preview');
+  const nameError    = document.getElementById('review-name-error');
+  const phoneError   = document.getElementById('review-phone-error');
+  const starsError   = document.getElementById('review-stars-error');
+  const commentError = document.getElementById('review-comment-error');
+  const imageError   = document.getElementById('review-image-error');
+  const starButtons  = Array.prototype.slice.call(document.querySelectorAll('#review-stars .star'));
+
+  /* ---- state ---- */
+  function readJSON(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+      if(!raw) return fallback;
+      const parsed = JSON.parse(raw);
+      return parsed == null ? fallback : parsed;
+    }catch(error){ return fallback; }
+  }
+  const usingBackend = !!REVIEWS_API_URL;
+  /* Fallback mode (no backend configured): real client submissions, same-device only. */
+  const storedReviews = readJSON(STORE_KEY, []);
+  let reviews = Array.isArray(storedReviews)
+    ? storedReviews.filter(review => review && review.name && review.comment)
+    : []; // nothing seeded; only what users actually submitted
+  let rating = 0;
+  let photoDataUrl = '';
+  let toastTimer = null;
+  let adminMode = false;
+  let titleClickCount = 0;
+  let titleClickTimer = null;
+  const adminBar = document.getElementById('admin-bar');
+  const adminExit = document.getElementById('admin-exit');
+
+  /* Backend mode: fetch APPROVED reviews from the Google Sheet so every visitor,
+     on any device, sees the same real list. Approval happens by editing the
+     Sheet directly — there is nothing to click on the page for that anymore. */
+  function loadFromBackend(){
+    fetch(REVIEWS_API_URL + '?action=list')
+      .then(response => response.json())
+      .then(data => {
+        if(data && data.ok && Array.isArray(data.reviews)){
+          reviews = data.reviews;
+          render();
+        }
+      })
+      .catch(() => {
+        // offline or misconfigured URL — keep whatever was already rendered
+      });
+  }
+  if(usingBackend){
+    if(adminBar) adminBar.remove(); // approval happens in the Sheet, not on the page
+    loadFromBackend();
+  }
+
+  /* Secret trigger: click the section title 5x within 2s to toggle admin mode.
+     No password — this is a lightweight deterrent, not real security. Since
+     reviews live in localStorage (this browser only), "admin mode" here can
+     only approve/reject reviews submitted on THIS SAME device/browser. */
+  if(title){
+    title.addEventListener('click', () => {
+      titleClickCount++;
+      clearTimeout(titleClickTimer);
+      titleClickTimer = setTimeout(() => { titleClickCount = 0; }, 2000);
+      if(titleClickCount >= 5){
+        titleClickCount = 0;
+        adminMode = !adminMode;
+        section.classList.toggle('admin-mode', adminMode);
+        render();
+      }
+    });
+  }
+  if(adminExit){
+    adminExit.addEventListener('click', () => {
+      adminMode = false;
+      section.classList.remove('admin-mode');
+      render();
+    });
+  }
+
+  /* Every review in the store is a real client submission.
+     New ones always enter with status:'pending' — invisible until the owner approves. */
+  function persist(){
+    try{
+      localStorage.setItem(STORE_KEY, JSON.stringify(reviews));
+    }catch(error){
+      // almost always the photo data URL hitting the ~5MB quota: keep the review, drop the photo
+      try{
+        localStorage.setItem(STORE_KEY, JSON.stringify(reviews.map(r => Object.assign({}, r, {photo:''}))));
+        reviews = reviews.map(r => Object.assign({}, r, {photo:''}));
+        toast('⚠️ الصورة كبيرة بزاف على التخزين — تسجلت المراجعة بلا صورة.');
+      }catch(secondError){ toast('⚠️ ما قدرناش نخزنو المراجعة فهاد المتصفح.'); }
+    }
+  }
+
+  function toast(message){
+    if(!toastEl) return;
+    toastEl.textContent = message;
+    toastEl.classList.add('open');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('open'), 4200);
+  }
+
+  /* ---- dynamic render: seeded + user-submitted reviews in one grid ---- */
+  function starsMarkup(value){
+    const filled = Math.max(0, Math.min(5, Math.round(Number(value) || 0)));
+    return '★'.repeat(filled) + (filled < 5 ? '<span class="stars-dim">' + '★'.repeat(5 - filled) + '</span>' : '');
+  }
+
+  function cardMarkup(review, index, total){
+    const photo = review.photo
+      ? '<div class="review-photo"><img src="images/daba%20daba.png" alt="' + esc('صورة من الزبون: ' + review.name) + '" loading="lazy" decoding="async"><span class="photo-tag">صورة من الزبون</span></div>'
+      : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>ما كايناش صورة مع هاد المراجعة</span></div>';
+
+    const isPending = review.status !== 'approved';
+
+    // the newest visible review closes the grid as the wide "highlight" card
+    const classes = 'review-card'
+      + (index === total - 1 ? ' review-wide' : '')
+      + (isPending ? ' is-pending' : '');
+
+    const statusBadge = isPending
+      ? '<span class="review-status">⏳ قيد المراجعة</span>'
+      : '';
+
+    const adminButtons = '<div class="review-admin">'
+      + (isPending ? '<button class="admin-btn approve" type="button" data-approve="' + esc(review.id) + '">✓ Approve</button>' : '')
+      + '<button class="admin-btn delete" type="button" data-delete="' + esc(review.id) + '">✕ Delete</button>'
+      + '</div>';
+
+    return '<article class="' + classes + '" data-review-id="' + esc(review.id) + '">'
+      + photo
+      + '<div class="review-body">'
+      +   statusBadge
+      +   '<p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p>'
+      +   '<p class="review-person"><span class="review-name" dir="rtl" lang="ar">' + esc(review.name) + ' 🇲🇦</span><span class="review-verified">✓ طلب مؤكد</span></p>'
+      +   '<div class="review-meta">'
+      +     '<span>' + esc(review.date) + '</span>'
+      +     '<span title="' + esc('رقم الهاتف مخفي للأمان') + '">' + esc(maskPhone(review.phone)) + '</span>'
+      +   '</div>'
+      +   '<p class="review-text" dir="rtl" lang="ar">' + esc(review.comment) + '</p>'
+      +   adminButtons
+      + '</div></article>';
+  }
+
+  function render(){
+    /* Public visitors see approved reviews only.
+       In admin mode (this browser, this device only — see note above),
+       pending reviews also show, with Approve/Delete controls. */
+    const source = adminMode ? reviews : reviews.filter(r => r.status === 'approved');
+    const visible = source.slice().reverse();
+
+    /* the average badge is computed from real APPROVED reviews only — never hard-coded */
+    const approvedCount = reviews.filter(r => r.status === 'approved').length;
+    if(summaryEl){
+      if(approvedCount){
+        const approved = reviews.filter(r => r.status === 'approved');
+        const average = approved.reduce((sum, review) => sum + (Number(review.rating) || 0), 0) / approved.length;
+        summaryEl.innerHTML = '<span aria-hidden="true">' + starsMarkup(Math.round(average)) + '</span> <b>'
+          + average.toFixed(1) + '/5</b> · ' + approvedCount
+          + (approvedCount === 1 ? ' تقييم موثق من زبون مغربي' : ' تقييمات موثقة من زبناء مغاربة');
+      }else{
+        summaryEl.textContent = 'مازال ما كايناش مراجعات موثقة — كل مراجعة كاتنشر من بعد ما نتحققو من الطلب والصورة ✅';
+      }
+    }
+
+    grid.innerHTML = visible.map((review, index) => cardMarkup(review, index, visible.length)).join('');
+    grid.hidden = visible.length === 0;
+    if(emptyState) emptyState.hidden = visible.length > 0;
+  }
+
+  /* ---- modal ---- */
+  function openModal(){
+    if(!modal || !backdropEl) return;
+    if(note){ note.textContent = ''; note.className = 'review-form-note'; }
+    modal.classList.add('open');
+    backdropEl.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => { if(nameInput) nameInput.focus(); }, 80);
+  }
+  function closeModal(){
+    if(!modal) return;
+    modal.classList.remove('open');
+    if(backdropEl) backdropEl.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+  function resetForm(){
+    if(form) form.reset();
+    rating = 0;
+    photoDataUrl = '';
+    starButtons.forEach(star => { star.classList.remove('active'); star.setAttribute('aria-checked','false'); });
+    if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
+    [nameInput,phoneInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
+    [nameError,phoneError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
+  }
+
+  /* Any element with [data-reviews-open] opens the modal (banner CTA, empty-state CTA…). */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-reviews-open]'), button => {
+    button.addEventListener('click', openModal);
+  });
+  const modalClose = document.getElementById('review-modal-close');
+  if(modalClose) modalClose.addEventListener('click', closeModal);
+  if(backdropEl) backdropEl.addEventListener('click', closeModal);
+
+  /* ---- admin: approve / delete a review (buttons only visible in admin mode) ---- */
+  grid.addEventListener('click', event => {
+    const approveBtn = event.target.closest('[data-approve]');
+    const deleteBtn  = event.target.closest('[data-delete]');
+    if(approveBtn){
+      const id = approveBtn.getAttribute('data-approve');
+      reviews = reviews.map(r => r.id === id ? Object.assign({}, r, {status:'approved'}) : r);
+      persist();
+      render();
+      toast('✅ تم قبول المراجعة، دابا بانت للزوار.');
+    } else if(deleteBtn){
+      const id = deleteBtn.getAttribute('data-delete');
+      if(!confirm('متأكد بغيتي تحيد هاد المراجعة نهائياً؟')) return;
+      reviews = reviews.filter(r => r.id !== id);
+      persist();
+      render();
+      toast('🗑️ تم حذف المراجعة.');
+    }
+  });
+
+  /* ---- interactive 1-5 star rating ---- */
+  starButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      rating = Number(button.dataset.value);
+      starButtons.forEach(star => {
+        const isOn = Number(star.dataset.value) <= rating;
+        star.classList.toggle('active', isOn);
+        star.setAttribute('aria-checked', Number(star.dataset.value) === rating ? 'true' : 'false');
+      });
+      if(starsError) starsError.textContent = '';
+    });
+  });
+
+  /* Resize+recompress to keep the photo well under Sheets' ~50k char/cell limit
+     and any reasonable POST size. Long edge capped at 900px, JPEG quality 0.7 —
+     plenty for a review thumbnail, a fraction of the size of a raw phone photo. */
+  function compressImage(dataUrl, callback){
+    const img = new Image();
+    img.onload = () => {
+      const maxEdge = 900;
+      const scale = Math.min(1, maxEdge / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      callback(canvas.toDataURL('image/jpeg', 0.7));
+    };
+    img.onerror = () => callback(dataUrl); // fall back to the original if decoding fails
+    img.src = dataUrl;
+  }
+
+  /* ---- photo picker with instant preview (kept out of the public markup) ---- */
+  if(imageInput){
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files && imageInput.files[0];
+      if(imageError) imageError.textContent = '';
+      photoDataUrl = '';
+      if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
+      if(!file) return;
+      if(!/^image\//.test(file.type)){
+        if(imageError) imageError.textContent = 'خاص الصورة تكون JPG ولا PNG ولا WEBP.';
+        imageInput.value = '';
+        return;
+      }
+      if(file.size > MAX_PHOTO_BYTES){
+        if(imageError) imageError.textContent = 'الصورة كبيرة بزاف — الحد الأقصى 1.5MB.';
+        imageInput.value = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const raw = String(reader.result || '');
+        if(!raw) return;
+        compressImage(raw, compressed => {
+          photoDataUrl = compressed;
+          if(preview){ preview.src = photoDataUrl; preview.hidden = false; }
+        });
+      };
+      reader.onerror = () => { if(imageError) imageError.textContent = 'ما قدرناش نقراو الصورة، عاود جرب.'; };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* ---- submit: validate → mask on render → store as pending ---- */
+  if(form){
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const name    = nameInput.value.trim();
+      const digits  = phoneInput.value.replace(/[\s\-.()]/g,'').replace(/^\+212/,'0');
+      const city    = cityInput.value.trim();
+      const comment = commentInput.value.trim();
+
+      const okName    = name.length >= 2;
+      const okPhone   = PHONE_PATTERN.test(digits);
+      const okStars   = rating >= 1;
+      const okComment = comment.length >= 10;
+      const okPhoto   = !!photoDataUrl;   // real order photo required for the 15 DH wallet credit
+
+      if(nameError)    nameError.textContent    = okName ? '' : 'عافاك كتب الاسم الكامل ديالك.';
+      if(phoneError)   phoneError.textContent   = okPhone ? '' : 'الرقم خاصو يبدا بـ 06 ولا 07 ولا 05 وعندو 10 أرقام.';
+      if(starsError)   starsError.textContent   = okStars ? '' : 'عافاك اختار التقييم ديالك من 5 نجوم.';
+      if(commentError) commentError.textContent = okComment ? '' : 'كتب على الأقل 10 حروف فـ الرأي ديالك.';
+      if(imageError)   imageError.textContent   = okPhoto ? '' : 'خاصك تحمل صورة ديال الطلب باش نتحققو ونتفعلو 15 DH.';
+      nameInput.classList.toggle('invalid', !okName);
+      phoneInput.classList.toggle('invalid', !okPhone);
+      commentInput.classList.toggle('invalid', !okComment);
+
+      if(!(okName && okPhone && okStars && okComment && okPhoto)){
+        if(note){ note.textContent = 'راجع الحقول المعلَّمة بالحمر قبل النشر.'; note.className = 'review-form-note err'; }
+        if(!okName) nameInput.focus();
+        else if(!okPhone) phoneInput.focus();
+        else if(!okStars && starButtons.length) starButtons[0].focus();
+        else if(!okComment) commentInput.focus();
+        else if(imageInput) imageInput.focus();
+        return;
+      }
+
+      const newReview = {
+        id:      'guest-' + Date.now(),
+        name:    name,
+        phone:   digits,        // stored raw, rendered masked on public cards
+        rating:  rating,
+        comment: comment,
+        photo:   photoDataUrl,
+        date:    today(),
+        status:  'pending'       // hidden from the public grid until an admin approves it
+      };
+
+      if(usingBackend){
+        if(note){ note.textContent = 'كيتصيفط...'; note.className = 'review-form-note'; }
+        fetch(REVIEWS_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // keeps this a CORS-simple request
+          body: JSON.stringify(newReview)
+        })
+          .then(response => response.json())
+          .then(data => {
+            if(!data || !data.ok) throw new Error('backend rejected the submission');
+            if(note){ note.textContent = '✅ توصلنا برأيك — غادي يبان فالموقع من بعد ما نتحققو من الطلب والصورة، و15 DH كايتفعلو فـ الـ Wallet ديالك من بعد التأكيد.'; note.className = 'review-form-note ok'; }
+            toast('شكراً ' + name + '! توصلنا برأيك، كايتصادق عليه دابا. 📸');
+            resetForm();
+            setTimeout(closeModal, 1100);
+          })
+          .catch(() => {
+            if(note){ note.textContent = '⚠️ ما قدرناش نصيفطو رأيك دابا — جرب مرة أخرى ولا صيفط لينا مباشرة فـ WhatsApp.'; note.className = 'review-form-note err'; }
+          });
+        return;
+      }
+
+      // fallback: no backend configured yet — keep it on this device via localStorage
+      reviews = reviews.concat([newReview]);
+      persist();
+      render();
+      if(note){ note.textContent = '✅ توصلنا برأيك — غادي يبان فالموقع من بعد ما نتحققو من الطلب والصورة، و15 DH كايتفعلو فـ الـ Wallet ديالك من بعد التأكيد.'; note.className = 'review-form-note ok'; }
+      toast('شكراً ' + name + '! توصلنا برأيك، كايتصادق عليه دابا. 📸');
+      resetForm();
+      setTimeout(closeModal, 1100);
+    });
+  }
+
+  render();
+})();
+</script>
+<script>
+  (function(){
+    var navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    navLinks.forEach(function(link){
+      link.addEventListener('click', function(event){
+        var targetId = link.getAttribute('href');
+        var target = targetId ? document.querySelector(targetId) : null;
+        if(target){
+          event.preventDefault();
+          var headerHeight = document.querySelector('.announcement-bar').offsetHeight
+            + document.querySelector('.navbar').offsetHeight;
+          var top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 12;
+          window.scrollTo({top:Math.max(0, top), behavior:'smooth'});
+          history.replaceState(null, '', targetId);
+        }
+        navLinks.forEach(function(item){ item.classList.remove('active'); });
+        link.classList.add('active');
+      });
+    });
+  })();
+</script>
+<script>
+  (function(){
+    // ScrollSpy: highlight the nav-link whose section is currently in view.
+    var sectionIds = ['games', 'how', 'reviews', 'contact'];
+    var sections = sectionIds
+      .map(function(id){ return document.getElementById(id); })
+      .filter(Boolean);
+    if(!sections.length || !('IntersectionObserver' in window)) return;
+
+    var navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    function setActive(id){
+      navLinks.forEach(function(link){
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+      });
+    }
+
+    var headerEl = document.querySelector('.site-header');
+    var headerHeight = headerEl ? headerEl.offsetHeight : 0;
+
+    var observer = new IntersectionObserver(function(entries){
+      // pick the entry closest to the top of the viewport among those currently visible
+      var visible = entries.filter(function(entry){ return entry.isIntersecting; });
+      if(!visible.length) return;
+      visible.sort(function(a, b){ return a.boundingClientRect.top - b.boundingClientRect.top; });
+      setActive(visible[0].target.id);
+    }, {
+      root: null,
+      rootMargin: '-' + (headerHeight + 4) + 'px 0px -60% 0px',
+      threshold: 0
+    });
+
+    sections.forEach(function(section){ observer.observe(section); });
+  })();
+</script>
+  <script>
+    (function(){
+      var productImages = {
+        'Love Memories': ['images/daba%20daba.png','images/love-memories-4.avif','images/love-memories-5.avif','images/love-memories-8.avif','images/88-conversation-starters.avif.avif','images/couple-connection-cards.avif.avif','images/soulmate-question-deck.avif.avif'],
+        'Love Whispers': ['images/love-whispers.avif','images/love-whispers-2.avif','images/love-whispers-3.avif','images/love-whispers-4.avif','images/love-whispers-5.avif','images/love-whispers-6.avif','images/love-whispers-7.avif'],
+        '88 Great Conversation Starters': ['images/88-conversation-starters.avif','images/88-conversation-starters-2.avif','images/88-conversation-starters-5.avif','images/88-conversation-starters-6.avif','images/88-conversation-starters-7.avif','images/88-conversation-starters-8.avif','images/88-conversation-starters-9.avif'],
+        'Couple Connection Cards': ['images/couple-connection-cards.avif','images/couple-connection-cards-2.avif','images/couple-connection-cards-3.avif','images/couple-connection-cards-4.avif','images/couple-connection-cards-5.avif','images/couple-connection-cards-6.avif','images/couple-connection-cards-7.avif'],
+        'Couples Chat': ['images/fdc0022f-f08a-4904-a9d4-219d94f2f337.avif','images/5818bc1d-7655-4840-998d-067ccdf78376.avif','images/ddc06f3b-7187-4074-bee6-6f70e18df6e3.avif','images/694a7935-b06d-487e-b6c4-52812cd577c3.avif','images/d147bd97-56f6-4180-9f3b-4f41f77d5912.avif','images/c6879c20-3d0d-4a07-975c-b33933137cc9.avif','images/81b425db-469f-4576-aaef-7f912c3c6773.avif','images/dffe2835-e977-4797-b595-60a9f75c8cd6.avif','images/70e2989d02f87d98a1afd97e91d1f2ab.avif','images/4639719e-e7cf-4bc6-8009-8c08c726483a.avif','images/ccd728cd-2612-4088-a4e5-9554171f4969.avif'],
+        'Date Night Code': ['images/cba6efa667322a1aaef438b557a3af32.avif','images/01ad37c4-bd10-11ef-a4e8-0a580a660e6a.avif','images/44ecb5e9-6f50-43cb-9442-b6ea0e6000d1.avif','images/6e507fc2-354a-4d1c-a589-a7644d51eb5c.avif','images/3ef6b9bc-1614-47f8-9d70-dc9b66643e42.avif','images/30fb90dc-c703-4feb-913b-775d0e16b88d.avif','images/4e2fa49f-0e91-4b06-8aba-9c43e6f05d45.avif','images/38a7ae5c-cadc-43f7-b811-62035d5500f0.avif'],
+        'Soulmate Question Deck': ['images/5298417f-fc1e-4af1-b5bb-521563347dec.avif','images/8526b666-8d2f-4c85-beef-47768f42766e.avif','images/a0d61c1f-0e98-4e9f-b30a-89be597c1483.avif','images/7446180b-da90-4637-bb7f-031b9cfb8b98.avif','images/803191aa-9ec7-485d-b043-26916cfb30fb.avif','images/a115e71b-bec5-4110-8774-14482a1e6503.avif','images/30cc773f-36e1-4756-8169-196a0b0171e2.avif','images/97552b4e-cd42-4d78-8b2a-807da50c1e27.avif'],
+        'Think Fast!': ['images/thing%20fast%201.avif','images/thing%20fast.avif','images/thing%20fast3.avif','images/thing%20fast4.avif','images/thing%20fast5.avif','images/thing%20fast6.avif','images/9219a289-7ef0-40c6-a12a-23b62e17d017.avif','images/594b1a3e-6da5-4601-8c2f-0490f3db4ab6.avif','images/d7035dcb-9587-4d89-8c10-f93300653898.avif'],
+        'She Is': ['images/35a6d9e0-b6bd-42b2-8c05-6759f3d40489.avif','images/87f40fcc-7eda-4beb-b323-1f856e5900f3.avif','images/0e5b7110-32d9-4b01-82bf-b1c8f11beea2.avif','images/f67b2026-c82a-4f7d-80bb-d7b6432e4c1a.avif','images/a43189ce-78b9-4b07-a4f6-00eae1961bb9.avif','images/c396ec01-cfbd-4650-ac87-35b3973e3e96.avif','images/29635e6e-d418-4851-97a9-ab68596eee1f.avif'],
+        "Let's Dig Deeper": ['images/4bf42132-1781-4b7d-ad42-06191ea19a8a.avif','images/d936127524df247c581052b6e65df571.avif','images/f26b92f0-5e43-4cf5-a6f5-2d90c96e8a33.avif','images/1c8c4e7d-deb2-4354-b0dd-84326b8794dc.avif','images/45c44f5e-170b-46df-8c46-0064285e7fd8.avif','images/fcd77fff-ed64-4b92-9694-219a6d638232.avif','images/6fa2ea19-b0d6-461c-8952-b4da8a744e14.avif','images/78e751a0-306d-40e0-b528-1b34ad7ee310.avif'],
+        'How Well Do You Know Me?': ['images/7ed46f6f0197527e3167d2e1fe4d7c2b.jpg','images/9b6ae98a-071f-431b-b2c4-74587c42d7f1.avif','images/aad52cf9-beb2-4d3f-9e1a-653390d989ab.avif','images/70fdf363-c2a8-4747-a509-c78e1c157d90.avif','images/80795e69-2614-4a74-a2c8-aa405498c92d.avif','images/b659bced-4e9d-4de3-856a-73c1001a6f03.avif','images/90b79796-3e9c-4daf-ba89-126b31ee2cef.avif']
+      };
+      document.querySelectorAll('#game-grid .game-card').forEach(function(card){
+        var title = card.querySelector('.card-title');
+        var wrapper = card.querySelector('.card-image-wrapper');
+        var images = title && wrapper ? productImages[title.textContent.trim()] : null;
+        if(!images || !images.length) return;
+        var image = wrapper.querySelector('.card-img');
+        if(image) image.src = images[0];
+        wrapper.removeAttribute('data-images');
+        if(images.length < 2 || !image) return;
+        var index = 0;
+        var timer = null;
+        var changeImage = function(nextIndex){
+          image.style.opacity = '0';
+          window.setTimeout(function(){
+            image.src = images[nextIndex];
+            image.style.opacity = '1';
+          }, 220);
+        };
+        card.addEventListener('mouseenter', function(){
+          if(timer) return;
+          timer = window.setInterval(function(){
+            index = (index + 1) % images.length;
+            changeImage(index);
+          }, 2000);
+        });
+        card.addEventListener('mouseleave', function(){
+          window.clearInterval(timer);
+          timer = null;
+          index = 0;
+          changeImage(0);
+        });
+      });
+    })();
+  </script>
+  </body>
+  </html>
