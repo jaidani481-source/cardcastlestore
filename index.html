@@ -105,7 +105,10 @@
 
   /* ===== NAV ===== */
   .site-header { position: sticky; top: 0; z-index: 1000; }
-  @media(max-width:859px){ .site-header{position:sticky;top:0;} }
+  @media(max-width:859px){
+    .site-header{position:fixed;top:0;left:0;right:0;width:100%;}
+    body{padding-top:var(--mobile-header-height,0px);}
+  }
   .navbar {
     background: rgba(10, 10, 10, 0.85);
     backdrop-filter: blur(14px);
@@ -879,6 +882,8 @@
   .review-card:hover{transform:translateY(-4px);box-shadow:0 28px 48px -28px rgba(0,0,0,.78);}
   .review-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:#211b15;}
   .review-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.8,.2,1);}
+  .review-photo .review-photos{display:flex;width:100%;height:100%;gap:4px;overflow-x:auto;}
+  .review-photo .review-photos img{flex:1 0 70px;width:0;min-width:70px;}
   .review-card:hover .review-photo img{transform:scale(1.05);}
   .photo-tag{
     position:absolute;left:12px;bottom:12px;
@@ -1359,7 +1364,7 @@
           </a>
           <a class="btn btn-ghost" href="#games">Explore the Decks</a>
         </div>
-        <p class="hero-social-proof" aria-label="Customer rating 4.9 out of 5">⭐️⭐️⭐️⭐️⭐️ 4.9/5 | <bdi dir="ltr">150+ families &amp; friend groups in Morocco</bdi></p>
+        <p class="hero-social-proof" aria-label="Customer rating 4.9 out of 5">⭐️⭐️⭐️⭐️⭐️ 4.9/5 | <bdi dir="ltr">+150 families &amp; friend groups in Morocco</bdi></p>
         <div class="trust-row">
           <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg><span>Original, sealed decks</span></div>
           <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span>Fast 24-48h Delivery</span></div>
@@ -2230,7 +2235,7 @@
 
   const STORE_KEY  = 'cardcastle_pending_reviews';
   const APPROVED_KEY = 'cardcastle_approved_reviews';
-  const MAX_PHOTO_BYTES = 1.5 * 1024 * 1024;       // 1.5 MB is plenty for a phone photo
+  const MAX_PHOTO_BYTES = 12 * 1024 * 1024;        // Accept modern phone photos; resize before local storage.
   const PHONE_PATTERN = /^0[567]\d{8}$/;           // 05/06/07 + 8 digits (matches the error message below)
 
   /* ---- shared backend (optional) ----
@@ -2391,7 +2396,7 @@
   function cardMarkup(review, index, total){
     const photos = Array.isArray(review.photo) ? review.photo : (review.photo ? [review.photo] : []);
     const photo = photos.length
-      ? '<div class="review-photo">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" alt="' + esc('صورة ' + (photoIndex + 1) + ' من الزبون: ' + review.name) + '" loading="lazy" decoding="async">').join('') + '<span class="photo-tag">' + photos.length + ' صورة من الزبون</span></div>'
+      ? '<div class="review-photo"><div class="review-photos">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" alt="' + esc('صورة ' + (photoIndex + 1) + ' من الزبون: ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div><span class="photo-tag">' + photos.length + ' صورة من الزبون</span></div>'
       : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>ما كايناش صورة مع هاد المراجعة</span></div>';
 
     const isPending = review.status !== 'approved';
@@ -2526,14 +2531,14 @@
   function compressImage(dataUrl, callback){
     const img = new Image();
     img.onload = () => {
-      const maxEdge = 900;
+      const maxEdge = 1100;
       const scale = Math.min(1, maxEdge / Math.max(img.width, img.height));
       const canvas = document.createElement('canvas');
       canvas.width = Math.round(img.width * scale);
       canvas.height = Math.round(img.height * scale);
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      callback(canvas.toDataURL('image/jpeg', 0.7));
+      callback(canvas.toDataURL('image/jpeg', 0.72));
     };
     img.onerror = () => callback(dataUrl); // fall back to the original if decoding fails
     img.src = dataUrl;
@@ -2555,7 +2560,7 @@
         return;
       }
       if(files.some(item => item.size > MAX_PHOTO_BYTES)){
-        if(imageError) imageError.textContent = 'الصورة كبيرة بزاف — الحد الأقصى 1.5MB.';
+        if(imageError) imageError.textContent = 'الصورة كبيرة بزاف — الحد الأقصى 12MB للصورة الواحدة.';
         imageInput.value = '';
         return;
       }
@@ -2731,12 +2736,16 @@
         wrapper.setAttribute('data-images', JSON.stringify(images));
         if(images.length < 2 || !image) return;
         var index = 0;
+        var changeToken = 0;
         var changeImage = function(nextIndex){
-          image.style.opacity = '0';
-          window.setTimeout(function(){
-            image.src = images[nextIndex];
-            image.style.opacity = '1';
-          }, 220);
+          var token = ++changeToken;
+          var nextImage = new Image();
+          nextImage.onload = function(){
+            if(token !== changeToken) return;
+            image.src = nextImage.src;
+          };
+          nextImage.onerror = function(){ if(token === changeToken) index = (index + images.length - 1) % images.length; };
+          nextImage.src = images[nextIndex];
         };
         wrapper.style.cursor = 'pointer';
         wrapper.setAttribute('role', 'button');
@@ -2753,5 +2762,18 @@
       });
     })();
   </script>
+<script>
+  (function(){
+    var header = document.querySelector('.site-header');
+    if(!header) return;
+    function sizeMobileHeader(){
+      document.documentElement.style.setProperty('--mobile-header-height',
+        window.matchMedia('(max-width: 859px)').matches ? header.offsetHeight + 'px' : '0px');
+    }
+    sizeMobileHeader();
+    window.addEventListener('resize', sizeMobileHeader, {passive:true});
+    if('ResizeObserver' in window) new ResizeObserver(sizeMobileHeader).observe(header);
+  })();
+</script>
   </body>
   </html>
