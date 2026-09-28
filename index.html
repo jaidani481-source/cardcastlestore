@@ -104,11 +104,8 @@
   .btn svg{width:18px;height:18px;flex-shrink:0;}
 
   /* ===== NAV ===== */
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+  .site-header { position: sticky; top: 0; z-index: 1000; }
+  @media(max-width:859px){ .site-header{position:sticky;top:0;} }
   .navbar {
     background: rgba(10, 10, 10, 0.85);
     backdrop-filter: blur(14px);
@@ -1362,7 +1359,7 @@
           </a>
           <a class="btn btn-ghost" href="#games">Explore the Decks</a>
         </div>
-        <p class="hero-social-proof" aria-label="Customer rating 4.9 out of 5">⭐️⭐️⭐️⭐️⭐️ 4.9/5 | 150+ families &amp; friend groups in Morocco</p>
+        <p class="hero-social-proof" aria-label="Customer rating 4.9 out of 5">⭐️⭐️⭐️⭐️⭐️ 4.9/5 | <bdi dir="ltr">150+ families &amp; friend groups in Morocco</bdi></p>
         <div class="trust-row">
           <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg><span>Original, sealed decks</span></div>
           <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span>Fast 24-48h Delivery</span></div>
@@ -1857,7 +1854,8 @@
           </label>
 
           <label class="review-field review-upload">صورة ديالك *
-            <input id="review-image" name="photo" type="file" accept="image/*" required>
+            <input id="review-image" name="photo" type="file" accept="image/*" multiple required>
+            <span id="review-image-count" class="review-upload-hint" aria-live="polite"></span>
             <span class="review-upload-hint">خاصة صورة ديال الطلب (JPG / PNG / WEBP — الحد الأقصى 1.5MB) باش نتحققو ونتفعلو 15 DH فـ الـ Wallet.</span>
           </label>
           <img id="review-image-preview" alt="معاينة الصورة" hidden>
@@ -2173,24 +2171,20 @@
 
 <script>
   document.querySelectorAll('.deck[data-category-target]').forEach(deck => {
-    const openCategory = () => {
-      document.querySelectorAll('.deck.is-selected').forEach(selected => selected.classList.remove('is-selected'));
-      deck.classList.add('is-selected');
-      // let the card visibly rise to the front of the fan before the page scrolls away
-      window.setTimeout(() => {
-        const category = deck.dataset.categoryTarget;
-        const filterTab = document.querySelector('.filter-tab[data-filter="' + category + '"]');
-        if(filterTab) filterTab.click();
-        const games = document.getElementById('games');
-        if(games) games.scrollIntoView({behavior:'smooth',block:'start'});
-      }, 450);
-    };
-    deck.addEventListener('click', openCategory);
-    deck.addEventListener('keydown', event => {
-      if(event.key === 'Enter' || event.key === ' '){
-        event.preventDefault();
-        openCategory();
+    const activate = () => {
+      if(!deck.classList.contains('is-selected')){
+        document.querySelectorAll('.deck.is-selected').forEach(card => card.classList.remove('is-selected'));
+        deck.classList.add('is-selected');
+        return;
       }
+      const tab = document.querySelector('.filter-tab[data-filter="' + deck.dataset.categoryTarget + '"]');
+      if(tab) tab.click();
+      const games = document.getElementById('games');
+      if(games) games.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+    deck.addEventListener('click', activate);
+    deck.addEventListener('keydown', event => {
+      if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); activate(); }
     });
   });
 </script>
@@ -2234,7 +2228,8 @@
 (function(){
   'use strict';
 
-  const STORE_KEY  = 'cardcastle_reviews_v1';      // fallback storage until REVIEWS_API_URL is configured
+  const STORE_KEY  = 'cardcastle_pending_reviews';
+  const APPROVED_KEY = 'cardcastle_approved_reviews';
   const MAX_PHOTO_BYTES = 1.5 * 1024 * 1024;       // 1.5 MB is plenty for a phone photo
   const PHONE_PATTERN = /^0[567]\d{8}$/;           // 05/06/07 + 8 digits (matches the error message below)
 
@@ -2284,6 +2279,7 @@
   const starsError   = document.getElementById('review-stars-error');
   const commentError = document.getElementById('review-comment-error');
   const imageError   = document.getElementById('review-image-error');
+  const imageCount   = document.getElementById('review-image-count');
   const starButtons  = Array.prototype.slice.call(document.querySelectorAll('#review-stars .star'));
 
   /* ---- state ---- */
@@ -2297,18 +2293,23 @@
   }
   const usingBackend = !!REVIEWS_API_URL;
   /* Fallback mode (no backend configured): real client submissions, same-device only. */
-  const storedReviews = readJSON(STORE_KEY, []);
-  let reviews = Array.isArray(storedReviews)
-    ? storedReviews.filter(review => review && review.name && review.comment)
-    : []; // nothing seeded; only what users actually submitted
+  const storedPending = readJSON(STORE_KEY, []);
+  const storedApproved = readJSON(APPROVED_KEY, []);
+  const legacyReviews = readJSON('cardcastle_reviews_v1', []);
+  let reviews = [].concat(
+    Array.isArray(storedPending) ? storedPending.map(r => Object.assign({}, r, {status:'pending'})) : [],
+    Array.isArray(storedApproved) ? storedApproved.map(r => Object.assign({}, r, {status:'approved'})) : [],
+    Array.isArray(legacyReviews) ? legacyReviews.filter(r => r && r.status === 'approved') : []
+  ).filter(review => review && review.name && review.comment);
   let rating = 0;
   let photoDataUrl = '';
   let toastTimer = null;
-  let adminMode = false;
+  let adminMode = new URLSearchParams(location.search).get('admin') === 'reviews';
   let titleClickCount = 0;
   let titleClickTimer = null;
   const adminBar = document.getElementById('admin-bar');
   const adminExit = document.getElementById('admin-exit');
+  if(adminMode) section.classList.add('admin-mode');
 
   /* Backend mode: fetch APPROVED reviews from the Google Sheet so every visitor,
      on any device, sees the same real list. Approval happens by editing the
@@ -2360,11 +2361,13 @@
      New ones always enter with status:'pending' — invisible until the owner approves. */
   function persist(){
     try{
-      localStorage.setItem(STORE_KEY, JSON.stringify(reviews));
+      localStorage.setItem(STORE_KEY, JSON.stringify(reviews.filter(r => r.status !== 'approved')));
+      localStorage.setItem(APPROVED_KEY, JSON.stringify(reviews.filter(r => r.status === 'approved')));
     }catch(error){
       // almost always the photo data URL hitting the ~5MB quota: keep the review, drop the photo
       try{
-        localStorage.setItem(STORE_KEY, JSON.stringify(reviews.map(r => Object.assign({}, r, {photo:''}))));
+        localStorage.setItem(STORE_KEY, JSON.stringify(reviews.filter(r => r.status !== 'approved').map(r => Object.assign({}, r, {photo:''}))));
+        localStorage.setItem(APPROVED_KEY, JSON.stringify(reviews.filter(r => r.status === 'approved').map(r => Object.assign({}, r, {photo:''}))));
         reviews = reviews.map(r => Object.assign({}, r, {photo:''}));
         toast('⚠️ الصورة كبيرة بزاف على التخزين — تسجلت المراجعة بلا صورة.');
       }catch(secondError){ toast('⚠️ ما قدرناش نخزنو المراجعة فهاد المتصفح.'); }
@@ -2386,8 +2389,9 @@
   }
 
   function cardMarkup(review, index, total){
-    const photo = review.photo
-      ? '<div class="review-photo"><img src="images/daba%20daba.png" alt="' + esc('صورة من الزبون: ' + review.name) + '" loading="lazy" decoding="async"><span class="photo-tag">صورة من الزبون</span></div>'
+    const photos = Array.isArray(review.photo) ? review.photo : (review.photo ? [review.photo] : []);
+    const photo = photos.length
+      ? '<div class="review-photo">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" alt="' + esc('صورة ' + (photoIndex + 1) + ' من الزبون: ' + review.name) + '" loading="lazy" decoding="async">').join('') + '<span class="photo-tag">' + photos.length + ' صورة من الزبون</span></div>'
       : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>ما كايناش صورة مع هاد المراجعة</span></div>';
 
     const isPending = review.status !== 'approved';
@@ -2468,6 +2472,7 @@
     if(form) form.reset();
     rating = 0;
     photoDataUrl = '';
+    if(imageCount) imageCount.textContent = '';
     starButtons.forEach(star => { star.classList.remove('active'); star.setAttribute('aria-checked','false'); });
     if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
     [nameInput,phoneInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
@@ -2537,32 +2542,32 @@
   /* ---- photo picker with instant preview (kept out of the public markup) ---- */
   if(imageInput){
     imageInput.addEventListener('change', () => {
-      const file = imageInput.files && imageInput.files[0];
+      const files = Array.from(imageInput.files || []);
+      const file = files[0];
+      if(imageCount){ const count = imageInput.files ? imageInput.files.length : 0; imageCount.textContent = count ? count + (count === 1 ? ' photo choisie' : ' photos choisies') : ''; }
       if(imageError) imageError.textContent = '';
       photoDataUrl = '';
       if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
       if(!file) return;
-      if(!/^image\//.test(file.type)){
+      if(files.some(item => !/^image\//.test(item.type))){
         if(imageError) imageError.textContent = 'خاص الصورة تكون JPG ولا PNG ولا WEBP.';
         imageInput.value = '';
         return;
       }
-      if(file.size > MAX_PHOTO_BYTES){
+      if(files.some(item => item.size > MAX_PHOTO_BYTES)){
         if(imageError) imageError.textContent = 'الصورة كبيرة بزاف — الحد الأقصى 1.5MB.';
         imageInput.value = '';
         return;
       }
-      const reader = new FileReader();
-      reader.onload = () => {
-        const raw = String(reader.result || '');
-        if(!raw) return;
-        compressImage(raw, compressed => {
-          photoDataUrl = compressed;
-          if(preview){ preview.src = photoDataUrl; preview.hidden = false; }
-        });
-      };
-      reader.onerror = () => { if(imageError) imageError.textContent = 'ما قدرناش نقراو الصورة، عاود جرب.'; };
-      reader.readAsDataURL(file);
+      Promise.all(files.map(item => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => compressImage(String(reader.result || ''), resolve);
+        reader.onerror = reject;
+        reader.readAsDataURL(item);
+      }))).then(photos => {
+        photoDataUrl = photos;
+        if(preview){ preview.src = photos[0]; preview.hidden = false; }
+      }).catch(() => { if(imageError) imageError.textContent = 'ما قدرناش نقراو الصور، عاود جرب.'; });
     });
   }
 
@@ -2579,7 +2584,7 @@
       const okPhone   = PHONE_PATTERN.test(digits);
       const okStars   = rating >= 1;
       const okComment = comment.length >= 10;
-      const okPhoto   = !!photoDataUrl;   // real order photo required for the 15 DH wallet credit
+    const okPhoto   = Array.isArray(photoDataUrl) ? photoDataUrl.length > 0 : !!photoDataUrl;
 
       if(nameError)    nameError.textContent    = okName ? '' : 'عافاك كتب الاسم الكامل ديالك.';
       if(phoneError)   phoneError.textContent   = okPhone ? '' : 'الرقم خاصو يبدا بـ 06 ولا 07 ولا 05 وعندو 10 أرقام.';
@@ -2723,10 +2728,9 @@
         if(!images || !images.length) return;
         var image = wrapper.querySelector('.card-img');
         if(image) image.src = images[0];
-        wrapper.removeAttribute('data-images');
+        wrapper.setAttribute('data-images', JSON.stringify(images));
         if(images.length < 2 || !image) return;
         var index = 0;
-        var timer = null;
         var changeImage = function(nextIndex){
           image.style.opacity = '0';
           window.setTimeout(function(){
@@ -2734,18 +2738,17 @@
             image.style.opacity = '1';
           }, 220);
         };
-        card.addEventListener('mouseenter', function(){
-          if(timer) return;
-          timer = window.setInterval(function(){
-            index = (index + 1) % images.length;
-            changeImage(index);
-          }, 2000);
+        wrapper.style.cursor = 'pointer';
+        wrapper.setAttribute('role', 'button');
+        wrapper.setAttribute('tabindex', '0');
+        wrapper.setAttribute('aria-label', 'Show next product photo');
+        wrapper.addEventListener('click', function(event){
+          if(event.target.closest('a,button')) return;
+          index = (index + 1) % images.length;
+          changeImage(index);
         });
-        card.addEventListener('mouseleave', function(){
-          window.clearInterval(timer);
-          timer = null;
-          index = 0;
-          changeImage(0);
+        wrapper.addEventListener('keydown', function(event){
+          if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); index = (index + 1) % images.length; changeImage(index); }
         });
       });
     })();
