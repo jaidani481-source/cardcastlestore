@@ -2233,18 +2233,9 @@
 (function(){
   'use strict';
 
-  const STORE_KEY  = 'cardcastle_pending_reviews';
-  const APPROVED_KEY = 'cardcastle_approved_reviews';
-  const MAX_PHOTO_BYTES = 12 * 1024 * 1024;        // Accept modern phone photos; resize before local storage.
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwehmOWadSkEdDOET4jJbL1nR5Qq_12-wr22Asw2BeECEGih4dnTv2FMsjBEH_skb2O/exec";
+  const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
   const PHONE_PATTERN = /^0[567]\d{8}$/;           // 05/06/07 + 8 digits (matches the error message below)
-
-  /* ---- shared backend (optional) ----
-     Paste your deployed Google Apps Script Web App URL here to make reviews
-     visible to EVERY visitor, submitted from ANY phone/computer, with approval
-     done by editing the Google Sheet directly (see the setup guide provided
-     alongside this file). Leave empty ('') to keep the current same-device-only
-     localStorage behavior — nothing breaks either way. */
-  const REVIEWS_API_URL = '';
 
   /* Phone masking utility — 0661234567 -> 0661***567. */
   function maskPhone(value){
@@ -2268,7 +2259,6 @@
   if(!section || !grid) return;
   const emptyState   = document.getElementById('reviews-empty-state');
   const summaryEl    = document.getElementById('reviews-summary');
-  const title        = document.getElementById('reviews-title');
   const backdropEl   = document.getElementById('review-modal-backdrop');
   const modal        = document.getElementById('review-modal');
   const form         = document.getElementById('review-form');
@@ -2287,97 +2277,31 @@
   const imageCount   = document.getElementById('review-image-count');
   const starButtons  = Array.prototype.slice.call(document.querySelectorAll('#review-stars .star'));
 
-  /* ---- state ---- */
-  function readJSON(key, fallback){
-    try{
-      const raw = localStorage.getItem(key);
-      if(!raw) return fallback;
-      const parsed = JSON.parse(raw);
-      return parsed == null ? fallback : parsed;
-    }catch(error){ return fallback; }
-  }
-  const usingBackend = !!REVIEWS_API_URL;
-  /* Fallback mode (no backend configured): real client submissions, same-device only. */
-  const storedPending = readJSON(STORE_KEY, []);
-  const storedApproved = readJSON(APPROVED_KEY, []);
-  const legacyReviews = readJSON('cardcastle_reviews_v1', []);
-  let reviews = [].concat(
-    Array.isArray(storedPending) ? storedPending.map(r => Object.assign({}, r, {status:'pending'})) : [],
-    Array.isArray(storedApproved) ? storedApproved.map(r => Object.assign({}, r, {status:'approved'})) : [],
-    Array.isArray(legacyReviews) ? legacyReviews.filter(r => r && r.status === 'approved') : []
-  ).filter(review => review && review.name && review.comment);
+  /* ---- shared Google Sheets backend ---- */
+  const usingBackend = GOOGLE_SCRIPT_URL !== 'YOUR_SCRIPT_URL_HERE' && /^https:\/\//i.test(GOOGLE_SCRIPT_URL);
+  let reviews = [];
   let rating = 0;
   let photoDataUrl = '';
   let toastTimer = null;
-  let adminMode = new URLSearchParams(location.search).get('admin') === 'reviews';
-  let titleClickCount = 0;
-  let titleClickTimer = null;
   const adminBar = document.getElementById('admin-bar');
-  const adminExit = document.getElementById('admin-exit');
-  if(adminMode) section.classList.add('admin-mode');
 
-  /* Backend mode: fetch APPROVED reviews from the Google Sheet so every visitor,
-     on any device, sees the same real list. Approval happens by editing the
-     Sheet directly — there is nothing to click on the page for that anymore. */
+  /* JSONP avoids the cross-origin fetch restriction on Apps Script ContentService. */
   function loadFromBackend(){
-    fetch(REVIEWS_API_URL + '?action=list')
-      .then(response => response.json())
-      .then(data => {
-        if(data && data.ok && Array.isArray(data.reviews)){
-          reviews = data.reviews;
-          render();
-        }
-      })
-      .catch(() => {
-        // offline or misconfigured URL — keep whatever was already rendered
-      });
-  }
-  if(usingBackend){
-    if(adminBar) adminBar.remove(); // approval happens in the Sheet, not on the page
-    loadFromBackend();
-  }
-
-  /* Secret trigger: click the section title 5x within 2s to toggle admin mode.
-     No password — this is a lightweight deterrent, not real security. Since
-     reviews live in localStorage (this browser only), "admin mode" here can
-     only approve/reject reviews submitted on THIS SAME device/browser. */
-  if(title){
-    title.addEventListener('click', () => {
-      titleClickCount++;
-      clearTimeout(titleClickTimer);
-      titleClickTimer = setTimeout(() => { titleClickCount = 0; }, 2000);
-      if(titleClickCount >= 5){
-        titleClickCount = 0;
-        adminMode = !adminMode;
-        section.classList.toggle('admin-mode', adminMode);
-        render();
-      }
-    });
-  }
-  if(adminExit){
-    adminExit.addEventListener('click', () => {
-      adminMode = false;
-      section.classList.remove('admin-mode');
+    if(!usingBackend){ render(); return; }
+    const callback = 'cardCastleReviews_' + Date.now();
+    const script = document.createElement('script');
+    const cleanup = () => { delete window[callback]; script.remove(); };
+    window[callback] = data => {
+      reviews = Array.isArray(data) ? data.filter(item => item && item.status === 'approved') : [];
       render();
-    });
+      cleanup();
+    };
+    script.onerror = () => { cleanup(); if(note) note.textContent = 'تعذر تحميل التقييمات حالياً.'; };
+    script.src = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callback;
+    document.head.appendChild(script);
   }
-
-  /* Every review in the store is a real client submission.
-     New ones always enter with status:'pending' — invisible until the owner approves. */
-  function persist(){
-    try{
-      localStorage.setItem(STORE_KEY, JSON.stringify(reviews.filter(r => r.status !== 'approved')));
-      localStorage.setItem(APPROVED_KEY, JSON.stringify(reviews.filter(r => r.status === 'approved')));
-    }catch(error){
-      // almost always the photo data URL hitting the ~5MB quota: keep the review, drop the photo
-      try{
-        localStorage.setItem(STORE_KEY, JSON.stringify(reviews.filter(r => r.status !== 'approved').map(r => Object.assign({}, r, {photo:''}))));
-        localStorage.setItem(APPROVED_KEY, JSON.stringify(reviews.filter(r => r.status === 'approved').map(r => Object.assign({}, r, {photo:''}))));
-        reviews = reviews.map(r => Object.assign({}, r, {photo:''}));
-        toast('⚠️ الصورة كبيرة بزاف على التخزين — تسجلت المراجعة بلا صورة.');
-      }catch(secondError){ toast('⚠️ ما قدرناش نخزنو المراجعة فهاد المتصفح.'); }
-    }
-  }
+  if(adminBar) adminBar.remove(); // Change Status in the Google Sheet to moderate.
+  loadFromBackend();
 
   function toast(message){
     if(!toastEl) return;
@@ -2434,7 +2358,7 @@
     /* Public visitors see approved reviews only.
        In admin mode (this browser, this device only — see note above),
        pending reviews also show, with Approve/Delete controls. */
-    const source = adminMode ? reviews : reviews.filter(r => r.status === 'approved');
+    const source = reviews.filter(r => r.status === 'approved');
     const visible = source.slice().reverse();
 
     /* the average badge is computed from real APPROVED reviews only — never hard-coded */
@@ -2491,26 +2415,6 @@
   const modalClose = document.getElementById('review-modal-close');
   if(modalClose) modalClose.addEventListener('click', closeModal);
   if(backdropEl) backdropEl.addEventListener('click', closeModal);
-
-  /* ---- admin: approve / delete a review (buttons only visible in admin mode) ---- */
-  grid.addEventListener('click', event => {
-    const approveBtn = event.target.closest('[data-approve]');
-    const deleteBtn  = event.target.closest('[data-delete]');
-    if(approveBtn){
-      const id = approveBtn.getAttribute('data-approve');
-      reviews = reviews.map(r => r.id === id ? Object.assign({}, r, {status:'approved'}) : r);
-      persist();
-      render();
-      toast('✅ تم قبول المراجعة، دابا بانت للزوار.');
-    } else if(deleteBtn){
-      const id = deleteBtn.getAttribute('data-delete');
-      if(!confirm('متأكد بغيتي تحيد هاد المراجعة نهائياً؟')) return;
-      reviews = reviews.filter(r => r.id !== id);
-      persist();
-      render();
-      toast('🗑️ تم حذف المراجعة.');
-    }
-  });
 
   /* ---- interactive 1-5 star rating ---- */
   starButtons.forEach(button => {
@@ -2621,35 +2525,26 @@
         status:  'pending'       // hidden from the public grid until an admin approves it
       };
 
-      if(usingBackend){
-        if(note){ note.textContent = 'كيتصيفط...'; note.className = 'review-form-note'; }
-        fetch(REVIEWS_API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // keeps this a CORS-simple request
-          body: JSON.stringify(newReview)
-        })
-          .then(response => response.json())
-          .then(data => {
-            if(!data || !data.ok) throw new Error('backend rejected the submission');
-            if(note){ note.textContent = '✅ توصلنا برأيك — غادي يبان فالموقع من بعد ما نتحققو من الطلب والصورة، و15 DH كايتفعلو فـ الـ Wallet ديالك من بعد التأكيد.'; note.className = 'review-form-note ok'; }
-            toast('شكراً ' + name + '! توصلنا برأيك، كايتصادق عليه دابا. 📸');
-            resetForm();
-            setTimeout(closeModal, 1100);
-          })
-          .catch(() => {
-            if(note){ note.textContent = '⚠️ ما قدرناش نصيفطو رأيك دابا — جرب مرة أخرى ولا صيفط لينا مباشرة فـ WhatsApp.'; note.className = 'review-form-note err'; }
-          });
+      if(!usingBackend){
+        if(note){ note.textContent = 'خاص ربط Google Apps Script أولاً قبل استقبال التقييمات.'; note.className = 'review-form-note err'; }
         return;
       }
-
-      // fallback: no backend configured yet — keep it on this device via localStorage
-      reviews = reviews.concat([newReview]);
-      persist();
-      render();
-      if(note){ note.textContent = '✅ توصلنا برأيك — غادي يبان فالموقع من بعد ما نتحققو من الطلب والصورة، و15 DH كايتفعلو فـ الـ Wallet ديالك من بعد التأكيد.'; note.className = 'review-form-note ok'; }
-      toast('شكراً ' + name + '! توصلنا برأيك، كايتصادق عليه دابا. 📸');
-      resetForm();
-      setTimeout(closeModal, 1100);
+      if(note){ note.textContent = 'كيتصيفط...'; note.className = 'review-form-note'; }
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(newReview)
+      })
+        .then(() => {
+          if(note){ note.textContent = '✅ توصلنا برأيك — غادي يبان فالموقع من بعد الموافقة عليه.'; note.className = 'review-form-note ok'; }
+          toast('شكراً ' + name + '! توصلنا برأيك، وغادي نراجعوه قبل النشر. 📸');
+          resetForm();
+          setTimeout(closeModal, 1300);
+        })
+        .catch(() => {
+          if(note){ note.textContent = '⚠️ ما قدرناش نصيفطو رأيك دابا — جرب مرة أخرى.'; note.className = 'review-form-note err'; }
+        });
     });
   }
 
