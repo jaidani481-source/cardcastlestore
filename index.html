@@ -2262,6 +2262,8 @@
   const backdropEl   = document.getElementById('review-modal-backdrop');
   const modal        = document.getElementById('review-modal');
   const form         = document.getElementById('review-form');
+  const submitButton = form ? form.querySelector('[type="submit"]') : null;
+  const submitButtonLabel = submitButton ? submitButton.textContent : 'نشر المراجعة';
   const note         = document.getElementById('review-form-note');
   const toastEl      = document.getElementById('reviews-toast');
   const nameInput    = document.getElementById('review-name');
@@ -2399,6 +2401,7 @@
   }
   function resetForm(){
     if(form) form.reset();
+    if(submitButton){ submitButton.disabled = false; submitButton.textContent = submitButtonLabel; }
     rating = 0;
     photoDataUrl = '';
     if(imageCount) imageCount.textContent = '';
@@ -2429,23 +2432,27 @@
     });
   });
 
-  /* Resize+recompress to keep the photo well under Sheets' ~50k char/cell limit
-     and any reasonable POST size. Long edge capped at 900px, JPEG quality 0.7 —
-     plenty for a review thumbnail, a fraction of the size of a raw phone photo. */
-  function compressImage(dataUrl, callback){
-    const img = new Image();
-    img.onload = () => {
-      const maxEdge = 1100;
-      const scale = Math.min(1, maxEdge / Math.max(img.width, img.height));
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.round(img.width * scale);
-      canvas.height = Math.round(img.height * scale);
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      callback(canvas.toDataURL('image/jpeg', 0.72));
-    };
-    img.onerror = () => callback(dataUrl); // fall back to the original if decoding fails
-    img.src = dataUrl;
+  /* Resize each original file before generating its smaller Base64 payload. */
+  function compressImage(file){
+    return new Promise((resolve, reject) => {
+      const objectUrl = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, 1000 / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+        const ctx = canvas.getContext('2d');
+        if(!ctx){ URL.revokeObjectURL(objectUrl); reject(new Error('Could not prepare image.')); return; }
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(objectUrl);
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
+      };
+      img.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('Could not read image.')); };
+      img.src = objectUrl;
+    });
   }
 
   /* ---- photo picker with instant preview (kept out of the public markup) ---- */
@@ -2468,12 +2475,7 @@
         imageInput.value = '';
         return;
       }
-      Promise.all(files.map(item => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => compressImage(String(reader.result || ''), resolve);
-        reader.onerror = reject;
-        reader.readAsDataURL(item);
-      }))).then(photos => {
+      Promise.all(files.map(compressImage)).then(photos => {
         photoDataUrl = photos;
         if(preview){ preview.src = photos[0]; preview.hidden = false; }
       }).catch(() => { if(imageError) imageError.textContent = 'ما قدرناش نقراو الصور، عاود جرب.'; });
@@ -2529,6 +2531,7 @@
         if(note){ note.textContent = 'خاص ربط Google Apps Script أولاً قبل استقبال التقييمات.'; note.className = 'review-form-note err'; }
         return;
       }
+      if(submitButton){ submitButton.disabled = true; submitButton.textContent = 'جاري الإرسال...'; }
       if(note){ note.textContent = 'كيتصيفط...'; note.className = 'review-form-note'; }
       fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
@@ -2537,12 +2540,13 @@
         body: JSON.stringify(newReview)
       })
         .then(() => {
-          if(note){ note.textContent = '✅ توصلنا برأيك — غادي يبان فالموقع من بعد الموافقة عليه.'; note.className = 'review-form-note ok'; }
-          toast('شكراً ' + name + '! توصلنا برأيك، وغادي نراجعوه قبل النشر. 📸');
+          if(note){ note.textContent = 'شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.'; note.className = 'review-form-note ok'; }
+          toast('شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.');
           resetForm();
           setTimeout(closeModal, 1300);
         })
         .catch(() => {
+          if(submitButton){ submitButton.disabled = false; submitButton.textContent = submitButtonLabel; }
           if(note){ note.textContent = '⚠️ ما قدرناش نصيفطو رأيك دابا — جرب مرة أخرى.'; note.className = 'review-form-note err'; }
         });
     });
