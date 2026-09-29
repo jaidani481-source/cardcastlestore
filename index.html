@@ -2270,6 +2270,7 @@
   const phoneInput   = document.getElementById('review-phone');
   const commentInput = document.getElementById('review-comment');
   const imageInput   = document.getElementById('review-image');
+  const ratingGroup  = document.getElementById('review-stars');
   const preview      = document.getElementById('review-image-preview');
   const nameError    = document.getElementById('review-name-error');
   const phoneError   = document.getElementById('review-phone-error');
@@ -2283,7 +2284,7 @@
   const usingBackend = GOOGLE_SCRIPT_URL !== 'YOUR_SCRIPT_URL_HERE' && /^https:\/\//i.test(GOOGLE_SCRIPT_URL);
   let reviews = [];
   let rating = 0;
-  let photoDataUrl = '';
+  let previewObjectUrl = '';
   let toastTimer = null;
   const adminBar = document.getElementById('admin-bar');
 
@@ -2403,7 +2404,7 @@
     if(form) form.reset();
     if(submitButton){ submitButton.disabled = false; submitButton.textContent = submitButtonLabel; }
     rating = 0;
-    photoDataUrl = '';
+    if(previewObjectUrl){ URL.revokeObjectURL(previewObjectUrl); previewObjectUrl = ''; }
     if(imageCount) imageCount.textContent = '';
     starButtons.forEach(star => { star.classList.remove('active'); star.setAttribute('aria-checked','false'); });
     if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
@@ -2460,9 +2461,9 @@
     imageInput.addEventListener('change', () => {
       const files = Array.from(imageInput.files || []);
       const file = files[0];
-      if(imageCount){ const count = imageInput.files ? imageInput.files.length : 0; imageCount.textContent = count ? count + (count === 1 ? ' photo choisie' : ' photos choisies') : ''; }
+      if(imageCount){ const count = files.length; imageCount.textContent = count ? count + (count === 1 ? ' photo choisie' : ' photos choisies') : ''; }
       if(imageError) imageError.textContent = '';
-      photoDataUrl = '';
+      if(previewObjectUrl){ URL.revokeObjectURL(previewObjectUrl); previewObjectUrl = ''; }
       if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
       if(!file) return;
       if(files.some(item => !/^image\//.test(item.type))){
@@ -2475,82 +2476,98 @@
         imageInput.value = '';
         return;
       }
-      Promise.all(files.map(compressImage)).then(photos => {
-        photoDataUrl = photos;
-        if(preview){ preview.src = photos[0]; preview.hidden = false; }
-      }).catch(() => { if(imageError) imageError.textContent = 'ما قدرناش نقراو الصور، عاود جرب.'; });
+      if(preview){
+        previewObjectUrl = URL.createObjectURL(file);
+        preview.src = previewObjectUrl;
+        preview.hidden = false;
+      }
     });
   }
 
   /* ---- submit: validate → mask on render → store as pending ---- */
-  if(form){
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      const name    = nameInput.value.trim();
-      const digits  = phoneInput.value.replace(/[\s\-.()]/g,'').replace(/^\+212/,'0');
-      const city    = cityInput.value.trim();
+  if(!form) throw new Error('Review form #review-form was not found.');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    try{
+      const requiredElements = [
+        ['#review-form', form], ['#review-name', nameInput], ['#review-phone', phoneInput],
+        ['#review-stars', ratingGroup], ['#review-comment', commentInput], ['#review-image', imageInput],
+        ['#review-form-note', note], ['#review-name-error', nameError], ['#review-phone-error', phoneError],
+        ['#review-stars-error', starsError], ['#review-comment-error', commentError],
+        ['#review-image-error', imageError], ['#review-form [type="submit"]', submitButton]
+      ];
+      requiredElements.forEach(([selector, element]) => {
+        if(!element) throw new Error('Required form element ' + selector + ' was not found.');
+      });
+      if(!starButtons.length) throw new Error('No rating buttons were found inside #review-stars.');
+
+      if(submitButton){ submitButton.disabled = true; submitButton.textContent = 'جاري الإرسال...'; }
+      if(note){ note.textContent = ''; note.className = 'review-form-note'; }
+
+      const name = nameInput.value.trim();
+      const digits = phoneInput.value.replace(/[\s\-.()]/g,'').replace(/^\+212/,'0');
       const comment = commentInput.value.trim();
+      const selectedStar = starButtons.find(star => star.getAttribute('aria-checked') === 'true');
+      const selectedRating = selectedStar ? Number(selectedStar.dataset.value) : 0;
+      const files = Array.from(imageInput.files || []);
 
-      const okName    = name.length >= 2;
-      const okPhone   = PHONE_PATTERN.test(digits);
-      const okStars   = rating >= 1;
+      const okName = name.length >= 2;
+      const okPhone = PHONE_PATTERN.test(digits);
+      const okStars = Number.isInteger(selectedRating) && selectedRating >= 1 && selectedRating <= 5;
       const okComment = comment.length >= 10;
-    const okPhoto   = Array.isArray(photoDataUrl) ? photoDataUrl.length > 0 : !!photoDataUrl;
+      const okPhoto = files.length > 0;
 
-      if(nameError)    nameError.textContent    = okName ? '' : 'عافاك كتب الاسم الكامل ديالك.';
-      if(phoneError)   phoneError.textContent   = okPhone ? '' : 'الرقم خاصو يبدا بـ 06 ولا 07 ولا 05 وعندو 10 أرقام.';
-      if(starsError)   starsError.textContent   = okStars ? '' : 'عافاك اختار التقييم ديالك من 5 نجوم.';
-      if(commentError) commentError.textContent = okComment ? '' : 'كتب على الأقل 10 حروف فـ الرأي ديالك.';
-      if(imageError)   imageError.textContent   = okPhoto ? '' : 'خاصك تحمل صورة ديال الطلب باش نتحققو ونتفعلو 15 DH.';
+      nameError.textContent = okName ? '' : 'عافاك كتب الاسم الكامل ديالك.';
+      phoneError.textContent = okPhone ? '' : 'الرقم خاصو يبدا بـ 06 ولا 07 ولا 05 وعندو 10 أرقام.';
+      starsError.textContent = okStars ? '' : 'عافاك اختار التقييم ديالك من 5 نجوم.';
+      commentError.textContent = okComment ? '' : 'كتب على الأقل 10 حروف فـ الرأي ديالك.';
+      imageError.textContent = okPhoto ? '' : 'خاصك تحمل صورة ديال الطلب باش نتحققو ونتفعلو 15 DH.';
       nameInput.classList.toggle('invalid', !okName);
       phoneInput.classList.toggle('invalid', !okPhone);
       commentInput.classList.toggle('invalid', !okComment);
 
       if(!(okName && okPhone && okStars && okComment && okPhoto)){
         if(note){ note.textContent = 'راجع الحقول المعلَّمة بالحمر قبل النشر.'; note.className = 'review-form-note err'; }
-        if(!okName) nameInput.focus();
-        else if(!okPhone) phoneInput.focus();
-        else if(!okStars && starButtons.length) starButtons[0].focus();
-        else if(!okComment) commentInput.focus();
-        else if(imageInput) imageInput.focus();
         return;
       }
+      if(files.some(file => !/^image\//.test(file.type))) throw new Error('Only image files can be uploaded.');
+      if(files.some(file => file.size > MAX_PHOTO_BYTES)) throw new Error('Each photo must be 12MB or smaller.');
+      if(!usingBackend) throw new Error('Google Apps Script URL is missing or invalid.');
 
+      const compressedPhotos = await Promise.all(files.map(compressImage));
       const newReview = {
-        id:      'guest-' + Date.now(),
-        name:    name,
-        phone:   digits,        // stored raw, rendered masked on public cards
-        rating:  rating,
-        comment: comment,
-        photo:   photoDataUrl,
-        date:    today(),
-        status:  'pending'       // hidden from the public grid until an admin approves it
+        id: 'guest-' + Date.now(),
+        name,
+        phone: digits,
+        rating: selectedRating,
+        comment,
+        photo: compressedPhotos,
+        date: today(),
+        status: 'pending'
       };
 
-      if(!usingBackend){
-        if(note){ note.textContent = 'خاص ربط Google Apps Script أولاً قبل استقبال التقييمات.'; note.className = 'review-form-note err'; }
-        return;
-      }
-      if(submitButton){ submitButton.disabled = true; submitButton.textContent = 'جاري الإرسال...'; }
       if(note){ note.textContent = 'كيتصيفط...'; note.className = 'review-form-note'; }
-      fetch(GOOGLE_SCRIPT_URL, {
+      await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(newReview)
-      })
-        .then(() => {
-          if(note){ note.textContent = 'شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.'; note.className = 'review-form-note ok'; }
-          toast('شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.');
-          resetForm();
-          setTimeout(closeModal, 1300);
-        })
-        .catch(() => {
-          if(submitButton){ submitButton.disabled = false; submitButton.textContent = submitButtonLabel; }
-          if(note){ note.textContent = '⚠️ ما قدرناش نصيفطو رأيك دابا — جرب مرة أخرى.'; note.className = 'review-form-note err'; }
-        });
-    });
-  }
+      });
+
+      resetForm();
+      if(note){ note.textContent = 'شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.'; note.className = 'review-form-note ok'; }
+      alert('شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.');
+      toast('شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.');
+      setTimeout(closeModal, 1600);
+    } catch(error) {
+      const errorMessage = error && error.message ? error.message : String(error);
+      alert('Error: ' + errorMessage);
+      console.error(error);
+      if(note){ note.textContent = 'تعذر إرسال المراجعة: ' + errorMessage; note.className = 'review-form-note err'; }
+    } finally {
+      if(submitButton){ submitButton.disabled = false; submitButton.textContent = submitButtonLabel; }
+    }
+  });
 
   render();
 })();
