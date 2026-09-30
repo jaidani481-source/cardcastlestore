@@ -208,9 +208,9 @@
   /* ===== CART DRAWER ===== */
   .cart-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.68);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:199;}
   .cart-backdrop.open{opacity:1;pointer-events:auto;}
-  .cart-drawer{position:fixed;z-index:200;top:0;right:0;width:min(440px,100%);height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:#17130f;border-left:1px solid var(--hairline);transform:translateX(100%);transition:transform .3s ease;box-shadow:-22px 0 70px rgba(0,0,0,.42);}
+  .cart-drawer{position:fixed;z-index:200;top:0;right:0;width:min(440px,100%);height:100dvh;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:contain;background:#17130f;border-left:1px solid var(--hairline);transform:translateX(100%);transition:transform .3s ease;box-shadow:-22px 0 70px rgba(0,0,0,.42);}
   .cart-drawer.open{transform:translateX(0);}
-  .cart-header{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--hairline);background:#17130f;flex:none;}
+  .cart-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--hairline);background:#17130f;flex:none;}
   .cart-header h2{font-size:25px;}
   .icon-button{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--hairline);border-radius:50%;background:transparent;color:var(--parchment);cursor:pointer;}
   .icon-button:hover{border-color:var(--brass);color:var(--brass-bright);}
@@ -1774,7 +1774,7 @@
       <!-- ===== 15 DH WALLET CASHBACK BANNER ===== -->
       <div class="wallet-banner" id="wallet-banner">
         <div class="wallet-banner-text">
-          <h3 class="wallet-headline" dir="rtl" lang="ary">ربح 15 DH f CardCastle Wallet ديالك! 📷</h3>
+          <h3 class="wallet-headline" dir="rtl" lang="ary">ربح 15 DH f CardCastle Wallet ديالك! 📸</h3>
           <p class="wallet-desc" dir="rtl" lang="ary">صور طلبك فاش يوصلك وخلي رأيك الصريح باش يتفعل ليك 15 DH كخصم فوري فطلبك الجاي.</p>
         </div>
         <div class="wallet-banner-actions">
@@ -1785,7 +1785,7 @@
 
 
       <div class="section-head">
-        <h2 class="reviews-title" id="reviews-title" dir="rtl" lang="ary">شنو كايقولو الزبناء ديالنا</h2>
+        <h2 class="reviews-title" id="reviews-title" dir="rtl" lang="ary">شنو كايقولو الزبناء ديالنا / <span dir="ltr" lang="en">What Our Players Say</span></h2>
       </div>
 
       <p class="reviews-empty-state" id="reviews-empty-state">No reviews yet. Be the first to share your experience.</p>
@@ -2306,7 +2306,7 @@
       + photo
       + '<div class="review-body">'
       +   '<p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p>'
-      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">Verified Buyer 🇲🇦</span></p>'
+      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">✓ طلب مؤكد</span></p>'
       +   '<div class="review-meta">'
       +     '<span>' + esc(review.date) + '</span>'
       +   '</div>'
