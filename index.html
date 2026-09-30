@@ -208,14 +208,15 @@
   /* ===== CART DRAWER ===== */
   .cart-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.68);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:199;}
   .cart-backdrop.open{opacity:1;pointer-events:auto;}
-  .cart-drawer{position:fixed;z-index:200;top:0;right:0;width:min(440px,100%);height:100dvh;display:flex;flex-direction:column;background:#17130f;border-left:1px solid var(--hairline);transform:translateX(100%);transition:transform .3s ease;box-shadow:-22px 0 70px rgba(0,0,0,.42);}
+  .cart-drawer{position:fixed;z-index:200;top:0;right:0;width:min(440px,100%);height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:#17130f;border-left:1px solid var(--hairline);transform:translateX(100%);transition:transform .3s ease;box-shadow:-22px 0 70px rgba(0,0,0,.42);}
   .cart-drawer.open{transform:translateX(0);}
-  .cart-header{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--hairline);}
+  .cart-header{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--hairline);background:#17130f;flex:none;}
   .cart-header h2{font-size:25px;}
   .icon-button{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--hairline);border-radius:50%;background:transparent;color:var(--parchment);cursor:pointer;}
   .icon-button:hover{border-color:var(--brass);color:var(--brass-bright);}
+  .cart-header .icon-button,.review-modal-head .icon-button{width:44px;height:44px;border-color:rgba(229,184,66,.62);background:rgba(229,184,66,.1);color:#ffe39a;flex:none;}
   .icon-button svg{width:18px;height:18px;}
-  .cart-body{overflow:auto;padding:20px 24px;flex:1;}
+  .cart-body{min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:20px 24px;flex:1;}
   .shipping-progress{padding:14px 16px;margin-bottom:18px;background:rgba(229,184,66,.08);border:1px solid rgba(229,184,66,.22);border-radius:12px;color:var(--text-secondary);font-size:13px;}
   .progress-track{height:6px;margin-top:10px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;}
   .progress-fill{height:100%;width:0;background:var(--brass);border-radius:inherit;transition:width .25s ease;}
@@ -768,12 +769,13 @@
   #reviews{scroll-margin-top:120px;}
   #reviews .section-head{max-width:720px;}
   .reviews-title{
-    font-family:'Manrope','Inter',sans-serif;
+    font-family:'Tajawal','Manrope',sans-serif;
     font-weight:800;
     font-size:clamp(30px,4vw,42px);
     line-height:1.15;
     margin:0;
     color:var(--parchment);
+    direction:rtl;text-align:right;
   }
 
   /* ---- wallet cashback banner (glassmorphism) ---- */
@@ -796,15 +798,15 @@
   .wallet-banner-text{position:relative;z-index:1;flex:1 1 340px;min-width:0;}
   .wallet-headline{
     margin:16px 0 10px;
-    font-family:'Manrope','Inter',sans-serif;
+    font-family:'Tajawal','Manrope',sans-serif;
     font-size:clamp(23px,3vw,33px);font-weight:800;line-height:1.3;
     color:var(--parchment);
-    direction:ltr;text-align:left;
+    direction:rtl;text-align:right;
   }
   .wallet-desc{
     color:var(--text-secondary);
-    font:500 15px/1.75 'Manrope','Inter',sans-serif;
-    direction:ltr;text-align:left;
+    font:500 15px/1.75 'Tajawal','Manrope',sans-serif;
+    direction:rtl;text-align:right;
     max-width:60ch;
   }
   .wallet-banner-actions{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
@@ -815,14 +817,14 @@
     border-radius:999px;
     background:linear-gradient(120deg,var(--brass) 0%,var(--brass-bright) 55%,#fff3c4 100%);
     color:#17120a;
-    font:800 15px 'Manrope','Inter',sans-serif;
-    direction:ltr;cursor:pointer;
+    font:800 15px 'Tajawal','Manrope',sans-serif;
+    direction:rtl;cursor:pointer;
     box-shadow:0 18px 40px -18px rgba(229,184,66,.85);
     transition:transform .22s ease, box-shadow .22s ease, filter .22s ease;
   }
   .btn-wallet:hover,.btn-wallet:focus-visible{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 26px 52px -20px rgba(229,184,66,.95);}
   .btn-wallet:focus-visible{outline:2px solid var(--brass-bright);outline-offset:3px;}
-  .wallet-note{color:rgba(203,195,178,.78);font:600 12px/1.6 'Manrope','Inter',sans-serif;direction:ltr;max-width:34ch;}
+  .wallet-note{color:rgba(203,195,178,.78);font:600 12px/1.6 'Tajawal','Manrope',sans-serif;direction:rtl;text-align:right;max-width:34ch;}
 
   /* ---- empty state: no approved reviews yet (minimal — the wallet-banner above already carries the CTA) ---- */
   .reviews-empty-state{
@@ -1077,11 +1079,11 @@
     position:fixed;z-index:301;
     top:50%;left:50%;
     transform:translate(-50%,-46%);
-    display:none;
+    display:none;flex-direction:column;
     width:min(560px,calc(100vw - 28px));
     max-height:min(92dvh,780px);
-    overflow:auto;
-    padding:26px clamp(18px,3vw,30px) 28px;
+    overflow:hidden;
+    padding:0 clamp(18px,3vw,30px) 0;
     border:1px solid rgba(241,233,216,.18);
     border-radius:20px;
     background:linear-gradient(160deg,rgba(40,32,23,.88),rgba(19,16,12,.92));
@@ -1091,8 +1093,9 @@
     opacity:0;
     transition:opacity .25s ease, transform .25s cubic-bezier(.2,.8,.2,1);
   }
-  .review-modal.open{display:block;opacity:1;transform:translate(-50%,-50%);}
-  .review-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px;}
+  .review-modal.open{display:flex;opacity:1;transform:translate(-50%,-50%);}
+  .review-modal-head{position:sticky;top:0;z-index:3;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin:0 -2px 0;padding:22px 2px 16px;background:linear-gradient(160deg,#282017,#17130f);flex:none;}
+  #review-form{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 2px 24px;}
   .review-modal-head h3{
     font-family:'Tajawal','Fraunces',serif;
     font-size:23px;font-weight:800;
@@ -1771,18 +1774,18 @@
       <!-- ===== 15 DH WALLET CASHBACK BANNER ===== -->
       <div class="wallet-banner" id="wallet-banner">
         <div class="wallet-banner-text">
-          <h3 class="wallet-headline">Share a photo review and get 15 DH off your next order</h3>
-          <p class="wallet-desc">Send a photo of your delivered order with your honest review. After verification, you’ll receive 15 DH credit toward your next order.</p>
+          <h3 class="wallet-headline" dir="rtl" lang="ary">ربح 15 DH f CardCastle Wallet ديالك! 📷</h3>
+          <p class="wallet-desc" dir="rtl" lang="ary">صور طلبك فاش يوصلك وخلي رأيك الصريح باش يتفعل ليك 15 DH كخصم فوري فطلبك الجاي.</p>
         </div>
         <div class="wallet-banner-actions">
-          <button class="btn-wallet" type="button" data-reviews-open="1">Share a Review · Get 15 DH</button>
-          <span class="wallet-note">Credit is added after we verify the order photo.</span>
+          <button class="btn-wallet" type="button" data-reviews-open="1" dir="rtl" lang="ary">عطي رأيك وخذ 15 DH</button>
+          <span class="wallet-note" dir="rtl" lang="ary">من بعد ما نتحققو من صورة الطلب ديالك.</span>
         </div>
       </div>
 
 
       <div class="section-head">
-        <h2 class="reviews-title" id="reviews-title">What Our Players Say</h2>
+        <h2 class="reviews-title" id="reviews-title" dir="rtl" lang="ary">شنو كايقولو الزبناء ديالنا</h2>
       </div>
 
       <p class="reviews-empty-state" id="reviews-empty-state">No reviews yet. Be the first to share your experience.</p>
@@ -1795,7 +1798,7 @@
         <div class="review-modal-head">
           <div>
             <h3 id="review-modal-title">خلّي رأيك فـ اللعبة</h3>
-            <p>شارك التقييم ديالك والصورة من بعد التوصيل. رقم الهاتف كايتخبا أوتوماتيكياً (مثال: 0661***567) وكل مراجعة كنراجعوها قبل النشر.</p>
+            <p>شارك التقييم ديالك وصورة من بعد التوصيل. كل مراجعة كنراجعوها قبل النشر.</p>
           </div>
           <button class="icon-button" id="review-modal-close" type="button" aria-label="إغلاق النافذة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         </div>
@@ -1804,12 +1807,6 @@
           <label class="review-field">الاسم الكامل *
             <input id="review-name" name="name" type="text" autocomplete="name" placeholder="مثال: أيوب" required>
             <span class="field-error" id="review-name-error"></span>
-          </label>
-
-          <label class="review-field">رقم الهاتف *
-            <input id="review-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0612345678" required>
-            <span class="review-upload-hint">كايتبقى مخفي — غير أول 4 أرقام وآخر 3 كايبانو للعموم.</span>
-            <span class="field-error" id="review-phone-error"></span>
           </label>
 
           <fieldset class="review-stars-field">
@@ -1981,6 +1978,29 @@
 <script>
 (function(){
   const phonePattern = /^0[5-7]\d{8}$/;
+  const pageScrollLocks = new Set();
+  let savedScrollStyles = null;
+  window.CardCastleScrollLock = {
+    lock(owner){
+      if(pageScrollLocks.has(owner)) return;
+      pageScrollLocks.add(owner);
+      if(pageScrollLocks.size !== 1) return;
+      savedScrollStyles = {bodyOverflow:document.body.style.overflow,bodyOverscroll:document.body.style.overscrollBehavior,htmlOverflow:document.documentElement.style.overflow,htmlOverscroll:document.documentElement.style.overscrollBehavior};
+      document.body.style.overflow = 'hidden';
+      document.body.style.overscrollBehavior = 'contain';
+      document.documentElement.style.overflow = 'hidden';
+      document.documentElement.style.overscrollBehavior = 'contain';
+    },
+    unlock(owner){
+      pageScrollLocks.delete(owner);
+      if(pageScrollLocks.size || !savedScrollStyles) return;
+      document.body.style.overflow = savedScrollStyles.bodyOverflow;
+      document.body.style.overscrollBehavior = savedScrollStyles.bodyOverscroll;
+      document.documentElement.style.overflow = savedScrollStyles.htmlOverflow;
+      document.documentElement.style.overscrollBehavior = savedScrollStyles.htmlOverscroll;
+      savedScrollStyles = null;
+    }
+  };
   const shippingThreshold = 350;
   const shippingFee = 35;
   const cart = [];
@@ -2030,8 +2050,8 @@
   const money = value => value.toLocaleString('fr-MA') + ' DH';
   const subtotal = () => cart.reduce((sum,item) => sum + item.price * item.quantity, 0);
   const delivery = () => subtotal() > 0 && subtotal() < shippingThreshold ? shippingFee : 0;
-  function openCart(){drawer.classList.add('open');backdrop.classList.add('open');drawer.setAttribute('aria-hidden','false');}
-  function closeCart(){drawer.classList.remove('open');backdrop.classList.remove('open');drawer.setAttribute('aria-hidden','true');}
+  function openCart(){drawer.classList.add('open');backdrop.classList.add('open');drawer.setAttribute('aria-hidden','false');window.CardCastleScrollLock.lock('cart');}
+  function closeCart(){drawer.classList.remove('open');backdrop.classList.remove('open');drawer.setAttribute('aria-hidden','true');window.CardCastleScrollLock.unlock('cart');}
   function render(){
     const value = subtotal();
     count.textContent = cart.reduce((sum,item) => sum + item.quantity, 0);
@@ -2206,7 +2226,6 @@
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwehmOWadSkEdDOET4jJbL1nR5Qq_12-wr22Asw2BeECEGih4dnTv2FMsjBEH_skb2O/exec";
   const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
-  const PHONE_PATTERN = /^0[567]\d{8}$/;           // 05/06/07 + 8 digits (matches the error message below)
 
   /* Phone masking utility — 0661234567 -> 0661***567. */
   /* Everything user-written goes through this before it lands in innerHTML */
@@ -2227,13 +2246,11 @@
   const note         = document.getElementById('review-form-note');
   const toastEl      = document.getElementById('reviews-toast');
   const nameInput    = document.getElementById('review-name');
-  const phoneInput   = document.getElementById('review-phone');
   const commentInput = document.getElementById('review-comment');
   const imageInput   = document.getElementById('review-image');
   const ratingGroup  = document.getElementById('review-stars');
   const preview      = document.getElementById('review-image-preview');
   const nameError    = document.getElementById('review-name-error');
-  const phoneError   = document.getElementById('review-phone-error');
   const starsError   = document.getElementById('review-stars-error');
   const commentError = document.getElementById('review-comment-error');
   const imageError   = document.getElementById('review-image-error');
@@ -2309,13 +2326,12 @@
   const lightboxImage = lightbox.querySelector('img');
   const lightboxClose = lightbox.querySelector('.review-lightbox-close');
   let lightboxReturnFocus = null;
-  let bodyOverflowBeforeLightbox = '';
 
   function closeReviewLightbox(){
     lightbox.classList.remove('open');
     lightbox.setAttribute('aria-hidden', 'true');
     lightboxImage.removeAttribute('src');
-    document.body.style.overflow = bodyOverflowBeforeLightbox;
+    window.CardCastleScrollLock.unlock('review-lightbox');
     if(lightboxReturnFocus && lightboxReturnFocus.isConnected) lightboxReturnFocus.focus();
   }
 
@@ -2323,12 +2339,11 @@
     const photo = event.target.closest('img[data-review-photo]');
     if(!photo || !grid.contains(photo)) return;
     lightboxReturnFocus = photo;
-    bodyOverflowBeforeLightbox = document.body.style.overflow;
     lightboxImage.src = photo.getAttribute('data-lightbox-src') || photo.src;
     lightboxImage.alt = photo.alt || 'Customer review photo';
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    window.CardCastleScrollLock.lock('review-lightbox');
     lightboxClose.focus();
   });
   lightboxClose.addEventListener('click', closeReviewLightbox);
@@ -2354,7 +2369,7 @@
     modal.classList.add('open');
     backdropEl.classList.add('open');
     modal.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
+    window.CardCastleScrollLock.lock('review-modal');
     setTimeout(() => { if(nameInput) nameInput.focus(); }, 80);
   }
   function closeModal(){
@@ -2362,7 +2377,7 @@
     modal.classList.remove('open');
     if(backdropEl) backdropEl.classList.remove('open');
     modal.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
+    window.CardCastleScrollLock.unlock('review-modal');
   }
   function resetForm(){
     if(form) form.reset();
@@ -2371,8 +2386,8 @@
     if(imageCount) imageCount.textContent = '';
     starButtons.forEach(star => { star.classList.remove('active'); star.setAttribute('aria-checked','false'); });
     if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
-    [nameInput,phoneInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
-    [nameError,phoneError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
+    [nameInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
+    [nameError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
   }
 
   /* Any element with [data-reviews-open] opens the modal (banner CTA, empty-state CTA…). */
@@ -2382,6 +2397,7 @@
   const modalClose = document.getElementById('review-modal-close');
   if(modalClose) modalClose.addEventListener('click', closeModal);
   if(backdropEl) backdropEl.addEventListener('click', closeModal);
+  document.addEventListener('keydown', event => { if(event.key === 'Escape' && modal && modal.classList.contains('open')) closeModal(); });
 
   /* ---- interactive 1-5 star rating ---- */
   starButtons.forEach(button => {
@@ -2495,9 +2511,9 @@
     e.preventDefault();
     try{
       const requiredElements = [
-        ['#review-form', form], ['#review-name', nameInput], ['#review-phone', phoneInput],
+        ['#review-form', form], ['#review-name', nameInput],
         ['#review-stars', ratingGroup], ['#review-comment', commentInput], ['#review-image', imageInput],
-        ['#review-form-note', note], ['#review-name-error', nameError], ['#review-phone-error', phoneError],
+        ['#review-form-note', note], ['#review-name-error', nameError],
         ['#review-stars-error', starsError], ['#review-comment-error', commentError],
         ['#review-image-error', imageError], ['#review-form [type="submit"]', submitButton]
       ];
@@ -2510,28 +2526,24 @@
       if(note){ note.textContent = ''; note.className = 'review-form-note'; }
 
       const name = nameInput.value.trim();
-      const digits = phoneInput.value.replace(/[\s\-.()]/g,'').replace(/^\+212/,'0');
       const comment = commentInput.value.trim();
       const selectedStar = starButtons.find(star => star.getAttribute('aria-checked') === 'true');
       const selectedRating = selectedStar ? Number(selectedStar.dataset.value) : 0;
       const files = Array.from(imageInput.files || []);
 
       const okName = name.length >= 2;
-      const okPhone = PHONE_PATTERN.test(digits);
       const okStars = Number.isInteger(selectedRating) && selectedRating >= 1 && selectedRating <= 5;
       const okComment = comment.length >= 10;
       const okPhoto = files.length > 0;
 
       nameError.textContent = okName ? '' : 'عافاك كتب الاسم الكامل ديالك.';
-      phoneError.textContent = okPhone ? '' : 'الرقم خاصو يبدا بـ 06 ولا 07 ولا 05 وعندو 10 أرقام.';
       starsError.textContent = okStars ? '' : 'عافاك اختار التقييم ديالك من 5 نجوم.';
       commentError.textContent = okComment ? '' : 'كتب على الأقل 10 حروف فـ الرأي ديالك.';
       imageError.textContent = okPhoto ? '' : 'خاصك تحمل صورة ديال الطلب باش نتحققو ونتفعلو 15 DH.';
       nameInput.classList.toggle('invalid', !okName);
-      phoneInput.classList.toggle('invalid', !okPhone);
       commentInput.classList.toggle('invalid', !okComment);
 
-      if(!(okName && okPhone && okStars && okComment && okPhoto)){
+      if(!(okName && okStars && okComment && okPhoto)){
         if(note){ note.textContent = 'راجع الحقول المعلَّمة بالحمر قبل النشر.'; note.className = 'review-form-note err'; }
         return;
       }
@@ -2546,7 +2558,7 @@
       const newReview = {
         id: 'guest-' + Date.now(),
         name,
-        phone: digits,
+        phone: "N/A",
         rating: selectedRating,
         comment,
         photo: compressedPhotos,
