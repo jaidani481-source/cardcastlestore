@@ -1825,6 +1825,12 @@
             <span class="field-error" id="review-name-error"></span>
           </label>
 
+          <label class="review-field">رقم الهاتف *
+            <input id="review-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0612345678" required>
+            <span class="review-upload-hint">كايتبقى مخفي — للتحقق من الطلب فقط وما كايبانش للعموم.</span>
+            <span class="field-error" id="review-phone-error"></span>
+          </label>
+
           <fieldset class="review-stars-field">
             <legend>التقييم ديالك *</legend>
             <div class="star-input" id="review-stars" role="radiogroup" aria-label="التقييم من 5 نجوم">
@@ -2239,14 +2245,14 @@
 </script>
 
 <script>
-/* ===== CUSTOMER REVIEWS: submit → mask → owner moderation ===== */
+/* ===== CUSTOMER REVIEWS: submit with private phone → owner moderation ===== */
 (function(){
   'use strict';
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwehmOWadSkEdDOET4jJbL1nR5Qq_12-wr22Asw2BeECEGih4dnTv2FMsjBEH_skb2O/exec";
   const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
+  const PHONE_PATTERN = /^0[567]\d{8}$/;
 
-  /* Phone masking utility — 0661234567 -> 0661***567. */
   /* Everything user-written goes through this before it lands in innerHTML */
   const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
@@ -2265,11 +2271,13 @@
   const note         = document.getElementById('review-form-note');
   const toastEl      = document.getElementById('reviews-toast');
   const nameInput    = document.getElementById('review-name');
+  const phoneInput   = document.getElementById('review-phone');
   const commentInput = document.getElementById('review-comment');
   const imageInput   = document.getElementById('review-image');
   const ratingGroup  = document.getElementById('review-stars');
   const preview      = document.getElementById('review-image-preview');
   const nameError    = document.getElementById('review-name-error');
+  const phoneError   = document.getElementById('review-phone-error');
   const starsError   = document.getElementById('review-stars-error');
   const commentError = document.getElementById('review-comment-error');
   const imageError   = document.getElementById('review-image-error');
@@ -2407,8 +2415,8 @@
     if(imageCount) imageCount.textContent = '';
     starButtons.forEach(star => { star.classList.remove('active'); star.setAttribute('aria-checked','false'); });
     if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
-    [nameInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
-    [nameError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
+    [nameInput,phoneInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
+    [nameError,phoneError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
   }
 
   /* Any element with [data-reviews-open] opens the modal (banner CTA, empty-state CTA…). */
@@ -2526,15 +2534,15 @@
     });
   }
 
-  /* ---- submit: validate → mask on render → store as pending ---- */
+  /* ---- submit: validate contact details and save as pending ---- */
   if(!form) throw new Error('Review form #review-form was not found.');
   form.addEventListener('submit', async e => {
     e.preventDefault();
     try{
       const requiredElements = [
-        ['#review-form', form], ['#review-name', nameInput],
+        ['#review-form', form], ['#review-name', nameInput], ['#review-phone', phoneInput],
         ['#review-stars', ratingGroup], ['#review-comment', commentInput], ['#review-image', imageInput],
-        ['#review-form-note', note], ['#review-name-error', nameError],
+        ['#review-form-note', note], ['#review-name-error', nameError], ['#review-phone-error', phoneError],
         ['#review-stars-error', starsError], ['#review-comment-error', commentError],
         ['#review-image-error', imageError], ['#review-form [type="submit"]', submitButton]
       ];
@@ -2547,24 +2555,28 @@
       if(note){ note.textContent = ''; note.className = 'review-form-note'; }
 
       const name = nameInput.value.trim();
+      const digits = phoneInput.value.replace(/[\s\-.()]/g,'').replace(/^\+212/,'0');
       const comment = commentInput.value.trim();
       const selectedStar = starButtons.find(star => star.getAttribute('aria-checked') === 'true');
       const selectedRating = selectedStar ? Number(selectedStar.dataset.value) : 0;
       const files = Array.from(imageInput.files || []);
 
       const okName = name.length >= 2;
+      const okPhone = PHONE_PATTERN.test(digits);
       const okStars = Number.isInteger(selectedRating) && selectedRating >= 1 && selectedRating <= 5;
       const okComment = comment.length >= 10;
       const okPhoto = files.length > 0;
 
       nameError.textContent = okName ? '' : 'عافاك كتب الاسم الكامل ديالك.';
+      phoneError.textContent = okPhone ? '' : 'عافاك دخل رقم مغربي صحيح (05 أو 06 أو 07 و10 أرقام).';
       starsError.textContent = okStars ? '' : 'عافاك اختار التقييم ديالك من 5 نجوم.';
       commentError.textContent = okComment ? '' : 'كتب على الأقل 10 حروف فـ الرأي ديالك.';
       imageError.textContent = okPhoto ? '' : 'خاصك تحمل صورة ديال الطلب باش نتحققو ونتفعلو 15 DH.';
       nameInput.classList.toggle('invalid', !okName);
+      phoneInput.classList.toggle('invalid', !okPhone);
       commentInput.classList.toggle('invalid', !okComment);
 
-      if(!(okName && okStars && okComment && okPhoto)){
+      if(!(okName && okPhone && okStars && okComment && okPhoto)){
         if(note){ note.textContent = 'راجع الحقول المعلَّمة بالحمر قبل النشر.'; note.className = 'review-form-note err'; }
         return;
       }
@@ -2579,7 +2591,7 @@
       const newReview = {
         id: 'guest-' + Date.now(),
         name,
-        phone: "N/A",
+        phone: digits,
         rating: selectedRating,
         comment,
         photo: compressedPhotos,
