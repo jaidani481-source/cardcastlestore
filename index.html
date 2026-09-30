@@ -545,7 +545,14 @@
     aspect-ratio:1/1;
     overflow:hidden;
     background:var(--surface-2);
+    touch-action:pan-y pinch-zoom;
+    -webkit-user-select:none;
+    user-select:none;
   }
+  .product-gallery-dots{position:absolute;z-index:12;left:50%;bottom:12px;display:flex;align-items:center;justify-content:center;gap:6px;max-width:calc(100% - 28px);padding:6px 9px;transform:translateX(-50%);border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(12,12,12,.66);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+  .product-gallery-dot{width:7px;height:7px;min-width:7px;padding:0;border:0;border-radius:999px;background:rgba(255,255,255,.55);cursor:pointer;transition:width .2s ease,background .2s ease,transform .2s ease;}
+  .product-gallery-dot.is-active{width:17px;background:var(--brass-bright,#e5b842);}
+  .product-gallery-dot:focus-visible{outline:2px solid #fff0b0;outline-offset:3px;}
   .card-img{
     position:absolute;
     inset:0;
@@ -2693,27 +2700,83 @@
         if(images.length < 2 || !image) return;
         var index = 0;
         var changeToken = 0;
-        var changeImage = function(nextIndex){
+        var dots = document.createElement('div');
+        dots.className = 'product-gallery-dots';
+        dots.setAttribute('role', 'group');
+        dots.setAttribute('aria-label', 'Product photos');
+        var dotButtons = images.map(function(_, dotIndex){
+          var dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'product-gallery-dot' + (dotIndex === 0 ? ' is-active' : '');
+          dot.setAttribute('aria-label', 'Show photo ' + (dotIndex + 1) + ' of ' + images.length);
+          dot.setAttribute('aria-pressed', dotIndex === 0 ? 'true' : 'false');
+          dot.addEventListener('click', function(event){
+            event.preventDefault();
+            event.stopPropagation();
+            showImage(dotIndex);
+          });
+          dots.appendChild(dot);
+          return dot;
+        });
+        wrapper.appendChild(dots);
+
+        var updateDots = function(){
+          dotButtons.forEach(function(dot, dotIndex){
+            var active = dotIndex === index;
+            dot.classList.toggle('is-active', active);
+            dot.setAttribute('aria-pressed', active ? 'true' : 'false');
+          });
+        };
+        var showImage = function(nextIndex){
+          nextIndex = (nextIndex + images.length) % images.length;
+          if(nextIndex === index) return;
           var token = ++changeToken;
           var nextImage = new Image();
           nextImage.onload = function(){
             if(token !== changeToken) return;
-            image.src = nextImage.src;
+            image.style.opacity = '0.25';
+            requestAnimationFrame(function(){
+              if(token !== changeToken) return;
+              image.src = nextImage.src;
+              index = nextIndex;
+              updateDots();
+              requestAnimationFrame(function(){ if(token === changeToken) image.style.opacity = '1'; });
+            });
           };
-          nextImage.onerror = function(){ if(token === changeToken) index = (index + images.length - 1) % images.length; };
+          nextImage.onerror = function(){ if(token === changeToken){ image.style.opacity = ''; updateDots(); } };
           nextImage.src = images[nextIndex];
         };
+        var swipeStart = null;
+        var suppressClickUntil = 0;
         wrapper.style.cursor = 'pointer';
-        wrapper.setAttribute('role', 'button');
+        wrapper.setAttribute('role', 'group');
         wrapper.setAttribute('tabindex', '0');
-        wrapper.setAttribute('aria-label', 'Show next product photo');
+        wrapper.setAttribute('aria-label', 'Product photo gallery. Swipe or click to change photos.');
+        wrapper.addEventListener('touchstart', function(event){
+          if(event.touches.length !== 1) { swipeStart = null; return; }
+          var touch = event.touches[0];
+          swipeStart = {x:touch.clientX,y:touch.clientY};
+        }, {passive:true});
+        wrapper.addEventListener('touchend', function(event){
+          if(!swipeStart || !event.changedTouches.length) return;
+          var touch = event.changedTouches[0];
+          var deltaX = touch.clientX - swipeStart.x;
+          var deltaY = touch.clientY - swipeStart.y;
+          swipeStart = null;
+          if(Math.abs(deltaX) < 30 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
+          suppressClickUntil = Date.now() + 500;
+          showImage(index + (deltaX < 0 ? 1 : -1));
+        }, {passive:true});
+        wrapper.addEventListener('touchcancel', function(){ swipeStart = null; }, {passive:true});
         wrapper.addEventListener('click', function(event){
           if(event.target.closest('a,button')) return;
-          index = (index + 1) % images.length;
-          changeImage(index);
+          if(Date.now() < suppressClickUntil) return;
+          showImage(index + 1);
         });
         wrapper.addEventListener('keydown', function(event){
-          if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); index = (index + 1) % images.length; changeImage(index); }
+          if(event.key === 'ArrowRight'){ event.preventDefault(); showImage(index + 1); }
+          else if(event.key === 'ArrowLeft'){ event.preventDefault(); showImage(index - 1); }
+          else if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); showImage(index + 1); }
         });
       });
     })();
