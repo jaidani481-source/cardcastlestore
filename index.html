@@ -768,31 +768,13 @@
   #reviews{scroll-margin-top:120px;}
   #reviews .section-head{max-width:720px;}
   .reviews-title{
-    font-family:'Tajawal','Fraunces',serif;
+    font-family:'Manrope','Inter',sans-serif;
     font-weight:800;
-    line-height:1.28;
-    margin-top:14px;
+    font-size:clamp(30px,4vw,42px);
+    line-height:1.15;
+    margin:0;
     color:var(--parchment);
   }
-  .reviews-title .reviews-title-ar{display:block;direction:rtl;text-align:right;}
-  .reviews-title .reviews-title-en{
-    display:block;
-    font-family:'Fraunces',serif;
-    font-weight:500;
-    font-size:.82em;
-    margin-top:6px;
-  }
-  .reviews-summary{
-    display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;
-    margin-top:18px;
-    padding:9px 16px;
-    border:1px solid rgba(229,184,66,.45);
-    border-radius:999px;
-    background:rgba(229,184,66,.1);
-    color:#ffe39a;
-    font:700 14px 'Tajawal','Manrope',sans-serif;
-  }
-  .reviews-summary b{color:var(--brass-bright);font-family:'Manrope',monospace;font-size:13px;}
 
   /* ---- wallet cashback banner (glassmorphism) ---- */
   .wallet-banner{
@@ -812,29 +794,17 @@
   .wallet-banner::before{content:'';position:absolute;top:-42%;left:-10%;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(229,184,66,.3),transparent 68%);filter:blur(30px);pointer-events:none;}
   .wallet-banner::after{content:'';position:absolute;right:-8%;bottom:-48%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(140,47,57,.32),transparent 70%);filter:blur(34px);pointer-events:none;}
   .wallet-banner-text{position:relative;z-index:1;flex:1 1 340px;min-width:0;}
-  .wallet-badge{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:7px 15px;
-    border:1px solid rgba(229,184,66,.5);
-    border-radius:999px;
-    background:rgba(13,13,13,.55);
-    color:#ffe39a;
-    font:800 12px 'Manrope',monospace;
-    letter-spacing:.08em;text-transform:uppercase;
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-  }
   .wallet-headline{
     margin:16px 0 10px;
-    font-family:'Tajawal','Fraunces',serif;
+    font-family:'Manrope','Inter',sans-serif;
     font-size:clamp(23px,3vw,33px);font-weight:800;line-height:1.3;
     color:var(--parchment);
-    direction:rtl;text-align:left;
+    direction:ltr;text-align:left;
   }
   .wallet-desc{
     color:var(--text-secondary);
-    font:500 15px/1.75 'Tajawal','Manrope',sans-serif;
-    direction:rtl;text-align:left;
+    font:500 15px/1.75 'Manrope','Inter',sans-serif;
+    direction:ltr;text-align:left;
     max-width:60ch;
   }
   .wallet-banner-actions{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
@@ -845,21 +815,21 @@
     border-radius:999px;
     background:linear-gradient(120deg,var(--brass) 0%,var(--brass-bright) 55%,#fff3c4 100%);
     color:#17120a;
-    font:800 16px 'Tajawal','Manrope',sans-serif;
-    direction:rtl;cursor:pointer;
+    font:800 15px 'Manrope','Inter',sans-serif;
+    direction:ltr;cursor:pointer;
     box-shadow:0 18px 40px -18px rgba(229,184,66,.85);
     transition:transform .22s ease, box-shadow .22s ease, filter .22s ease;
   }
   .btn-wallet:hover,.btn-wallet:focus-visible{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 26px 52px -20px rgba(229,184,66,.95);}
   .btn-wallet:focus-visible{outline:2px solid var(--brass-bright);outline-offset:3px;}
-  .wallet-note{color:rgba(203,195,178,.78);font:600 12px/1.6 'Tajawal','Manrope',sans-serif;direction:rtl;max-width:34ch;}
+  .wallet-note{color:rgba(203,195,178,.78);font:600 12px/1.6 'Manrope','Inter',sans-serif;direction:ltr;max-width:34ch;}
 
   /* ---- empty state: no approved reviews yet (minimal — the wallet-banner above already carries the CTA) ---- */
   .reviews-empty-state{
     display:block;
-    text-align:center;direction:rtl;
+    text-align:center;direction:ltr;
     color:var(--muted);
-    font:500 15px/1.7 'Tajawal','Manrope',sans-serif;
+    font:500 15px/1.7 'Manrope','Inter',sans-serif;
     padding:20px 0 8px;
   }
   .reviews-empty-state[hidden]{display:none;}
@@ -896,15 +866,16 @@
     border-radius:999px;
     background:rgba(13,13,13,.78);
     color:#ffe39a;
-    font:700 11.5px 'Tajawal','Manrope',sans-serif;
-    direction:rtl;
+    font:700 11.5px 'Manrope','Inter',sans-serif;
+    direction:ltr;
     backdrop-filter:blur(6px);
     -webkit-backdrop-filter:blur(6px);
   }
   .review-body{padding:22px 24px 26px;display:flex;flex-direction:column;gap:12px;flex:1;min-width:0;}
   .review-stars{color:#f8df91;font-size:18px;line-height:1;letter-spacing:.12em;text-shadow:0 0 16px rgba(229,184,66,.2);}
   .review-person{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .review-name{direction:rtl;font:700 16px 'Tajawal','Manrope',sans-serif;color:var(--parchment);}
+  .review-name{font:700 15px 'Manrope','Inter',sans-serif;color:var(--parchment);}
+  .review-name.is-arabic{font-family:'Tajawal','Manrope',sans-serif;}
   .review-verified{
     display:inline-flex;align-items:center;
     padding:5px 11px;
@@ -912,20 +883,21 @@
     border-radius:999px;
     background:rgba(229,184,66,.09);
     color:#f2d786;
-    font:700 11.5px 'Tajawal','Manrope',sans-serif;
-    direction:rtl;
+    font:700 11.5px 'Manrope','Inter',sans-serif;
+    direction:ltr;
     white-space:nowrap;
   }
   .review-text{
-    direction:rtl;
-    text-align:right;
+    direction:auto;
+    text-align:start;
     color:var(--text-secondary);
-    font:400 16px/1.75 'Tajawal','Manrope',sans-serif;
+    font:400 15px/1.75 'Manrope','Inter',sans-serif;
     word-break:break-word;
     overflow-wrap:anywhere;
     white-space:pre-wrap;
     min-width:0;
   }
+  .review-text.is-arabic{font-family:'Tajawal','Manrope',sans-serif;}
   .review-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:6;overflow:hidden;}
 
   /* ===== FOOTER ===== */
@@ -1037,7 +1009,6 @@
   #reviews.admin-mode .admin-bar{display:flex;}
   .admin-bar .admin-btn{padding:7px 14px;font-size:12.5px;}
   .admin-hint{color:rgba(203,195,178,.75);font-weight:500;}
-  #reviews-title{cursor:default;user-select:none;}
 
   /* ---- review card extras ---- */
   .review-meta{
@@ -1240,7 +1211,6 @@
     .review-photo .review-photos{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
     .review-photo .review-photos img{scroll-snap-align:start;}
     .reviews-title{font-size:26px;}
-    .reviews-summary{width:100%;justify-content:center;text-align:center;}
     .review-text{font-size:15.5px;}
     .footer-grid{grid-template-columns:minmax(0,1fr);gap:28px;}
     .footer-bottom{flex-direction:column;align-items:flex-start;}
@@ -1249,7 +1219,6 @@
     .review-modal-head h3{font-size:20px;}
     .star-input{gap:5px;}
     .star-input .star{width:100%;height:42px;border-radius:10px;font-size:19px;}
-    .admin-bar{flex-direction:column;align-items:flex-start;}
     .reviews-toast{left:14px;right:14px;bottom:18px;transform:translate(0,18px);text-align:center;}
     .reviews-toast.open{transform:translate(0,0);}
     .wallet-banner{flex-direction:column;align-items:stretch;margin-bottom:36px;border-radius:18px;}
@@ -1802,31 +1771,21 @@
       <!-- ===== 15 DH WALLET CASHBACK BANNER ===== -->
       <div class="wallet-banner" id="wallet-banner">
         <div class="wallet-banner-text">
-          <span class="wallet-badge">🪙 15 DH CASHBACK REWARD</span>
-          <h3 class="wallet-headline" dir="rtl" lang="ar">ربح 15 DH فـ CardCastle Wallet ديالك! 📸</h3>
-          <p class="wallet-desc" dir="rtl" lang="ar">دخل رقم الهاتف ديالك، صور طلبك فاش يوصلك، وخلي رأيك الصريح لتفعيل 15 درهم كخصم فوري لطلبك القادم.</p>
+          <h3 class="wallet-headline">Share a photo review and get 15 DH off your next order</h3>
+          <p class="wallet-desc">Send a photo of your delivered order with your honest review. After verification, you’ll receive 15 DH credit toward your next order.</p>
         </div>
         <div class="wallet-banner-actions">
-          <button class="btn-wallet" type="button" data-reviews-open="1">📸 خلي رأيك وخود 15 DH</button>
-          <span class="wallet-note" dir="rtl" lang="ar">كايتفعل الرصيد من بعد ما نتحققو من الصورة ورقم الطلب.</span>
+          <button class="btn-wallet" type="button" data-reviews-open="1">Share a Review · Get 15 DH</button>
+          <span class="wallet-note">Credit is added after we verify the order photo.</span>
         </div>
       </div>
 
 
       <div class="section-head">
-        <span class="eyebrow">Verified buyer photos</span>
-        <h2 class="reviews-title" id="reviews-title" title="Click 5x to toggle admin mode">
-          <span class="reviews-title-ar" dir="rtl" lang="ar">شنو كايقولو الزبناء ديالنا</span>
-          <span class="reviews-title-en">What Our Players Say</span>
-        </h2>
-        <p class="reviews-summary" id="reviews-summary">مازال ما كايناش مراجعات موثقة — كل مراجعة كاتنشر من بعد ما نتحققو من الطلب والصورة ✅</p>
-        <div class="admin-bar" id="admin-bar">
-          <span class="admin-hint" dir="rtl" lang="ar">🔐 Admin mode — راجع وقبل ولا رفض المراجعات قبل ما تبان للناس.</span>
-          <button class="admin-btn delete" id="admin-exit" type="button">Exit admin mode</button>
-        </div>
+        <h2 class="reviews-title" id="reviews-title">What Our Players Say</h2>
       </div>
 
-      <p class="reviews-empty-state" id="reviews-empty-state" dir="rtl" lang="ar">ماكاينينش مراجعات بعد — كن أول واحد.</p>
+      <p class="reviews-empty-state" id="reviews-empty-state">No reviews yet. Be the first to share your experience.</p>
 
       <div class="reviews-grid" id="reviews-grid"></div>
 
@@ -2250,16 +2209,6 @@
   const PHONE_PATTERN = /^0[567]\d{8}$/;           // 05/06/07 + 8 digits (matches the error message below)
 
   /* Phone masking utility — 0661234567 -> 0661***567. */
-  function maskPhone(value){
-    const digits = String(value == null ? '' : value).replace(/\D/g,'').replace(/^212/,'0');
-    if(!digits) return '—';
-    const length = digits.length;
-    if(length >= 10) return digits.slice(0,4) + '***' + digits.slice(-3);
-    if(length >= 6)  return digits.slice(0,2) + '*'.repeat(length - 4) + digits.slice(-2);
-    if(length >= 3)  return digits.slice(0,1) + '*'.repeat(length - 2) + digits.slice(-1);
-    return digits.charAt(0) + '*'.repeat(Math.max(length - 1, 1));
-  }
-
   /* Everything user-written goes through this before it lands in innerHTML */
   const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
@@ -2270,7 +2219,6 @@
   const grid         = document.getElementById('reviews-grid');
   if(!section || !grid) return;
   const emptyState   = document.getElementById('reviews-empty-state');
-  const summaryEl    = document.getElementById('reviews-summary');
   const backdropEl   = document.getElementById('review-modal-backdrop');
   const modal        = document.getElementById('review-modal');
   const form         = document.getElementById('review-form');
@@ -2297,7 +2245,6 @@
   let reviews = [];
   let rating = 0;
   let toastTimer = null;
-  const adminBar = document.getElementById('admin-bar');
 
   /* JSONP avoids the cross-origin fetch restriction on Apps Script ContentService. */
   function loadFromBackend(){
@@ -2314,7 +2261,6 @@
     script.src = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callback;
     document.head.appendChild(script);
   }
-  if(adminBar) adminBar.remove(); // Change Status in the Google Sheet to moderate.
   loadFromBackend();
 
   function toast(message){
@@ -2333,19 +2279,21 @@
 
   function cardMarkup(review){
     const photos = Array.isArray(review.photo) ? review.photo : (review.photo ? [review.photo] : []);
+    const photoCountLabel = photos.length === 1 ? '1 Customer Photo' : photos.length + ' Customer Photos';
+    const nameLanguageClass = /[\u0600-\u06FF]/.test(String(review.name || '')) ? ' is-arabic' : '';
+    const commentLanguageClass = /[\u0600-\u06FF]/.test(String(review.comment || '')) ? ' is-arabic' : '';
     const photo = photos.length
-      ? '<div class="review-photo"><div class="review-photos">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('صورة ' + (photoIndex + 1) + ' من الزبون: ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div><span class="photo-tag">' + photos.length + ' صورة من الزبون</span></div>'
-      : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>ما كايناش صورة مع هاد المراجعة</span></div>';
+      ? '<div class="review-photo"><div class="review-photos">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('Customer photo ' + (photoIndex + 1) + ' from ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div><span class="photo-tag">' + photoCountLabel + '</span></div>'
+      : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>No customer photo</span></div>';
     return '<article class="review-card" data-review-id="' + esc(review.id) + '">'
       + photo
       + '<div class="review-body">'
       +   '<p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p>'
-      +   '<p class="review-person"><span class="review-name" dir="rtl" lang="ar">' + esc(review.name) + ' 🇲🇦</span><span class="review-verified">✓ طلب مؤكد</span></p>'
+      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">Verified Buyer 🇲🇦</span></p>'
       +   '<div class="review-meta">'
       +     '<span>' + esc(review.date) + '</span>'
-      +     '<span title="' + esc('رقم الهاتف مخفي للأمان') + '">' + esc(maskPhone(review.phone)) + '</span>'
       +   '</div>'
-      +   '<p class="review-text" dir="rtl" lang="ar" title="' + esc(review.comment) + '">' + esc(review.comment) + '</p>'
+      +   '<p class="review-text' + commentLanguageClass + '" dir="auto" title="' + esc(review.comment) + '">' + esc(review.comment) + '</p>'
       + '</div></article>';
   }
 
@@ -2392,26 +2340,8 @@
   });
 
   function render(){
-    /* Public visitors see approved reviews only.
-       In admin mode (this browser, this device only — see note above),
-       pending reviews also show, with Approve/Delete controls. */
     const source = reviews.filter(r => r.status === 'approved');
     const visible = source.slice().reverse();
-
-    /* the average badge is computed from real APPROVED reviews only — never hard-coded */
-    const approvedCount = reviews.filter(r => r.status === 'approved').length;
-    if(summaryEl){
-      if(approvedCount){
-        const approved = reviews.filter(r => r.status === 'approved');
-        const average = approved.reduce((sum, review) => sum + (Number(review.rating) || 0), 0) / approved.length;
-        summaryEl.innerHTML = '<span aria-hidden="true">' + starsMarkup(Math.round(average)) + '</span> <b>'
-          + average.toFixed(1) + '/5</b> · ' + approvedCount
-          + (approvedCount === 1 ? ' تقييم موثق من زبون مغربي' : ' تقييمات موثقة من زبناء مغاربة');
-      }else{
-        summaryEl.textContent = 'مازال ما كايناش مراجعات موثقة — كل مراجعة كاتنشر من بعد ما نتحققو من الطلب والصورة ✅';
-      }
-    }
-
     grid.innerHTML = visible.map(cardMarkup).join('');
     grid.hidden = visible.length === 0;
     if(emptyState) emptyState.hidden = visible.length > 0;
