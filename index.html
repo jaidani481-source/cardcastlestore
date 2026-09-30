@@ -865,13 +865,16 @@
   .reviews-empty-state[hidden]{display:none;}
   .reviews-grid{
     display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:24px;
+    grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));
+    grid-auto-rows:1fr;
+    align-items:stretch;
+    gap:clamp(16px,2.2vw,24px);
   }
   .reviews-grid[hidden]{display:none;}
   .stars-dim{color:rgba(248,223,145,.3);}
   .review-card{
     display:flex;flex-direction:column;
+    height:100%;
     min-width:0;
     border:1px solid rgba(229,184,66,.2);
     border-radius:20px;
@@ -881,11 +884,11 @@
     transition:transform .28s cubic-bezier(.25,.8,.25,1),border-color .28s ease,box-shadow .28s ease;
   }
   .review-card:hover{transform:translateY(-4px);border-color:rgba(229,184,66,.5);box-shadow:0 24px 54px -24px rgba(0,0,0,.9),0 0 0 1px rgba(229,184,66,.08);}
-  .review-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:#12110e;border-bottom:1px solid rgba(229,184,66,.16);}
-  .review-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.8,.2,1);}
+  .review-photo{position:relative;width:100%;aspect-ratio:4/3;flex:none;overflow:hidden;background:#12110e;border-bottom:1px solid rgba(229,184,66,.16);}
+  .review-photo img{width:100%;height:100%;object-fit:cover;border-radius:8px;cursor:zoom-in;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .3s ease;}
   .review-photo .review-photos{display:flex;width:100%;height:100%;gap:4px;overflow-x:auto;}
-  .review-photo .review-photos img{flex:1 0 70px;width:0;min-width:70px;}
-  .review-card:hover .review-photo img{transform:scale(1.05);}
+  .review-photo .review-photos img{flex:1 0 70px;width:0;min-width:70px;border-radius:8px;}
+  .review-photo .review-photos img:hover{transform:scale(1.045);filter:brightness(1.07);}
   .photo-tag{
     position:absolute;left:12px;bottom:12px;
     padding:6px 12px;
@@ -905,10 +908,10 @@
   .review-verified{
     display:inline-flex;align-items:center;
     padding:5px 11px;
-    border:1px solid rgba(93,196,138,.4);
+    border:1px solid rgba(229,184,66,.38);
     border-radius:999px;
-    background:rgba(93,196,138,.14);
-    color:#9fe0b6;
+    background:rgba(229,184,66,.09);
+    color:#f2d786;
     font:700 11.5px 'Tajawal','Manrope',sans-serif;
     direction:rtl;
     white-space:nowrap;
@@ -923,11 +926,7 @@
     white-space:pre-wrap;
     min-width:0;
   }
-  /* the 4th review is a wide highlight: photo left, words right */
-  .review-card.review-wide{grid-column:1 / -1;flex-direction:row;}
-  .review-card.review-wide .review-photo{width:38%;flex-shrink:0;aspect-ratio:4/3;}
-  .review-card.review-wide .review-body{justify-content:center;padding:28px 30px;min-width:0;}
-  .review-card.review-wide .review-text{font-size:17.5px;}
+  .review-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:6;overflow:hidden;}
 
   /* ===== FOOTER ===== */
   footer{padding:64px 0 28px;border-top:1px solid var(--hairline);background:rgba(19,16,12,.6);}
@@ -1068,6 +1067,12 @@
     direction:rtl;
   }
   .review-photo.no-photo .no-photo-icon{font-size:26px;line-height:1;}
+  .review-lightbox{position:fixed;inset:0;z-index:10050;display:flex;visibility:hidden;pointer-events:none;align-items:center;justify-content:center;padding:clamp(14px,4vw,40px);background:rgba(5,5,5,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .22s ease,visibility .22s ease;}
+  .review-lightbox.open{visibility:visible;pointer-events:auto;opacity:1;}
+  .review-lightbox img{display:block;max-width:min(1100px,94vw);max-height:86dvh;object-fit:contain;border:1px solid rgba(229,184,66,.42);border-radius:14px;background:#0d0d0d;box-shadow:0 28px 100px rgba(0,0,0,.75),0 0 38px rgba(229,184,66,.12);}
+  .review-lightbox-close{position:absolute;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));width:48px;height:48px;display:grid;place-items:center;border:1px solid rgba(229,184,66,.55);border-radius:50%;background:rgba(15,15,15,.92);color:#ffe39a;font:400 32px/1 'Manrope',sans-serif;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,.45);}
+  .review-lightbox-close:hover,.review-lightbox-close:focus-visible{background:#241e15;color:#fff;outline:2px solid var(--brass-bright);outline-offset:3px;}
+  @media(max-width:620px){.review-lightbox{padding:12px;}.review-lightbox img{max-width:96vw;max-height:82dvh;border-radius:10px;}}
   .review-admin{display:none;gap:10px;flex-wrap:wrap;margin-top:6px;}
   #reviews.admin-mode .review-admin{display:flex;}
   .admin-btn{
@@ -1217,14 +1222,10 @@
 
   /* ---- responsive: reviews + footer ---- */
   @media(max-width:1024px){
-    .reviews-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
     .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   }
   @media(max-width:760px){
     .review-card{border-radius:17px;}
-    .review-card.review-wide{flex-direction:column;}
-    .review-card.review-wide .review-photo{width:100%;flex-basis:auto;}
-    .review-card.review-wide .review-body{width:100%;padding:21px 19px 24px;}
     .wallet-banner{flex-direction:column;align-items:stretch;}
     .wallet-banner-actions{align-items:stretch;}
     .btn-wallet{width:100%;justify-content:center;}
@@ -1234,7 +1235,7 @@
   @media(max-width:620px){
     .reviews-grid{grid-template-columns:minmax(0,1fr);gap:18px;}
     .review-card{width:100%;}
-    .review-body,.review-card.review-wide .review-body{padding:19px 17px 22px;}
+    .review-body{padding:19px 17px 22px;}
     .review-text{font-size:15.5px;line-height:1.8;}
     .review-photo .review-photos{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
     .review-photo .review-photos img{scroll-snap-align:start;}
@@ -2330,42 +2331,65 @@
     return '★'.repeat(filled) + (filled < 5 ? '<span class="stars-dim">' + '★'.repeat(5 - filled) + '</span>' : '');
   }
 
-  function cardMarkup(review, index, total){
+  function cardMarkup(review){
     const photos = Array.isArray(review.photo) ? review.photo : (review.photo ? [review.photo] : []);
     const photo = photos.length
-      ? '<div class="review-photo"><div class="review-photos">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" alt="' + esc('صورة ' + (photoIndex + 1) + ' من الزبون: ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div><span class="photo-tag">' + photos.length + ' صورة من الزبون</span></div>'
+      ? '<div class="review-photo"><div class="review-photos">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('صورة ' + (photoIndex + 1) + ' من الزبون: ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div><span class="photo-tag">' + photos.length + ' صورة من الزبون</span></div>'
       : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>ما كايناش صورة مع هاد المراجعة</span></div>';
-
-    const isPending = review.status !== 'approved';
-
-    // the newest visible review closes the grid as the wide "highlight" card
-    const classes = 'review-card'
-      + (index === total - 1 ? ' review-wide' : '')
-      + (isPending ? ' is-pending' : '');
-
-    const statusBadge = isPending
-      ? '<span class="review-status">⏳ قيد المراجعة</span>'
-      : '';
-
-    const adminButtons = '<div class="review-admin">'
-      + (isPending ? '<button class="admin-btn approve" type="button" data-approve="' + esc(review.id) + '">✓ Approve</button>' : '')
-      + '<button class="admin-btn delete" type="button" data-delete="' + esc(review.id) + '">✕ Delete</button>'
-      + '</div>';
-
-    return '<article class="' + classes + '" data-review-id="' + esc(review.id) + '">'
+    return '<article class="review-card" data-review-id="' + esc(review.id) + '">'
       + photo
       + '<div class="review-body">'
-      +   statusBadge
       +   '<p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p>'
       +   '<p class="review-person"><span class="review-name" dir="rtl" lang="ar">' + esc(review.name) + ' 🇲🇦</span><span class="review-verified">✓ طلب مؤكد</span></p>'
       +   '<div class="review-meta">'
       +     '<span>' + esc(review.date) + '</span>'
       +     '<span title="' + esc('رقم الهاتف مخفي للأمان') + '">' + esc(maskPhone(review.phone)) + '</span>'
       +   '</div>'
-      +   '<p class="review-text" dir="rtl" lang="ar">' + esc(review.comment) + '</p>'
-      +   adminButtons
+      +   '<p class="review-text" dir="rtl" lang="ar" title="' + esc(review.comment) + '">' + esc(review.comment) + '</p>'
       + '</div></article>';
   }
+
+  /* One delegated listener handles photos added on every render. */
+  const lightbox = document.createElement('div');
+  lightbox.className = 'review-lightbox';
+  lightbox.setAttribute('role', 'dialog');
+  lightbox.setAttribute('aria-modal', 'true');
+  lightbox.setAttribute('aria-label', 'Review photo');
+  lightbox.setAttribute('aria-hidden', 'true');
+  lightbox.innerHTML = '<button class="review-lightbox-close" type="button" aria-label="Close photo">×</button><img alt="Customer review photo">';
+  document.body.appendChild(lightbox);
+  const lightboxImage = lightbox.querySelector('img');
+  const lightboxClose = lightbox.querySelector('.review-lightbox-close');
+  let lightboxReturnFocus = null;
+  let bodyOverflowBeforeLightbox = '';
+
+  function closeReviewLightbox(){
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightboxImage.removeAttribute('src');
+    document.body.style.overflow = bodyOverflowBeforeLightbox;
+    if(lightboxReturnFocus && lightboxReturnFocus.isConnected) lightboxReturnFocus.focus();
+  }
+
+  grid.addEventListener('click', event => {
+    const photo = event.target.closest('img[data-review-photo]');
+    if(!photo || !grid.contains(photo)) return;
+    lightboxReturnFocus = photo;
+    bodyOverflowBeforeLightbox = document.body.style.overflow;
+    lightboxImage.src = photo.getAttribute('data-lightbox-src') || photo.src;
+    lightboxImage.alt = photo.alt || 'Customer review photo';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    lightboxClose.focus();
+  });
+  lightboxClose.addEventListener('click', closeReviewLightbox);
+  lightbox.addEventListener('click', event => {
+    if(event.target === lightbox) closeReviewLightbox();
+  });
+  document.addEventListener('keydown', event => {
+    if(event.key === 'Escape' && lightbox.classList.contains('open')) closeReviewLightbox();
+  });
 
   function render(){
     /* Public visitors see approved reviews only.
@@ -2388,7 +2412,7 @@
       }
     }
 
-    grid.innerHTML = visible.map((review, index) => cardMarkup(review, index, visible.length)).join('');
+    grid.innerHTML = visible.map(cardMarkup).join('');
     grid.hidden = visible.length === 0;
     if(emptyState) emptyState.hidden = visible.length > 0;
   }
