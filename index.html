@@ -873,14 +873,15 @@
   .review-card{
     display:flex;flex-direction:column;
     min-width:0;
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:16px;
-    background:rgba(30,25,18,0.72);
+    border:1px solid rgba(229,184,66,.2);
+    border-radius:20px;
+    background:linear-gradient(155deg,rgba(31,27,19,.98),rgba(14,14,14,.98) 72%);
     overflow:hidden;
-    transition:transform .3s cubic-bezier(.25,.8,.25,1), box-shadow .3s ease;
+    box-shadow:0 14px 36px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.035);
+    transition:transform .28s cubic-bezier(.25,.8,.25,1),border-color .28s ease,box-shadow .28s ease;
   }
-  .review-card:hover{transform:translateY(-4px);box-shadow:0 28px 48px -28px rgba(0,0,0,.78);}
-  .review-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:#211b15;}
+  .review-card:hover{transform:translateY(-4px);border-color:rgba(229,184,66,.5);box-shadow:0 24px 54px -24px rgba(0,0,0,.9),0 0 0 1px rgba(229,184,66,.08);}
+  .review-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:#12110e;border-bottom:1px solid rgba(229,184,66,.16);}
   .review-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.8,.2,1);}
   .review-photo .review-photos{display:flex;width:100%;height:100%;gap:4px;overflow-x:auto;}
   .review-photo .review-photos img{flex:1 0 70px;width:0;min-width:70px;}
@@ -897,8 +898,8 @@
     backdrop-filter:blur(6px);
     -webkit-backdrop-filter:blur(6px);
   }
-  .review-body{padding:20px 22px 24px;display:flex;flex-direction:column;gap:11px;flex:1;}
-  .review-stars{color:#f8df91;font-size:17px;line-height:1;letter-spacing:.1em;}
+  .review-body{padding:22px 24px 26px;display:flex;flex-direction:column;gap:12px;flex:1;min-width:0;}
+  .review-stars{color:#f8df91;font-size:18px;line-height:1;letter-spacing:.12em;text-shadow:0 0 16px rgba(229,184,66,.2);}
   .review-person{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   .review-name{direction:rtl;font:700 16px 'Tajawal','Manrope',sans-serif;color:var(--parchment);}
   .review-verified{
@@ -917,11 +918,15 @@
     text-align:right;
     color:var(--text-secondary);
     font:400 16px/1.75 'Tajawal','Manrope',sans-serif;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+    white-space:pre-wrap;
+    min-width:0;
   }
   /* the 4th review is a wide highlight: photo left, words right */
   .review-card.review-wide{grid-column:1 / -1;flex-direction:row;}
   .review-card.review-wide .review-photo{width:38%;flex-shrink:0;aspect-ratio:4/3;}
-  .review-card.review-wide .review-body{justify-content:center;padding:28px 30px;}
+  .review-card.review-wide .review-body{justify-content:center;padding:28px 30px;min-width:0;}
   .review-card.review-wide .review-text{font-size:17.5px;}
 
   /* ===== FOOTER ===== */
@@ -1216,9 +1221,10 @@
     .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   }
   @media(max-width:760px){
+    .review-card{border-radius:17px;}
     .review-card.review-wide{flex-direction:column;}
-    .review-card.review-wide .review-photo{width:100%;}
-    .review-card.review-wide .review-body{padding:22px 22px 26px;}
+    .review-card.review-wide .review-photo{width:100%;flex-basis:auto;}
+    .review-card.review-wide .review-body{width:100%;padding:21px 19px 24px;}
     .wallet-banner{flex-direction:column;align-items:stretch;}
     .wallet-banner-actions{align-items:stretch;}
     .btn-wallet{width:100%;justify-content:center;}
@@ -1227,6 +1233,11 @@
   }
   @media(max-width:620px){
     .reviews-grid{grid-template-columns:minmax(0,1fr);gap:18px;}
+    .review-card{width:100%;}
+    .review-body,.review-card.review-wide .review-body{padding:19px 17px 22px;}
+    .review-text{font-size:15.5px;line-height:1.8;}
+    .review-photo .review-photos{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+    .review-photo .review-photos img{scroll-snap-align:start;}
     .reviews-title{font-size:26px;}
     .reviews-summary{width:100%;justify-content:center;text-align:center;}
     .review-text{font-size:15.5px;}
@@ -2284,7 +2295,6 @@
   const usingBackend = GOOGLE_SCRIPT_URL !== 'YOUR_SCRIPT_URL_HERE' && /^https:\/\//i.test(GOOGLE_SCRIPT_URL);
   let reviews = [];
   let rating = 0;
-  let previewObjectUrl = '';
   let toastTimer = null;
   const adminBar = document.getElementById('admin-bar');
 
@@ -2404,7 +2414,6 @@
     if(form) form.reset();
     if(submitButton){ submitButton.disabled = false; submitButton.textContent = submitButtonLabel; }
     rating = 0;
-    if(previewObjectUrl){ URL.revokeObjectURL(previewObjectUrl); previewObjectUrl = ''; }
     if(imageCount) imageCount.textContent = '';
     starButtons.forEach(star => { star.classList.remove('active'); star.setAttribute('aria-checked','false'); });
     if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
@@ -2433,37 +2442,84 @@
     });
   });
 
-  /* Resize each original file before generating its smaller Base64 payload. */
+  /* Draw a small canvas, encode it as a compressed JPEG Blob, then Base64-encode
+     only that smaller Blob. This avoids a second full-size Base64 copy in memory. */
   function compressImage(file){
     return new Promise((resolve, reject) => {
       const objectUrl = URL.createObjectURL(file);
       const img = new Image();
-      img.onload = () => {
-        const scale = Math.min(1, 1000 / Math.max(img.width, img.height));
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.max(1, Math.round(img.width * scale));
-        canvas.height = Math.max(1, Math.round(img.height * scale));
-        const ctx = canvas.getContext('2d');
-        if(!ctx){ URL.revokeObjectURL(objectUrl); reject(new Error('Could not prepare image.')); return; }
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      let canvas = null;
+      const cleanupImage = () => {
         URL.revokeObjectURL(objectUrl);
-        resolve(canvas.toDataURL('image/jpeg', 0.7));
+        img.onload = null;
+        img.onerror = null;
+        img.src = '';
       };
-      img.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('Could not read image.')); };
+      img.onload = () => {
+        try{
+          const width = img.naturalWidth || img.width;
+          const height = img.naturalHeight || img.height;
+          if(!width || !height) throw new Error('The selected photo has invalid dimensions.');
+          const scale = Math.min(1, 800 / Math.max(width, height));
+          canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(width * scale));
+          canvas.height = Math.max(1, Math.round(height * scale));
+          const context = canvas.getContext('2d', { alpha: false });
+          if(!context) throw new Error('Canvas is unavailable for photo compression.');
+          context.fillStyle = '#fff';
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          const finish = blob => {
+            cleanupImage();
+            if(!blob){ canvas.width = 0; canvas.height = 0; reject(new Error('Could not compress the selected photo.')); return; }
+            const reader = new FileReader();
+            reader.onload = () => {
+              const dataUrl = String(reader.result || '');
+              canvas.width = 0;
+              canvas.height = 0;
+              canvas = null;
+              if(!dataUrl) reject(new Error('Could not encode the compressed photo.'));
+              else resolve(dataUrl);
+            };
+            reader.onerror = () => {
+              canvas.width = 0;
+              canvas.height = 0;
+              canvas = null;
+              reject(new Error('Could not read the compressed photo.'));
+            };
+            reader.readAsDataURL(blob);
+          };
+
+          if(typeof canvas.toBlob === 'function') canvas.toBlob(finish, 'image/jpeg', 0.5);
+          else finish(dataUrlToBlob_(canvas.toDataURL('image/jpeg', 0.5)));
+        }catch(error){
+          cleanupImage();
+          if(canvas){ canvas.width = 0; canvas.height = 0; }
+          reject(error);
+        }
+      };
+      img.onerror = () => { cleanupImage(); reject(new Error('Could not decode the selected photo on this device.')); };
       img.src = objectUrl;
     });
   }
 
-  /* ---- photo picker with instant preview (kept out of the public markup) ---- */
+  function dataUrlToBlob_(dataUrl){
+    const parts = dataUrl.split(',');
+    const mime = (parts[0].match(/:(.*?);/) || [,'image/jpeg'])[1];
+    const binary = atob(parts[1]);
+    const bytes = new Uint8Array(binary.length);
+    for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], {type:mime});
+  }
+
+  /* Keep only the photo count here; avoid decoding full-size originals for preview. */
   if(imageInput){
     imageInput.addEventListener('change', () => {
       const files = Array.from(imageInput.files || []);
       const file = files[0];
       if(imageCount){ const count = files.length; imageCount.textContent = count ? count + (count === 1 ? ' photo choisie' : ' photos choisies') : ''; }
       if(imageError) imageError.textContent = '';
-      if(previewObjectUrl){ URL.revokeObjectURL(previewObjectUrl); previewObjectUrl = ''; }
       if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
       if(!file) return;
       if(files.some(item => !/^image\//.test(item.type))){
@@ -2475,11 +2531,6 @@
         if(imageError) imageError.textContent = 'الصورة كبيرة بزاف — الحد الأقصى 12MB للصورة الواحدة.';
         imageInput.value = '';
         return;
-      }
-      if(preview){
-        previewObjectUrl = URL.createObjectURL(file);
-        preview.src = previewObjectUrl;
-        preview.hidden = false;
       }
     });
   }
@@ -2534,7 +2585,10 @@
       if(files.some(file => file.size > MAX_PHOTO_BYTES)) throw new Error('Each photo must be 12MB or smaller.');
       if(!usingBackend) throw new Error('Google Apps Script URL is missing or invalid.');
 
-      const compressedPhotos = await Promise.all(files.map(compressImage));
+      const compressedPhotos = [];
+      for(const file of files){
+        compressedPhotos.push(await compressImage(file));
+      }
       const newReview = {
         id: 'guest-' + Date.now(),
         name,
