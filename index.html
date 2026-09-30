@@ -767,16 +767,18 @@
 
   /* ===== CUSTOMER PHOTO REVIEWS ===== */
   #reviews{scroll-margin-top:120px;}
-  #reviews .section-head{max-width:720px;}
+  #reviews .section-head{max-width:none;margin-bottom:56px;}
+  .reviews-kicker{display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;padding:7px 12px;border:1px solid rgba(229,184,66,.55);border-radius:999px;color:var(--brass-bright);font:800 11px/1 'Manrope','Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;}
   .reviews-title{
     font-family:'Tajawal','Manrope',sans-serif;
     font-weight:800;
-    font-size:clamp(30px,4vw,42px);
-    line-height:1.15;
+    font-size:clamp(32px,4.4vw,46px);
+    line-height:1.2;
     margin:0;
     color:var(--parchment);
-    direction:rtl;text-align:right;
+    direction:rtl;text-align:center;
   }
+  .reviews-title-en{display:block;margin-top:8px;font:700 clamp(22px,3vw,29px)/1.2 'Fraunces','Georgia',serif;direction:ltr;text-align:left;color:var(--parchment);}
 
   /* ---- wallet cashback banner (glassmorphism) ---- */
   .wallet-banner{
@@ -797,12 +799,13 @@
   .wallet-banner::after{content:'';position:absolute;right:-8%;bottom:-48%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(140,47,57,.32),transparent 70%);filter:blur(34px);pointer-events:none;}
   .wallet-banner-text{position:relative;z-index:1;flex:1 1 340px;min-width:0;}
   .wallet-headline{
-    margin:16px 0 10px;
+    margin:12px 0 10px;
     font-family:'Tajawal','Manrope',sans-serif;
     font-size:clamp(23px,3vw,33px);font-weight:800;line-height:1.3;
     color:var(--parchment);
     direction:rtl;text-align:right;
   }
+  .wallet-eyebrow{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border:1px solid rgba(229,184,66,.58);border-radius:999px;color:#f1d78f;background:rgba(17,15,11,.25);font:800 10px/1 'Manrope','Inter',sans-serif;letter-spacing:.04em;}
   .wallet-desc{
     color:var(--text-secondary);
     font:500 15px/1.75 'Tajawal','Manrope',sans-serif;
@@ -1774,18 +1777,20 @@
       <!-- ===== 15 DH WALLET CASHBACK BANNER ===== -->
       <div class="wallet-banner" id="wallet-banner">
         <div class="wallet-banner-text">
+          <span class="wallet-eyebrow">♙ 15 DH CASHBACK REWARD</span>
           <h3 class="wallet-headline" dir="rtl" lang="ary">ربح 15 DH f CardCastle Wallet ديالك! 📸</h3>
-          <p class="wallet-desc" dir="rtl" lang="ary">صور طلبك فاش يوصلك وخلي رأيك الصريح باش يتفعل ليك 15 DH كخصم فوري فطلبك الجاي.</p>
+          <p class="wallet-desc" dir="rtl" lang="ary">صور طلبك فاش يوصلك، وخلي رأيك الصريح باش يتفعل ليك 15 DH كخصم فوري لطلبك القادم.</p>
         </div>
         <div class="wallet-banner-actions">
-          <button class="btn-wallet" type="button" data-reviews-open="1" dir="rtl" lang="ary">عطي رأيك وخذ 15 DH</button>
-          <span class="wallet-note" dir="rtl" lang="ary">من بعد ما نتحققو من صورة الطلب ديالك.</span>
+          <button class="btn-wallet" type="button" data-reviews-open="1" dir="rtl" lang="ary">خلي رأيك وخود 15 DH 📸</button>
+          <span class="wallet-note" dir="rtl" lang="ary">كيتفعل الرصيد من بعد ما نتحققو من الصورة ورقم الطلب.</span>
         </div>
       </div>
 
 
       <div class="section-head">
-        <h2 class="reviews-title" id="reviews-title" dir="rtl" lang="ary">شنو كايقولو الزبناء ديالنا / <span dir="ltr" lang="en">What Our Players Say</span></h2>
+        <span class="reviews-kicker">VERIFIED BUYER PHOTOS</span>
+        <h2 class="reviews-title" id="reviews-title" dir="rtl" lang="ary">شنو كايقولو الزبناء ديالنا<span class="reviews-title-en" dir="ltr" lang="en">What Our Players Say</span></h2>
       </div>
 
       <p class="reviews-empty-state" id="reviews-empty-state">No reviews yet. Be the first to share your experience.</p>
