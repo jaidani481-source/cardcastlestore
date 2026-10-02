@@ -867,8 +867,10 @@
     transition:transform .28s cubic-bezier(.25,.8,.25,1),border-color .28s ease,box-shadow .28s ease;
   }
   .review-card:hover{transform:translateY(-4px);border-color:rgba(229,184,66,.5);box-shadow:0 24px 54px -24px rgba(0,0,0,.9),0 0 0 1px rgba(229,184,66,.08);}
+  .review-card-head{padding:16px 16px 0;}
+  .review-card-head .review-name{display:block;color:#f4e8cf;font:400 clamp(22px,2vw,28px)/1.15 Georgia,'Times New Roman',serif;}
   .review-photo{position:relative;width:100%;aspect-ratio:auto;flex:none;overflow:hidden;background:#12110e;border-bottom:1px solid rgba(229,184,66,.16);}
-  .review-photos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-top:10px;padding:10px;}
+  .review-photos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin:0;padding:8px;}
   .review-photos-grid img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:transform .2s ease;}
   .review-photos-grid img:hover{transform:scale(1.02);}
   .photo-tag{
@@ -883,9 +885,10 @@
     backdrop-filter:blur(6px);
     -webkit-backdrop-filter:blur(6px);
   }
-  .review-body{padding:22px 24px 26px;display:flex;flex-direction:column;gap:12px;flex:1;min-width:0;}
-  .review-stars{color:#f8df91;font-size:18px;line-height:1;letter-spacing:.12em;text-shadow:0 0 16px rgba(229,184,66,.2);}
-  .review-person{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .review-body{padding:10px 16px 18px;display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;}
+  .review-proof-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .review-stars{color:#f8df91;font-size:18px;line-height:1;letter-spacing:.12em;text-shadow:0 0 16px rgba(229,184,66,.2);margin-inline-start:auto;}
+  .review-person{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .review-name{font:700 15px 'Manrope','Inter',sans-serif;color:var(--parchment);}
   .review-name.is-arabic{font-family:'Tajawal','Manrope',sans-serif;}
   .review-verified{
@@ -900,6 +903,7 @@
     white-space:nowrap;
   }
   .review-deck-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(229,184,66,.1);border:1px solid rgba(229,184,66,.3);color:#e5b842;font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+  .review-divider{height:1px;width:100%;background:linear-gradient(90deg,transparent,rgba(229,184,66,.42),transparent);}
   .review-text{
     direction:auto;
     text-align:start;
@@ -1233,7 +1237,8 @@
   @media(max-width:620px){
     .reviews-grid{grid-template-columns:minmax(0,1fr);gap:18px;}
     .review-card{width:100%;}
-    .review-body{padding:19px 17px 22px;}
+    .review-card-head{padding:14px 14px 0;}
+    .review-body{padding:9px 14px 16px;}
     .review-text{font-size:15.5px;line-height:1.8;}
     .review-photos-grid{grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:7px;padding:8px;}
     .reviews-title{font-size:26px;}
@@ -2356,13 +2361,12 @@
       ? '<div class="review-photo"><div class="review-photos-grid">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('Customer photo ' + (photoIndex + 1) + ' from ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div><span class="photo-tag">' + photoCountLabel + '</span></div>'
       : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>No customer photo</span></div>';
     return '<article class="review-card" data-review-id="' + esc(review.id) + '">'
+      +   '<div class="review-card-head"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span></div>'
       + photo
       + '<div class="review-body">'
-      +   '<p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p>'
-      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">✓ طلب مؤكد</span><span class="review-deck-badge">🎴 ' + esc(deckName) + '</span></p>'
-      +   '<div class="review-meta">'
-      +     '<span>' + esc(review.date) + '</span>'
-      +   '</div>'
+      +   '<div class="review-proof-row"><span class="review-deck-badge">🎴 ' + esc(deckName) + '</span><span class="review-verified">✓ طلب مؤكد</span><p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p></div>'
+      +   '<div class="review-meta"><span>' + esc(review.date) + '</span></div>'
+      +   '<div class="review-divider" aria-hidden="true"></div>'
       +   '<p class="review-text' + commentLanguageClass + '" dir="auto" title="' + esc(review.comment) + '">' + esc(review.comment) + '</p>'
       + '</div></article>';
   }
