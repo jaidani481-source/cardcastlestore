@@ -911,7 +911,14 @@
     min-width:0;
   }
   .review-text.is-arabic{font-family:'Tajawal','Manrope',sans-serif;}
-  .review-text{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:6;overflow:hidden;}
+  .review-comment,.review-text{
+    display:block !important;
+    -webkit-line-clamp:unset !important;
+    max-height:none !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    white-space:normal !important;
+  }
 
   /* ===== FOOTER ===== */
   footer{padding:64px 0 28px;border-top:1px solid var(--hairline);background:rgba(19,16,12,.6);}
@@ -1123,6 +1130,8 @@
     direction:rtl;
     text-align:right;
   }
+  .label-row{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:6px;font-weight:600;}
+  .label-row .en-label{opacity:.8;font-size:.85rem;color:var(--text-secondary);direction:ltr;letter-spacing:0;}
   .review-field input[type="text"],
   .review-field input[type="tel"],
   .review-field select,
@@ -1144,7 +1153,7 @@
   .review-field input.invalid,.review-field select.invalid,.review-field textarea.invalid{border-color:rgba(241,138,138,.7);}
   .review-field .field-error{min-height:15px;text-align:right;}
   .review-stars-field{border:0;margin:0 0 14px;padding:0;direction:rtl;text-align:right;}
-  .review-stars-field legend{color:var(--muted);font:700 12px 'Tajawal',sans-serif;padding:0;margin-bottom:8px;}
+  .review-stars-field legend{color:var(--muted);font:700 12px 'Tajawal',sans-serif;padding:0;margin-bottom:8px;width:100%;}
   .star-input{display:flex;gap:6px;justify-content:flex-end;}
   .star-input .star{
     width:44px;height:44px;
@@ -1823,19 +1832,19 @@
         </div>
 
         <form id="review-form" novalidate>
-          <label class="review-field">الاسم الكامل *
+          <label class="review-field"><div class="label-row"><span>الاسم الكامل</span><span class="en-label">Full Name *</span></div>
             <input id="review-name" name="name" type="text" autocomplete="name" placeholder="مثال: أيوب" required>
             <span class="field-error" id="review-name-error"></span>
           </label>
 
-          <label class="review-field">رقم الهاتف *
+          <label class="review-field"><div class="label-row"><span>رقم الهاتف</span><span class="en-label">Phone Number *</span></div>
             <input id="review-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0612345678" required>
             <span class="review-upload-hint">كايتبقى مخفي — للتحقق من الطلب فقط وما كايبانش للعموم.</span>
             <span class="field-error" id="review-phone-error"></span>
           </label>
 
           <fieldset class="review-stars-field">
-            <legend>التقييم ديالك *</legend>
+            <legend><div class="label-row"><span>التقييم ديالك</span><span class="en-label">Your Rating *</span></div></legend>
             <div class="star-input" id="review-stars" role="radiogroup" aria-label="التقييم من 5 نجوم">
               <button class="star" type="button" data-value="1" role="radio" aria-checked="false" aria-label="نجمة 1">★</button>
               <button class="star" type="button" data-value="2" role="radio" aria-checked="false" aria-label="نجمة 2">★</button>
@@ -1847,7 +1856,7 @@
           </fieldset>
 
           <label class="review-field">
-            شنو اللعبة اللي خديتي؟ / Purchased Deck *
+            <div class="label-row"><span>شنو اللعبة اللي خديتي؟</span><span class="en-label">Purchased Deck *</span></div>
             <select id="review-product" name="product" required>
               <option value="" disabled selected>اختار اللعبة / Select Game</option>
               <option value="Couples Chat">Couples Chat</option>
@@ -1857,12 +1866,12 @@
             <span class="field-error" id="review-product-error"></span>
           </label>
 
-          <label class="review-field">الرأي ديالك *
+          <label class="review-field"><div class="label-row"><span>الرأي ديالك</span><span class="en-label">Your Review *</span></div>
             <textarea id="review-comment" name="comment" placeholder="كيفاش كانت التجربة؟ واش وصلاتك بالوقت؟ شكون لعب معاك؟" required></textarea>
             <span class="field-error" id="review-comment-error"></span>
           </label>
 
-          <label class="review-field review-upload">صورة ديالك *
+          <label class="review-field review-upload"><div class="label-row"><span>صورة ديالك</span><span class="en-label">Order Photo *</span></div>
             <input id="review-image" name="photo" type="file" accept="image/*" multiple required>
             <span id="review-image-count" class="review-upload-hint" aria-live="polite"></span>
             <span class="review-upload-hint">خاصة صورة ديال الطلب (JPG / PNG / WEBP — الحد الأقصى 1.5MB) باش نتحققو ونتفعلو 15 DH فـ الـ Wallet.</span>
@@ -2340,6 +2349,7 @@
   function cardMarkup(review){
     const photos = Array.isArray(review.photo) ? review.photo : (review.photo ? [review.photo] : []);
     const photoCountLabel = photos.length === 1 ? '1 Customer Photo' : photos.length + ' Customer Photos';
+    const deckName = review.product || review.deck || review.game || review['Purchased Deck'] || 'CardCastle Deck';
     const nameLanguageClass = /[\u0600-\u06FF]/.test(String(review.name || '')) ? ' is-arabic' : '';
     const commentLanguageClass = /[\u0600-\u06FF]/.test(String(review.comment || '')) ? ' is-arabic' : '';
     const photo = photos.length
@@ -2349,7 +2359,7 @@
       + photo
       + '<div class="review-body">'
       +   '<p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p>'
-      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">✓ طلب مؤكد</span><span class="review-deck-badge">🎴 ' + esc(review.product || 'CardCastle Deck') + '</span></p>'
+      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">✓ طلب مؤكد</span><span class="review-deck-badge">🎴 ' + esc(deckName) + '</span></p>'
       +   '<div class="review-meta">'
       +     '<span>' + esc(review.date) + '</span>'
       +   '</div>'
