@@ -872,18 +872,19 @@
   }
   .review-card:hover{transform:translateY(-4px);border-color:rgba(229,184,66,.5);box-shadow:0 24px 54px -24px rgba(0,0,0,.9),0 0 0 1px rgba(229,184,66,.08);}
   .review-card-head{padding:0;}
-  .review-card-head .review-name{display:block;color:#f4e8cf;font:500 clamp(22px,2vw,28px)/1.15 'Playfair Display',Georgia,serif;}
+  .review-card-head .review-date{display:block;color:#f4e8cf;font:500 clamp(20px,1.8vw,24px)/1.2 'Playfair Display',Georgia,serif;}
   .review-photo{position:relative;width:100%;aspect-ratio:auto;flex:none;overflow:hidden;background:#12110e;border:1px solid rgba(229,184,66,.2);border-radius:11px;}
   .review-photos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin:0;padding:8px;}
   .review-photos-grid img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:transform .2s ease;}
   .review-photos-grid img:hover{transform:scale(1.02);}
   .review-body{padding:10px 0 0;display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;}
-  .review-proof-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
-  .review-stars{color:#f8df91;font-size:18px;line-height:1;letter-spacing:.12em;text-shadow:0 0 16px rgba(229,184,66,.2);margin-inline-start:auto;}
+  .review-proof-row{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;}
+  .review-stars{color:#d7a82f;font-size:23px;line-height:1;letter-spacing:.14em;text-shadow:0 0 14px rgba(215,168,47,.22);}
   .review-person{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .review-name{font:500 22px 'Playfair Display',Georgia,serif;color:var(--parchment);}
   .review-name.is-arabic{font-family:'Tajawal','Manrope',sans-serif;}
   .review-deck-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(229,184,66,.1);border:1px solid rgba(229,184,66,.3);color:#e5b842;font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+  .review-card-title{margin:0;text-align:center;color:#e5b842;font:600 17px/1.35 'Playfair Display',Georgia,serif;letter-spacing:.02em;}
   .review-card-divider{display:flex;align-items:center;justify-content:center;margin:10px 0;}
   .review-card-divider::before,.review-card-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(229,184,66,.35),transparent);}
   .review-card-divider span{color:#e5b842;font-size:.65rem;padding:0 10px;opacity:.7;}
@@ -892,7 +893,8 @@
     direction:auto;
     text-align:start;
     color:var(--text-secondary);
-    font:400 15px/1.75 'Manrope','Inter',sans-serif;
+    font:500 16px/1.8 'Playfair Display',Georgia,serif;
+    color:#eee5d3;
     word-break:break-word;
     overflow-wrap:anywhere;
     white-space:pre-wrap;
@@ -2339,17 +2341,16 @@
   function cardMarkup(review){
     const photos = Array.isArray(review.photo) ? review.photo : (review.photo ? [review.photo] : []);
     const deckName = review.product || review.deck || 'Couples Chat';
-    const nameLanguageClass = /[\u0600-\u06FF]/.test(String(review.name || '')) ? ' is-arabic' : '';
     const commentLanguageClass = /[\u0600-\u06FF]/.test(String(review.comment || '')) ? ' is-arabic' : '';
     const photo = photos.length
       ? '<div class="review-photo"><div class="review-photos-grid">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('Customer photo ' + (photoIndex + 1) + ' from ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div></div>'
       : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>No customer photo</span></div>';
     return '<article class="review-card" data-review-id="' + esc(review.id) + '">'
-      +   '<div class="review-card-head"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span></div>'
+      +   '<div class="review-card-head"><span class="review-date">' + esc(review.date) + '</span></div>'
       + photo
       + '<div class="review-body">'
-      +   '<div class="review-proof-row"><span class="review-deck-badge">🎴 ' + esc(deckName) + '</span><p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p></div>'
-      +   '<div class="review-meta"><span>' + esc(review.date) + '</span></div>'
+      +   '<div class="review-proof-row"><p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p></div>'
+      +   '<h4 class="review-card-title" dir="auto">' + esc(deckName) + '</h4>'
       +   '<div class="review-card-divider" aria-hidden="true"><span>◆</span></div>'
       +   '<p class="review-text review-comment' + commentLanguageClass + '" dir="auto" title="' + esc(review.comment) + '">' + esc(review.comment) + '</p>'
       + '</div></article>';
