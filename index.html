@@ -872,7 +872,7 @@
   }
   .review-card:hover{transform:translateY(-4px);border-color:rgba(229,184,66,.5);box-shadow:0 24px 54px -24px rgba(0,0,0,.9),0 0 0 1px rgba(229,184,66,.08);}
   .review-card-head{padding:0;}
-  .review-card-head .review-name{display:block;color:#f4e8cf;font:500 clamp(20px,1.8vw,24px)/1.2 'Playfair Display',Georgia,serif;}
+  .review-card-head .review-name{display:block;text-align:center;color:#f4e8cf;font:500 clamp(20px,1.8vw,24px)/1.2 'Playfair Display',Georgia,serif;}
   .review-photo{position:relative;width:100%;aspect-ratio:auto;flex:none;overflow:hidden;background:#12110e;border:1px solid rgba(229,184,66,.2);border-radius:11px;}
   .review-photos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin:0;padding:8px;}
   .review-photos-grid img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:transform .2s ease;}
@@ -892,7 +892,7 @@
   .review-comment{font-family:'Playfair Display',Georgia,serif;}
   .review-text{
     direction:auto;
-    text-align:start;
+    text-align:center;
     color:var(--text-secondary);
     font:500 16px/1.8 'Playfair Display',Georgia,serif;
     color:#eee5d3;
@@ -1049,9 +1049,10 @@
     direction:rtl;
   }
   .review-photo.no-photo .no-photo-icon{font-size:26px;line-height:1;}
-  .review-lightbox{position:fixed;inset:0;z-index:10050;display:flex;visibility:hidden;pointer-events:none;align-items:center;justify-content:center;padding:clamp(14px,4vw,40px);background:rgba(5,5,5,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .22s ease,visibility .22s ease;}
+  .review-lightbox{position:fixed;inset:0;z-index:10050;display:flex;visibility:hidden;pointer-events:none;align-items:center;justify-content:center;overflow:auto;padding:clamp(14px,4vw,40px);background:rgba(5,5,5,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .22s ease,visibility .22s ease;}
   .review-lightbox.open{visibility:visible;pointer-events:auto;opacity:1;}
-  .review-lightbox img{display:block;max-width:min(1100px,94vw);max-height:86dvh;object-fit:contain;border:1px solid rgba(229,184,66,.42);border-radius:14px;background:#0d0d0d;box-shadow:0 28px 100px rgba(0,0,0,.75),0 0 38px rgba(229,184,66,.12);}
+  .review-lightbox img{display:block;max-width:min(1100px,94vw);max-height:86dvh;object-fit:contain;border:1px solid rgba(229,184,66,.42);border-radius:14px;background:#0d0d0d;box-shadow:0 28px 100px rgba(0,0,0,.75),0 0 38px rgba(229,184,66,.12);cursor:zoom-in;transition:transform .2s ease;}
+  .review-lightbox img.zoomed{transform:scale(1.65);cursor:zoom-out;}
   .review-lightbox-close{position:absolute;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));width:48px;height:48px;display:grid;place-items:center;border:1px solid rgba(229,184,66,.55);border-radius:50%;background:rgba(15,15,15,.92);color:#ffe39a;font:400 32px/1 'Manrope',sans-serif;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,.45);}
   .review-lightbox-close:hover,.review-lightbox-close:focus-visible{background:#241e15;color:#fff;outline:2px solid var(--brass-bright);outline-offset:3px;}
   @media(max-width:620px){.review-lightbox{padding:12px;}.review-lightbox img{max-width:96vw;max-height:82dvh;border-radius:10px;}}
@@ -1854,7 +1855,16 @@
               <option value="" disabled selected>اختار اللعبة / Select Game</option>
               <option value="Couples Chat">Couples Chat</option>
               <option value="Love Memories">Love Memories</option>
+              <option value="Love Whispers">Love Whispers</option>
+              <option value="88 Great Conversation Starters">88 Great Conversation Starters</option>
+              <option value="Couple Connection Cards">Couple Connection Cards</option>
+              <option value="Soulmate Question Deck">Soulmate Question Deck</option>
+              <option value="Date Night Code">Date Night Code</option>
+              <option value="How Well Do You Know Me?">How Well Do You Know Me?</option>
+              <option value="Think Fast!">Think Fast!</option>
+              <option value="She Is">She Is</option>
               <option value="Let's Dig Deeper">Let's Dig Deeper</option>
+              <option value="The Royal Full Bundle">The Royal Full Bundle</option>
             </select>
             <span class="field-error" id="review-product-error"></span>
           </label>
@@ -2341,7 +2351,7 @@
 
   function cardMarkup(review){
     const photos = Array.isArray(review.photo) ? review.photo : (review.photo ? [review.photo] : []);
-    const deckName = review.product || review.deck || 'Couples Chat';
+    const deckName = review.product || review.deck || "Let's Dig Deeper";
     const nameLanguageClass = /[\u0600-\u06FF]/.test(String(review.name || '')) ? ' is-arabic' : '';
     const commentLanguageClass = /[\u0600-\u06FF]/.test(String(review.comment || '')) ? ' is-arabic' : '';
     const photo = photos.length
@@ -2374,6 +2384,7 @@
   function closeReviewLightbox(){
     lightbox.classList.remove('open');
     lightbox.setAttribute('aria-hidden', 'true');
+    lightboxImage.classList.remove('zoomed');
     lightboxImage.removeAttribute('src');
     window.CardCastleScrollLock.unlock('review-lightbox');
     if(lightboxReturnFocus && lightboxReturnFocus.isConnected) lightboxReturnFocus.focus();
@@ -2392,6 +2403,7 @@
     lightboxClose.focus();
   });
   lightboxClose.addEventListener('click', closeReviewLightbox);
+  lightboxImage.addEventListener('click', () => lightboxImage.classList.toggle('zoomed'));
   lightbox.addEventListener('click', event => {
     if(event.target === lightbox) closeReviewLightbox();
   });
