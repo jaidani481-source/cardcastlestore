@@ -867,10 +867,10 @@
     transition:transform .28s cubic-bezier(.25,.8,.25,1),border-color .28s ease,box-shadow .28s ease;
   }
   .review-card:hover{transform:translateY(-4px);border-color:rgba(229,184,66,.5);box-shadow:0 24px 54px -24px rgba(0,0,0,.9),0 0 0 1px rgba(229,184,66,.08);}
-  .review-photo{position:relative;width:100%;aspect-ratio:4/3;flex:none;overflow:hidden;background:#12110e;border-bottom:1px solid rgba(229,184,66,.16);}
-  .review-photo img{width:100%;height:100%;object-fit:cover;border-radius:8px;cursor:zoom-in;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .3s ease;}
-  .review-photo .review-photos{display:flex;width:100%;height:100%;gap:4px;overflow-x:auto;}
-  .review-photo .review-photos img{flex:1 0 70px;width:0;min-width:70px;border-radius:8px;}
+  .review-photo{position:relative;width:100%;aspect-ratio:1/1;flex:none;overflow:hidden;background:#12110e;border-bottom:1px solid rgba(229,184,66,.16);}
+  .review-photo img{display:block;width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;cursor:zoom-in;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .3s ease;}
+  .review-photo .review-photos{display:flex;width:100%;height:100%;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+  .review-photo .review-photos img{flex:0 0 100%;width:100%;min-width:100%;height:100%;aspect-ratio:1/1;border-radius:8px;scroll-snap-align:start;}
   .review-photo .review-photos img:hover{transform:scale(1.045);filter:brightness(1.07);}
   .photo-tag{
     position:absolute;left:12px;bottom:12px;
@@ -900,6 +900,7 @@
     direction:ltr;
     white-space:nowrap;
   }
+  .review-deck-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid rgba(241,233,216,.12);border-radius:999px;background:rgba(241,233,216,.045);color:var(--text-secondary);font:600 11px/1.2 'Manrope','Inter',sans-serif;white-space:nowrap;}
   .review-text{
     direction:auto;
     text-align:start;
@@ -1125,6 +1126,7 @@
   }
   .review-field input[type="text"],
   .review-field input[type="tel"],
+  .review-field select,
   .review-field textarea{
     display:block;width:100%;margin-top:7px;
     padding:12px 14px;
@@ -1137,9 +1139,10 @@
   .review-field input[type="text"],
   .review-field textarea{direction:rtl;text-align:right;}
   .review-field input[type="tel"]{direction:ltr;text-align:left;font-family:'Manrope',monospace;}
+  .review-field select{direction:ltr;text-align:left;font:500 14px 'Manrope','Tajawal',sans-serif;}
   .review-field textarea{min-height:108px;resize:vertical;line-height:1.7;}
-  .review-field input:focus,.review-field textarea:focus{outline:2px solid var(--brass);outline-offset:1px;}
-  .review-field input.invalid,.review-field textarea.invalid{border-color:rgba(241,138,138,.7);}
+  .review-field input:focus,.review-field select:focus,.review-field textarea:focus{outline:2px solid var(--brass);outline-offset:1px;}
+  .review-field input.invalid,.review-field select.invalid,.review-field textarea.invalid{border-color:rgba(241,138,138,.7);}
   .review-field .field-error{min-height:15px;text-align:right;}
   .review-stars-field{border:0;margin:0 0 14px;padding:0;direction:rtl;text-align:right;}
   .review-stars-field legend{color:var(--muted);font:700 12px 'Tajawal',sans-serif;padding:0;margin-bottom:8px;}
@@ -1188,19 +1191,21 @@
   }
   #review-image-preview[hidden]{display:none;}
   .review-submit{width:100%;justify-content:center;margin-top:6px;direction:rtl;}
-  .review-form-note{margin-top:12px;min-height:19px;font:600 13px/1.5 'Manrope',sans-serif;text-align:center;direction:rtl;}
+  .review-form-note{margin-top:12px;min-height:19px;font:600 14px/1.65 'Tajawal','Manrope',sans-serif;text-align:center;direction:rtl;}
   .review-form-note.ok{color:#9fe0b6;}
   .review-form-note.err{color:#f5a3a3;}
   .reviews-toast{
     position:fixed;left:50%;bottom:26px;z-index:302;
     display:none;
     transform:translate(-50%,18px);
+    width:max-content;max-width:min(560px,calc(100vw - 28px));
     padding:12px 20px;
     border:1px solid rgba(229,184,66,.45);
     border-radius:999px;
     background:rgba(19,16,12,.94);
     color:#ffe39a;
-    font:700 13px 'Manrope',sans-serif;
+    font:700 14px/1.6 'Tajawal','Manrope',sans-serif;
+    direction:rtl;text-align:center;
     box-shadow:0 20px 40px -22px rgba(0,0,0,.9);
   }
   .reviews-toast.open{display:block;transform:translate(-50%,0);transition:transform .25s ease;}
@@ -1233,7 +1238,7 @@
     .review-modal-head h3{font-size:20px;}
     .star-input{gap:5px;}
     .star-input .star{width:100%;height:42px;border-radius:10px;font-size:19px;}
-    .reviews-toast{left:14px;right:14px;bottom:18px;transform:translate(0,18px);text-align:center;}
+    .reviews-toast{left:14px;right:14px;bottom:18px;width:auto;transform:translate(0,18px);text-align:center;}
     .reviews-toast.open{transform:translate(0,0);}
     .wallet-banner{flex-direction:column;align-items:stretch;margin-bottom:36px;border-radius:18px;}
     .wallet-headline{text-align:center;margin-top:14px;}
@@ -1843,6 +1848,17 @@
             <span class="field-error" id="review-stars-error"></span>
           </fieldset>
 
+          <label class="review-field">
+            شنو اللعبة اللي خديتي؟ / Purchased Deck *
+            <select id="review-product" name="product" required>
+              <option value="" disabled selected>اختار اللعبة / Select Game</option>
+              <option value="Couples Chat">Couples Chat</option>
+              <option value="Love Memories">Love Memories</option>
+              <option value="Let's Dig Deeper">Let's Dig Deeper</option>
+            </select>
+            <span class="field-error" id="review-product-error"></span>
+          </label>
+
           <label class="review-field">الرأي ديالك *
             <textarea id="review-comment" name="comment" placeholder="كيفاش كانت التجربة؟ واش وصلاتك بالوقت؟ شكون لعب معاك؟" required></textarea>
             <span class="field-error" id="review-comment-error"></span>
@@ -2272,12 +2288,14 @@
   const toastEl      = document.getElementById('reviews-toast');
   const nameInput    = document.getElementById('review-name');
   const phoneInput   = document.getElementById('review-phone');
+  const productInput = document.getElementById('review-product');
   const commentInput = document.getElementById('review-comment');
   const imageInput   = document.getElementById('review-image');
   const ratingGroup  = document.getElementById('review-stars');
   const preview      = document.getElementById('review-image-preview');
   const nameError    = document.getElementById('review-name-error');
   const phoneError   = document.getElementById('review-phone-error');
+  const productError = document.getElementById('review-product-error');
   const starsError   = document.getElementById('review-stars-error');
   const commentError = document.getElementById('review-comment-error');
   const imageError   = document.getElementById('review-image-error');
@@ -2333,7 +2351,7 @@
       + photo
       + '<div class="review-body">'
       +   '<p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p>'
-      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">✓ طلب مؤكد</span></p>'
+      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">✓ طلب مؤكد</span><span class="review-deck-badge">🎮 ' + esc(review.product || 'CardCastle Deck') + '</span></p>'
       +   '<div class="review-meta">'
       +     '<span>' + esc(review.date) + '</span>'
       +   '</div>'
@@ -2415,8 +2433,8 @@
     if(imageCount) imageCount.textContent = '';
     starButtons.forEach(star => { star.classList.remove('active'); star.setAttribute('aria-checked','false'); });
     if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
-    [nameInput,phoneInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
-    [nameError,phoneError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
+    [nameInput,phoneInput,productInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
+    [nameError,phoneError,productError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
   }
 
   /* Any element with [data-reviews-open] opens the modal (banner CTA, empty-state CTA…). */
@@ -2540,9 +2558,9 @@
     e.preventDefault();
     try{
       const requiredElements = [
-        ['#review-form', form], ['#review-name', nameInput], ['#review-phone', phoneInput],
+        ['#review-form', form], ['#review-name', nameInput], ['#review-phone', phoneInput], ['#review-product', productInput],
         ['#review-stars', ratingGroup], ['#review-comment', commentInput], ['#review-image', imageInput],
-        ['#review-form-note', note], ['#review-name-error', nameError], ['#review-phone-error', phoneError],
+        ['#review-form-note', note], ['#review-name-error', nameError], ['#review-phone-error', phoneError], ['#review-product-error', productError],
         ['#review-stars-error', starsError], ['#review-comment-error', commentError],
         ['#review-image-error', imageError], ['#review-form [type="submit"]', submitButton]
       ];
@@ -2551,11 +2569,12 @@
       });
       if(!starButtons.length) throw new Error('No rating buttons were found inside #review-stars.');
 
-      if(submitButton){ submitButton.disabled = true; submitButton.textContent = 'جاري الإرسال...'; }
+      if(submitButton){ submitButton.disabled = true; submitButton.textContent = 'جاري الإرسال... / Sending...'; }
       if(note){ note.textContent = ''; note.className = 'review-form-note'; }
 
       const name = nameInput.value.trim();
       const digits = phoneInput.value.replace(/[\s\-.()]/g,'').replace(/^\+212/,'0');
+      const product = productInput.value;
       const comment = commentInput.value.trim();
       const selectedStar = starButtons.find(star => star.getAttribute('aria-checked') === 'true');
       const selectedRating = selectedStar ? Number(selectedStar.dataset.value) : 0;
@@ -2563,20 +2582,23 @@
 
       const okName = name.length >= 2;
       const okPhone = PHONE_PATTERN.test(digits);
+      const okProduct = Boolean(product);
       const okStars = Number.isInteger(selectedRating) && selectedRating >= 1 && selectedRating <= 5;
       const okComment = comment.length >= 10;
       const okPhoto = files.length > 0;
 
       nameError.textContent = okName ? '' : 'عافاك كتب الاسم الكامل ديالك.';
       phoneError.textContent = okPhone ? '' : 'عافاك دخل رقم مغربي صحيح (05 أو 06 أو 07 و10 أرقام).';
+      productError.textContent = okProduct ? '' : 'عافاك اختار اللعبة اللي خديتي.';
       starsError.textContent = okStars ? '' : 'عافاك اختار التقييم ديالك من 5 نجوم.';
       commentError.textContent = okComment ? '' : 'كتب على الأقل 10 حروف فـ الرأي ديالك.';
       imageError.textContent = okPhoto ? '' : 'خاصك تحمل صورة ديال الطلب باش نتحققو ونتفعلو 15 DH.';
       nameInput.classList.toggle('invalid', !okName);
       phoneInput.classList.toggle('invalid', !okPhone);
+      productInput.classList.toggle('invalid', !okProduct);
       commentInput.classList.toggle('invalid', !okComment);
 
-      if(!(okName && okPhone && okStars && okComment && okPhoto)){
+      if(!(okName && okPhone && okProduct && okStars && okComment && okPhoto)){
         if(note){ note.textContent = 'راجع الحقول المعلَّمة بالحمر قبل النشر.'; note.className = 'review-form-note err'; }
         return;
       }
@@ -2592,6 +2614,7 @@
         id: 'guest-' + Date.now(),
         name,
         phone: digits,
+        product,
         rating: selectedRating,
         comment,
         photo: compressedPhotos,
@@ -2607,11 +2630,11 @@
         body: JSON.stringify(newReview)
       });
 
+      const successMessage = 'شكراً لك! 🌟 تم إرسال مراجعتك بنجاح، وستظهر في الموقع فور مراجعتها.';
       resetForm();
-      if(note){ note.textContent = 'شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.'; note.className = 'review-form-note ok'; }
-      alert('شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.');
-      toast('شكراً لك! تم إرسال مراجعتك بنجاح وستظهر بعد المراجعة.');
-      setTimeout(closeModal, 1600);
+      if(note){ note.textContent = successMessage; note.className = 'review-form-note ok'; }
+      toast(successMessage);
+      setTimeout(closeModal, 1800);
     } catch(error) {
       const errorMessage = error && error.message ? error.message : String(error);
       alert('Error: ' + errorMessage);
