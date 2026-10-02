@@ -867,11 +867,10 @@
     transition:transform .28s cubic-bezier(.25,.8,.25,1),border-color .28s ease,box-shadow .28s ease;
   }
   .review-card:hover{transform:translateY(-4px);border-color:rgba(229,184,66,.5);box-shadow:0 24px 54px -24px rgba(0,0,0,.9),0 0 0 1px rgba(229,184,66,.08);}
-  .review-photo{position:relative;width:100%;aspect-ratio:1/1;flex:none;overflow:hidden;background:#12110e;border-bottom:1px solid rgba(229,184,66,.16);}
-  .review-photo img{display:block;width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;cursor:zoom-in;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .3s ease;}
-  .review-photo .review-photos{display:flex;width:100%;height:100%;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
-  .review-photo .review-photos img{flex:0 0 100%;width:100%;min-width:100%;height:100%;aspect-ratio:1/1;border-radius:8px;scroll-snap-align:start;}
-  .review-photo .review-photos img:hover{transform:scale(1.045);filter:brightness(1.07);}
+  .review-photo{position:relative;width:100%;aspect-ratio:auto;flex:none;overflow:hidden;background:#12110e;border-bottom:1px solid rgba(229,184,66,.16);}
+  .review-photos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-top:10px;padding:10px;}
+  .review-photos-grid img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:transform .2s ease;}
+  .review-photos-grid img:hover{transform:scale(1.02);}
   .photo-tag{
     position:absolute;left:12px;bottom:12px;
     padding:6px 12px;
@@ -900,7 +899,7 @@
     direction:ltr;
     white-space:nowrap;
   }
-  .review-deck-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid rgba(241,233,216,.12);border-radius:999px;background:rgba(241,233,216,.045);color:var(--text-secondary);font:600 11px/1.2 'Manrope','Inter',sans-serif;white-space:nowrap;}
+  .review-deck-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(229,184,66,.1);border:1px solid rgba(229,184,66,.3);color:#e5b842;font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;}
   .review-text{
     direction:auto;
     text-align:start;
@@ -1227,8 +1226,7 @@
     .review-card{width:100%;}
     .review-body{padding:19px 17px 22px;}
     .review-text{font-size:15.5px;line-height:1.8;}
-    .review-photo .review-photos{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
-    .review-photo .review-photos img{scroll-snap-align:start;}
+    .review-photos-grid{grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:7px;padding:8px;}
     .reviews-title{font-size:26px;}
     .review-text{font-size:15.5px;}
     .footer-grid{grid-template-columns:minmax(0,1fr);gap:28px;}
@@ -2345,13 +2343,13 @@
     const nameLanguageClass = /[\u0600-\u06FF]/.test(String(review.name || '')) ? ' is-arabic' : '';
     const commentLanguageClass = /[\u0600-\u06FF]/.test(String(review.comment || '')) ? ' is-arabic' : '';
     const photo = photos.length
-      ? '<div class="review-photo"><div class="review-photos">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('Customer photo ' + (photoIndex + 1) + ' from ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div><span class="photo-tag">' + photoCountLabel + '</span></div>'
+      ? '<div class="review-photo"><div class="review-photos-grid">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('Customer photo ' + (photoIndex + 1) + ' from ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div><span class="photo-tag">' + photoCountLabel + '</span></div>'
       : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>No customer photo</span></div>';
     return '<article class="review-card" data-review-id="' + esc(review.id) + '">'
       + photo
       + '<div class="review-body">'
       +   '<p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p>'
-      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">✓ طلب مؤكد</span><span class="review-deck-badge">🎮 ' + esc(review.product || 'CardCastle Deck') + '</span></p>'
+      +   '<p class="review-person"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span><span class="review-verified">✓ طلب مؤكد</span><span class="review-deck-badge">🎴 ' + esc(review.product || 'CardCastle Deck') + '</span></p>'
       +   '<div class="review-meta">'
       +     '<span>' + esc(review.date) + '</span>'
       +   '</div>'
@@ -2569,7 +2567,7 @@
       });
       if(!starButtons.length) throw new Error('No rating buttons were found inside #review-stars.');
 
-      if(submitButton){ submitButton.disabled = true; submitButton.textContent = 'جاري الإرسال... / Sending...'; }
+      if(submitButton){ submitButton.disabled = true; submitButton.textContent = 'جاري الإرسال... / Submitting...'; }
       if(note){ note.textContent = ''; note.className = 'review-form-note'; }
 
       const name = nameInput.value.trim();
@@ -2622,7 +2620,6 @@
         status: 'pending'
       };
 
-      if(note){ note.textContent = 'كيتصيفط...'; note.className = 'review-form-note'; }
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -2632,9 +2629,8 @@
 
       const successMessage = 'شكراً لك! 🌟 تم إرسال مراجعتك بنجاح، وستظهر في الموقع فور مراجعتها.';
       resetForm();
-      if(note){ note.textContent = successMessage; note.className = 'review-form-note ok'; }
-      toast(successMessage);
-      setTimeout(closeModal, 1800);
+      closeModal();
+      alert(successMessage);
     } catch(error) {
       const errorMessage = error && error.message ? error.message : String(error);
       alert('Error: ' + errorMessage);
