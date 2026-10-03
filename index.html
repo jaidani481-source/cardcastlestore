@@ -55,6 +55,7 @@
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
     overflow-x:clip;
+    padding-top:var(--site-header-height,0px);
   }
   a{color:inherit;text-decoration:none;}
   img{max-width:100%;height:auto;display:block;}
@@ -105,22 +106,26 @@
   .btn svg{width:18px;height:18px;flex-shrink:0;}
 
   /* ===== NAV ===== */
-  .site-header { position: sticky; top: 0; z-index: 1000; }
-  @media(max-width:859px){
-    .site-header{position:fixed;top:0;left:0;right:0;width:100%;height:auto;isolation:isolate;}
-    body{padding-top:var(--mobile-header-height,0px);}
-    .announcement-bar{position:relative;z-index:2;}
-    .navbar{position:absolute;top:100%;left:0;right:0;z-index:1;width:100%;transform:translateY(0);visibility:visible;transition:transform .28s ease,visibility .28s ease;}
-    .site-header.nav-hidden .navbar{transform:translateY(-100%);visibility:hidden;pointer-events:none;}
-    @media(prefers-reduced-motion:reduce){.navbar{transition:none;}}
-  }
+  .site-header{position:fixed;top:0;left:0;right:0;z-index:1000;isolation:isolate;}
+  .announcement-bar{position:relative;z-index:2;}
   .navbar {
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    z-index:1;
+    width:100%;
+    transform:translateY(0);
+    visibility:visible;
+    transition:transform .28s ease,visibility .28s ease;
     background: rgba(10, 10, 10, 0.85);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 13px 0;
   }
+  .site-header.nav-hidden .navbar{transform:translateY(-100%);visibility:hidden;pointer-events:none;}
+  @media(prefers-reduced-motion:reduce){.navbar{transition:none;}}
   .nav-link{font-family:'Manrope','Manrope',sans-serif;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#d1d5db;}
   .announcement-bar{display:flex;align-items:center;justify-content:center;min-height:34px;padding:8px 16px;background:var(--brass);color:#17120a;text-align:center;font:700 13px/1.5 'Tajawal',sans-serif;letter-spacing:0;direction:rtl;}
   .nav-inner {
@@ -2852,19 +2857,16 @@
     if(!header) return;
     var announcement = header.querySelector('.announcement-bar');
     var navbar = header.querySelector('.navbar');
-    var mobileQuery = window.matchMedia('(max-width: 859px)');
     var lastScrollY = window.scrollY;
     var scrollFrame = false;
-    function sizeMobileHeader(){
-      var fullHeaderHeight = mobileQuery.matches
-        ? (announcement ? announcement.offsetHeight : 0) + (navbar ? navbar.offsetHeight : 0)
-        : 0;
-      document.documentElement.style.setProperty('--mobile-header-height', fullHeaderHeight + 'px');
+    function sizeHeader(){
+      var fullHeaderHeight = (announcement ? announcement.offsetHeight : 0) + (navbar ? navbar.offsetHeight : 0);
+      document.documentElement.style.setProperty('--site-header-height', fullHeaderHeight + 'px');
     }
-    sizeMobileHeader();
-    window.addEventListener('resize', sizeMobileHeader, {passive:true});
+    sizeHeader();
+    window.addEventListener('resize', sizeHeader, {passive:true});
     if('ResizeObserver' in window){
-      var headerObserver = new ResizeObserver(sizeMobileHeader);
+      var headerObserver = new ResizeObserver(sizeHeader);
       if(announcement) headerObserver.observe(announcement);
       if(navbar) headerObserver.observe(navbar);
     }
@@ -2873,9 +2875,7 @@
       scrollFrame = true;
       window.requestAnimationFrame(function(){
         var currentY = window.scrollY;
-        if(!mobileQuery.matches){
-          header.classList.remove('nav-hidden');
-        }else if(document.body.style.overflow !== 'hidden'){
+        if(document.body.style.overflow !== 'hidden'){
           var movement = currentY - lastScrollY;
           if(currentY < 70){
             header.classList.remove('nav-hidden');
@@ -2889,11 +2889,6 @@
         scrollFrame = false;
       });
     }, {passive:true});
-    mobileQuery.addEventListener && mobileQuery.addEventListener('change', function(){
-      header.classList.remove('nav-hidden');
-      lastScrollY = window.scrollY;
-      sizeMobileHeader();
-    });
   })();
 </script>
   </body>
