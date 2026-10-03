@@ -107,8 +107,12 @@
   /* ===== NAV ===== */
   .site-header { position: sticky; top: 0; z-index: 1000; }
   @media(max-width:859px){
-    .site-header{position:fixed;top:0;left:0;right:0;width:100%;}
+    .site-header{position:fixed;top:0;left:0;right:0;width:100%;height:auto;isolation:isolate;}
     body{padding-top:var(--mobile-header-height,0px);}
+    .announcement-bar{position:relative;z-index:2;}
+    .navbar{position:absolute;top:100%;left:0;right:0;z-index:1;width:100%;transform:translateY(0);visibility:visible;transition:transform .28s ease,visibility .28s ease;}
+    .site-header.nav-hidden .navbar{transform:translateY(-100%);visibility:hidden;pointer-events:none;}
+    @media(prefers-reduced-motion:reduce){.navbar{transition:none;}}
   }
   .navbar {
     background: rgba(10, 10, 10, 0.85);
@@ -2846,13 +2850,50 @@
   (function(){
     var header = document.querySelector('.site-header');
     if(!header) return;
+    var announcement = header.querySelector('.announcement-bar');
+    var navbar = header.querySelector('.navbar');
+    var mobileQuery = window.matchMedia('(max-width: 859px)');
+    var lastScrollY = window.scrollY;
+    var scrollFrame = false;
     function sizeMobileHeader(){
-      document.documentElement.style.setProperty('--mobile-header-height',
-        window.matchMedia('(max-width: 859px)').matches ? header.offsetHeight + 'px' : '0px');
+      var fullHeaderHeight = mobileQuery.matches
+        ? (announcement ? announcement.offsetHeight : 0) + (navbar ? navbar.offsetHeight : 0)
+        : 0;
+      document.documentElement.style.setProperty('--mobile-header-height', fullHeaderHeight + 'px');
     }
     sizeMobileHeader();
     window.addEventListener('resize', sizeMobileHeader, {passive:true});
-    if('ResizeObserver' in window) new ResizeObserver(sizeMobileHeader).observe(header);
+    if('ResizeObserver' in window){
+      var headerObserver = new ResizeObserver(sizeMobileHeader);
+      if(announcement) headerObserver.observe(announcement);
+      if(navbar) headerObserver.observe(navbar);
+    }
+    window.addEventListener('scroll', function(){
+      if(scrollFrame) return;
+      scrollFrame = true;
+      window.requestAnimationFrame(function(){
+        var currentY = window.scrollY;
+        if(!mobileQuery.matches){
+          header.classList.remove('nav-hidden');
+        }else if(document.body.style.overflow !== 'hidden'){
+          var movement = currentY - lastScrollY;
+          if(currentY < 70){
+            header.classList.remove('nav-hidden');
+          }else if(movement > 6){
+            header.classList.add('nav-hidden');
+          }else if(movement < -6){
+            header.classList.remove('nav-hidden');
+          }
+        }
+        lastScrollY = currentY;
+        scrollFrame = false;
+      });
+    }, {passive:true});
+    mobileQuery.addEventListener && mobileQuery.addEventListener('change', function(){
+      header.classList.remove('nav-hidden');
+      lastScrollY = window.scrollY;
+      sizeMobileHeader();
+    });
   })();
 </script>
   </body>
