@@ -17,16 +17,14 @@
 <meta name="twitter:image" content="https://cardcastle.store/images/love-memories.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700&family=Cairo:wght@500;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
   :root{
     /* ---- Official CardCastle brand variables ---- */
     --bg-color:#0d0d0d;       /* Premium dark background */
     --accent-color:#e5b842;   /* Warm Gold/Amber from our official logo */
     --text-primary:#f5f5f7;   /* Creamy white for primary typography */
-    --text-secondary:#CBC3B2; /* Warm muted tone for secondary typography */
+    --text-secondary:#E2E8F0; /* Brighter, readable text on dark surfaces */
 
     /* Category colors matching our physical cards */
     --couples-color:#6b1d2f;  /* Deep burgundy */
@@ -50,33 +48,37 @@
   html{scroll-behavior:smooth;overflow-x:clip;}
   body{
     background:var(--bg);
-    color:var(--parchment);
-    font-family:'Tajawal','Manrope',sans-serif;
-    line-height:1.6;
+    color:#E2E8F0;
+    font-family:'Plus Jakarta Sans','Inter',sans-serif;
+    font-size:16px;
+    font-weight:400;
+    line-height:1.7;
     -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
     overflow-x:clip;
     padding-top:var(--site-header-height,0px);
   }
   a{color:inherit;text-decoration:none;}
   img{max-width:100%;height:auto;display:block;}
-  :lang(ar), [lang="ar"], [dir="rtl"]{
-    font-family:'Tajawal',sans-serif;
+  :lang(ar), [lang="ar"], [dir="rtl"], .arabic-text{
+    font-family:'Cairo','Alexandria',sans-serif !important;
   }
   h1:lang(ar), h2:lang(ar), h3:lang(ar),
   h1[lang="ar"], h2[lang="ar"], h3[lang="ar"]{
-    font-family:'Tajawal',sans-serif;
-    font-weight:800;
+    font-family:'Alexandria','Cairo',sans-serif !important;
+    font-weight:700;
     letter-spacing:0;
   }
   .wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,32px);}
-  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;}
+  h1,h2,h3{font-family:'Playfair Display','Georgia',serif;font-weight:600;letter-spacing:-0.015em;}
   .eyebrow{
-    font-family:'Manrope',monospace;
-    font-size:0.95rem;
+    font-family:'Plus Jakarta Sans','Inter',sans-serif;
+    font-size:0.75rem;
     font-weight:700;
-    letter-spacing:0.15em;
+    letter-spacing:0.2em;
     text-transform:uppercase;
-    color:var(--brass);
+    color:#E5B842;
   }
   .btn{
     display:inline-flex;
@@ -800,8 +802,8 @@
     margin-top:14px;
     color:var(--parchment);
   }
-  .reviews-title .reviews-title-ar{display:block;direction:rtl;text-align:right;}
-  .reviews-title .reviews-title-en{display:block;font-family:'Fraunces',serif;font-weight:500;font-size:.82em;margin-top:6px;}
+  .reviews-title .reviews-title-ar{display:block;direction:rtl;text-align:right;font-family:'Alexandria','Cairo',sans-serif!important;font-size:clamp(1.15em,3.5vw,1.38em);font-weight:700;letter-spacing:0;line-height:1.5;}
+  .reviews-title .reviews-title-en{display:block;font-family:'Playfair Display','Georgia',serif;font-weight:600;font-size:.82em;margin-top:6px;}
 
   /* ---- wallet cashback banner (glassmorphism) ---- */
   .wallet-banner{
@@ -2861,6 +2863,37 @@
       });
     })();
   </script>
+<script>
+  (function(){
+    var arabicCharacters = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
+    function markArabicText(root){
+      if(!root) return;
+      if(root.nodeType === Node.TEXT_NODE){
+        if(arabicCharacters.test(root.nodeValue || '') && root.parentElement){
+          root.parentElement.classList.add('arabic-text');
+        }
+        return;
+      }
+      if(root.nodeType === Node.ELEMENT_NODE && /^(SCRIPT|STYLE|NOSCRIPT)$/.test(root.tagName)) return;
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      var textNode;
+      while((textNode = walker.nextNode())){
+        if(arabicCharacters.test(textNode.nodeValue || '') && textNode.parentElement){
+          textNode.parentElement.classList.add('arabic-text');
+        }
+      }
+    }
+    markArabicText(document.body);
+    if('MutationObserver' in window){
+      new MutationObserver(function(records){
+        records.forEach(function(record){
+          if(record.type === 'characterData') markArabicText(record.target);
+          record.addedNodes && record.addedNodes.forEach(markArabicText);
+        });
+      }).observe(document.body,{subtree:true,childList:true,characterData:true});
+    }
+  })();
+</script>
 <script>
   (function(){
     var header = document.querySelector('.site-header');
