@@ -471,22 +471,23 @@
     transform-origin:center;
     backface-visibility:hidden;
     -webkit-backface-visibility:hidden;
-    transition:transform .65s cubic-bezier(.2,.75,.25,1),filter .45s ease,opacity .45s ease;
+    opacity:.9;
+    filter:brightness(.92) saturate(.96);
+    transition:filter .3s ease,opacity .3s ease;
     animation:none;
   }
   .deck-stack.orbit-carousel .deck.card-blue{--orbit-angle:0deg;}
   .deck-stack.orbit-carousel .deck.card-red{--orbit-angle:-120deg;}
   .deck-stack.orbit-carousel .deck.card-green{--orbit-angle:120deg;}
   .deck-stack.orbit-carousel .deck.is-selected{
-    --orbit-angle:calc(0deg - var(--scroll-rotation,0deg));
-    z-index:8;opacity:1;filter:brightness(1.08);
-    transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle) + var(--scroll-rotation,0deg))) translateZ(clamp(155px,19vw,220px)) rotateY(calc(0deg - var(--orbit-angle) - var(--scroll-rotation,0deg))) scale(1.04);
+    z-index:auto;opacity:1;filter:brightness(1.08) saturate(1.04);
+    transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(clamp(120px,16vw,185px)) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(.96);
   }
   .deck-stack.orbit-carousel:hover .deck{filter:brightness(1.04);}
   .deck-stack.orbit-carousel:hover .deck.is-selected{filter:brightness(1.1);}
   @media(max-width:768px){
     .deck-stack.orbit-carousel .deck{transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(105px) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(.82);}
-    .deck-stack.orbit-carousel .deck.is-selected{transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle) + var(--scroll-rotation,0deg))) translateZ(145px) rotateY(calc(0deg - var(--orbit-angle) - var(--scroll-rotation,0deg))) scale(1);}
+    .deck-stack.orbit-carousel .deck.is-selected{transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(115px) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(.9);}
   }
   @media(prefers-reduced-motion:reduce){
     .deck-stack.orbit-carousel .deck{transition:none;}
@@ -2276,30 +2277,72 @@
 <script>
   (function(){
     var stack = document.getElementById('deck-stack');
-    var hero = stack && stack.closest('.hero');
-    if(!stack || !hero) return;
+    if(!stack) return;
     stack.classList.add('orbit-carousel');
-    var ticking = false;
-    function updateOrbit(){
-      var travel = Math.max(hero.offsetHeight, window.innerHeight * 0.75);
-      var progress = Math.max(0, Math.min(1, window.scrollY / travel));
-      stack.style.setProperty('--scroll-rotation', (progress * 180).toFixed(2) + 'deg');
-      ticking = false;
+    var targetRotation = 0;
+    var shownRotation = 0;
+    var baseRotation = 0;
+    var baseScrollY = window.scrollY;
+    var lastScrollY = window.scrollY;
+    var frame = 0;
+    var snapTimer = 0;
+    var degreesPerPixel = 0.12;
+    stack.querySelectorAll('.deck').forEach(function(deck){
+      deck.dataset.orbitBase = deck.classList.contains('card-red') ? '-120' : (deck.classList.contains('card-green') ? '120' : '0');
+    });
+    function updateCardDepth(){
+      var cards = Array.prototype.map.call(stack.querySelectorAll('.deck'), function(deck){
+        var angle = ((Number(deck.dataset.orbitBase || 0) + shownRotation) % 360 + 360) % 360;
+        return {deck:deck,distance:Math.min(angle,360-angle)};
+      }).sort(function(a,b){ return a.distance - b.distance; });
+      cards.forEach(function(item,index){
+        item.deck.style.zIndex = String(5 - index);
+        item.deck.style.opacity = index === 0 ? '1' : (index === 1 ? '.9' : '.84');
+      });
     }
-    function requestOrbitUpdate(){
-      if(ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(updateOrbit);
+    function animateOrbit(){
+      shownRotation += (targetRotation - shownRotation) * 0.1;
+      if(Math.abs(targetRotation - shownRotation) < 0.08) shownRotation = targetRotation;
+      stack.style.setProperty('--scroll-rotation', shownRotation.toFixed(2) + 'deg');
+      updateCardDepth();
+      if(shownRotation !== targetRotation){ frame = window.requestAnimationFrame(animateOrbit); }
+      else { frame = 0; }
     }
-    updateOrbit();
-    window.addEventListener('scroll', requestOrbitUpdate, {passive:true});
-    window.addEventListener('resize', requestOrbitUpdate, {passive:true});
+    function animateToTarget(){
+      if(!frame) frame = window.requestAnimationFrame(animateOrbit);
+    }
+    function onScroll(){
+      var currentY = window.scrollY;
+      lastScrollY = currentY;
+      targetRotation = baseRotation + (currentY - baseScrollY) * degreesPerPixel;
+      animateToTarget();
+      window.clearTimeout(snapTimer);
+      snapTimer = window.setTimeout(function(){
+        var snappedRotation = Math.round(targetRotation / 120) * 120;
+        baseRotation = snappedRotation;
+        baseScrollY = lastScrollY;
+        targetRotation = snappedRotation;
+        animateToTarget();
+      }, 170);
+    }
+    stack.style.setProperty('--scroll-rotation','0deg');
+    window.addEventListener('scroll', onScroll, {passive:true});
   })();
 
   document.querySelectorAll('.deck[data-category-target]').forEach(deck => {
     const activate = () => {
       if(!deck.classList.contains('is-selected')){
-        document.querySelectorAll('.deck.is-selected').forEach(card => card.classList.remove('is-selected'));
+        const stack = document.getElementById('deck-stack');
+        document.querySelectorAll('.deck.is-selected').forEach(card => {
+          card.classList.remove('is-selected');
+          card.style.removeProperty('--orbit-angle');
+          card.dataset.orbitBase = card.classList.contains('card-red') ? '-120' : (card.classList.contains('card-green') ? '120' : '0');
+        });
+        const rotation = stack ? (parseFloat(stack.style.getPropertyValue('--scroll-rotation')) || 0) : 0;
+        deck.dataset.orbitBase = String(-rotation);
+        deck.style.setProperty('--orbit-angle', (-rotation) + 'deg');
+        deck.style.zIndex = '5';
+        deck.style.opacity = '1';
         deck.classList.add('is-selected');
         return;
       }
