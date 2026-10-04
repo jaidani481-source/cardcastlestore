@@ -464,12 +464,12 @@
   .deck-stack .card-blue.is-selected{transform:rotate3d(.2,-1,0,3deg) rotate(0deg) translate3d(0,-6%,0) scale(1.06);}
 
   /* Scroll-driven circular deck carousel inspired by the reference pin. */
-  .deck-stack.orbit-carousel{transform-style:preserve-3d;perspective:1400px;transition:opacity .3s ease,translate .65s ease,rotate .65s ease;translate:0 0 0;rotate:0 1 0 0deg;margin-top:clamp(-64px,-5vh,-30px);will-change:transform;}
-  @keyframes ambient3DFloat{
+  .deck-stack.orbit-carousel{transform-style:preserve-3d;perspective:1400px;transition:opacity .3s ease,translate .65s ease,rotate .65s ease;translate:0 0 0;rotate:0 1 0 0deg;margin-top:clamp(-76px,-6vh,-36px);will-change:transform;}
+  @keyframes idle3DRotate{
     0%,100%{translate:0 0 0;rotate:0 1 0 0deg;}
     50%{translate:0 -7px 10px;rotate:0 1 0 1.2deg;}
   }
-  .deck-stack.orbit-carousel.is-idle{animation:ambient3DFloat 6s ease-in-out infinite;}
+  .deck-stack.orbit-carousel.is-idle{animation:idle3DRotate 6s ease-in-out infinite;}
   .deck-stack.orbit-carousel.is-hidden{opacity:0;pointer-events:none;}
   .deck-stack.orbit-carousel.is-hidden .deck{pointer-events:none!important;}
   .deck-stack.orbit-carousel-scroll-clone{position:fixed!important;z-index:30!important;margin:0!important;max-width:none!important;overflow:visible!important;pointer-events:none!important;opacity:0;visibility:hidden;transition:top .28s ease-out,opacity .3s ease,visibility .3s ease;}
@@ -2406,7 +2406,7 @@
     });
     var targetRotation = 0, shownRotation = 0, snapOffset = 0;
     var frame = 0, snapTimer = 0;
-    var stageStart = 0, stageEnd = 0, sourceLeft = 0, sourceTop = 0, sourceWidth = 0, sourceHeight = 0;
+    var scrollStart = 0, stageAnchor = 0, stageEnd = 0, sourceLeft = 0, sourceTop = 0, sourceWidth = 0, sourceHeight = 0;
 
     function clamp(value,min,max){ return Math.max(min,Math.min(max,value)); }
     function measure(){
@@ -2419,10 +2419,10 @@
       sourceWidth = stackRect.width;
       sourceHeight = stackRect.height;
       sourceTop = stackRect.top + y;
-      stageStart = hero.getBoundingClientRect().top + y + 24;
+      stageAnchor = hero.getBoundingClientRect().top + y + 24;
       /* End while there is still room above the first product row. */
       stageEnd = gridRect.top + y - headerHeight - sourceHeight - 28;
-      if(stageEnd <= stageStart + 100) stageEnd = stageStart + Math.max(300,window.innerHeight * .55);
+      if(stageEnd <= scrollStart + 100) stageEnd = scrollStart + Math.max(300,window.innerHeight * .55);
     }
     function updateDepth(){
       roots.forEach(function(root){
@@ -2450,7 +2450,7 @@
       var desired = -base;
       while(desired-shownRotation > 180) desired -= 360;
       while(desired-shownRotation < -180) desired += 360;
-      var progress = clamp((window.scrollY-stageStart)/Math.max(1,stageEnd-stageStart),0,1);
+      var progress = clamp((window.scrollY-scrollStart)/Math.max(1,stageEnd-scrollStart),0,1);
       targetRotation = desired;
       snapOffset = desired-progress*360;
       if(!frame) frame=window.requestAnimationFrame(animate);
@@ -2459,24 +2459,24 @@
       stack.classList.toggle('is-idle',window.scrollY <= 0);
       measure();
       var y = window.scrollY;
-      var progress = clamp((y-stageStart)/Math.max(1,stageEnd-stageStart),0,1);
+      var progress = clamp((y-scrollStart)/Math.max(1,stageEnd-scrollStart),0,1);
       var mobile = window.innerWidth <= 760;
-      var fadeIn = clamp((y-stageStart)/90,0,1);
+      var fadeIn = clamp((y-scrollStart)/90,0,1);
       var fadeOut = 1-clamp((progress-.78)/.22,0,1);
-      var opacity = mobile || y < stageStart || y >= stageEnd ? 0 : fadeIn*fadeOut;
+      var opacity = mobile || y >= stageEnd ? 0 : fadeIn*fadeOut;
       var drop = Math.min(150,window.innerHeight*.22)*progress;
       var startScale = mobile ? 1 : 1.15;
       var endScale = mobile ? .72 : .7;
       var scale = startScale+(endScale-startScale)*progress;
 
       clone.style.left = sourceLeft+'px';
-      clone.style.top = (sourceTop-stageStart+drop)+'px';
+      clone.style.top = (sourceTop-stageAnchor+drop)+'px';
       clone.style.width = sourceWidth+'px';
       clone.style.height = sourceHeight+'px';
       clone.style.opacity = opacity.toFixed(3);
       clone.style.setProperty('--orbit-scale',scale.toFixed(3));
       clone.classList.toggle('is-visible',opacity>.02);
-      var originalOpacity = mobile || y < stageStart ? 1 : 1-fadeIn;
+      var originalOpacity = mobile ? 1 : 1-fadeIn;
       stack.style.opacity = originalOpacity.toFixed(3);
       stack.style.setProperty('--orbit-scale',scale.toFixed(3));
       stack.inert = originalOpacity <= .02;
@@ -2489,7 +2489,7 @@
       update();
       window.clearTimeout(snapTimer);
       snapTimer=window.setTimeout(function(){
-        var progress=clamp((window.scrollY-stageStart)/Math.max(1,stageEnd-stageStart),0,1);
+        var progress=clamp((window.scrollY-scrollStart)/Math.max(1,stageEnd-scrollStart),0,1);
         if(progress<=.001){ snapOffset=0; targetRotation=0; }
         else if(progress>=.999){ targetRotation=360; snapOffset=360-progress*360; }
         else { targetRotation=Math.round(targetRotation/120)*120; snapOffset=targetRotation-progress*360; }
