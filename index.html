@@ -464,17 +464,18 @@
   .deck-stack .card-blue.is-selected{transform:rotate3d(.2,-1,0,3deg) rotate(0deg) translate3d(0,-6%,0) scale(1.06);}
 
   /* Scroll-driven circular deck carousel inspired by the reference pin. */
-  .deck-stage{width:100%;margin-top:-60px;transform-style:preserve-3d;perspective:1400px;transition:transform .45s ease;animation:idle3DFloat 5s ease-in-out infinite;}
+  .deck-stage{width:100%;margin-top:-60px;transform:translateZ(0);transform-style:preserve-3d;perspective:1400px;will-change:transform;transition:transform .45s ease;animation:idle3DFloat 5s ease-in-out infinite;}
   .deck-stage.is-scrolling{animation:none;}
   @keyframes idle3DFloat{
     0%,100%{transform:translateY(0px) rotateY(0deg) rotateX(0deg);}
     50%{transform:translateY(-10px) rotateY(8deg) rotateX(-4deg);}
   }
   @media(max-width:1024px){.deck-stage{margin-top:0;}}
+  #deck-stack,.banner-frame{will-change:transform;transform:translateZ(0);}
   .deck-stack.orbit-carousel{transform-style:preserve-3d;perspective:1400px;transition:opacity .3s ease;will-change:transform;}
   .deck-stack.orbit-carousel.is-hidden{opacity:0;pointer-events:none;}
   .deck-stack.orbit-carousel.is-hidden .deck{pointer-events:none!important;}
-  .deck-stack.orbit-carousel-scroll-clone{position:fixed!important;z-index:30!important;margin:0!important;max-width:none!important;overflow:visible!important;pointer-events:none!important;opacity:0;visibility:hidden;transition:top .28s ease-out,opacity .3s ease,visibility .3s ease;}
+  .deck-stack.orbit-carousel-scroll-clone{position:fixed!important;z-index:30!important;margin:0!important;max-width:none!important;overflow:visible!important;pointer-events:none!important;opacity:0;visibility:hidden;transform:translate3d(0,var(--orbit-drop,0px),0);transition:transform .28s ease-out,opacity .3s ease,visibility .3s ease;will-change:transform,opacity;}
   .deck-stack.orbit-carousel-scroll-clone.is-visible{opacity:1;visibility:visible;}
   .deck-stack.orbit-carousel-scroll-clone .deck{pointer-events:auto!important;transition:transform .2s ease-out,filter .3s ease,opacity .3s ease;}
   @media(max-width:760px){.deck-stack.orbit-carousel-scroll-clone{display:none!important;}}
@@ -905,10 +906,11 @@
   .reviews-title .reviews-title-ar{font-family:'Cairo','Alexandria',sans-serif!important;}
 
   /* CardCastle cashback reward component: styles stay inside the banner. */
-  #wallet-banner.banner-frame{width:min(1120px,100%);position:relative;overflow:hidden;margin:0 auto 52px;border:1px solid rgba(235,192,83,.47);border-radius:28px;box-shadow:0 35px 100px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.1);background:linear-gradient(118deg,#16110e 0%,#261712 51%,#18110e 100%);transition:transform .45s ease,box-shadow .45s ease;isolation:isolate;}
-  #wallet-banner.banner-frame:hover{transform:translateY(-4px);box-shadow:0 44px 110px rgba(0,0,0,.62),0 0 55px rgba(218,158,49,.11),inset 0 1px 0 rgba(255,255,255,.12);}
-  #wallet-banner.banner-frame::before{content:"";position:absolute;width:52%;height:150%;right:-12%;top:-35%;background:radial-gradient(ellipse,rgba(221,154,56,.23),transparent 67%);transform:rotate(16deg);pointer-events:none;z-index:0;}
-  #wallet-banner.banner-frame::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(120deg,rgba(255,255,255,.07),transparent 25%,transparent 72%,rgba(236,191,78,.07));z-index:2;}
+  #wallet-banner.banner-frame{width:min(1120px,100%);position:relative;overflow:hidden;margin:0 auto 52px;border:1px solid rgba(235,192,83,.47);border-radius:28px;box-shadow:0 35px 100px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.1);background:linear-gradient(118deg,#16110e 0%,#261712 51%,#18110e 100%);transform:translateZ(0);will-change:transform;transition:transform .45s ease,box-shadow .45s ease;isolation:isolate;}
+  #wallet-banner.banner-frame:hover{transform:translate3d(0,-4px,0);box-shadow:0 44px 110px rgba(0,0,0,.62),0 0 55px rgba(218,158,49,.11),inset 0 1px 0 rgba(255,255,255,.12);}
+  #wallet-banner.banner-frame::before{content:"";position:absolute;width:52%;height:150%;right:-12%;top:-35%;background:radial-gradient(ellipse,rgba(221,154,56,.23),transparent 67%);transform:rotate(16deg) translateZ(0);pointer-events:none;z-index:0;}
+  #wallet-banner.banner-frame::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(120deg,rgba(255,255,255,.07),transparent 25%,transparent 72%,rgba(236,191,78,.07));transform:translateZ(0);z-index:2;}
+  .luxury-shell::before,.luxury-shell::after,.grain{pointer-events:none;transform:translateZ(0);}
   #wallet-banner .banner-content{position:relative;z-index:1;min-height:500px;padding:clamp(2rem,5vw,5rem);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(230px,.65fr);align-items:center;gap:2rem;}
   #wallet-banner .banner-copy{min-width:0;}
   #wallet-banner .banner-kicker{display:flex;align-items:center;gap:12px;margin-bottom:20px;color:#d8bd77;font:700 11px/1.4 'Manrope',sans-serif;letter-spacing:.18rem;text-transform:uppercase;}
@@ -1559,7 +1561,7 @@
         <div class="game-card" data-category="romance">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/daba%20daba.png&quot;,&quot;images/love-memories-4.avif&quot;,&quot;images/love-memories-5.avif&quot;,&quot;images/love-memories-8.avif&quot;]">
-              <img src="images/daba%20daba.png" alt="Love Memories conversation cards" class="card-img" loading="lazy">
+              <img src="images/daba%20daba.png" alt="Love Memories conversation cards" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">Love Memories</h3>
@@ -1586,7 +1588,7 @@
         <div class="game-card" data-category="romance">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/love-whispers.avif&quot;,&quot;images/love-whispers-2.avif&quot;,&quot;images/love-whispers-3.avif&quot;,&quot;images/love-whispers-4.avif&quot;,&quot;images/love-whispers-5.avif&quot;,&quot;images/love-whispers-6.avif&quot;,&quot;images/love-whispers-7.avif&quot;]">
-              <img src="images/love-whispers.avif" alt="Love Whispers 55 couple conversation cards by Mirthquake" class="card-img" loading="lazy">
+              <img src="images/love-whispers.avif" alt="Love Whispers 55 couple conversation cards by Mirthquake" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">Love Whispers</h3>
@@ -1613,7 +1615,7 @@
         <div class="game-card" data-category="romance">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/88-conversation-starters.avif&quot;,&quot;images/88-conversation-starters-2.avif&quot;,&quot;images/88-conversation-starters-5.avif&quot;,&quot;images/88-conversation-starters-6.avif&quot;,&quot;images/88-conversation-starters-7.avif&quot;,&quot;images/88-conversation-starters-8.avif&quot;,&quot;images/88-conversation-starters-9.avif&quot;]">
-              <img src="images/88-conversation-starters.avif" alt="88 Great Conversation Starters deck for husbands and wives" class="card-img" loading="lazy">
+              <img src="images/88-conversation-starters.avif" alt="88 Great Conversation Starters deck for husbands and wives" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">88 Great Conversation Starters</h3>
@@ -1640,7 +1642,7 @@
         <div class="game-card" data-category="romance">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/couple-connection-cards.avif&quot;,&quot;images/couple-connection-cards-2.avif&quot;,&quot;images/couple-connection-cards-3.avif&quot;,&quot;images/couple-connection-cards-4.avif&quot;,&quot;images/couple-connection-cards-5.avif&quot;,&quot;images/couple-connection-cards-6.avif&quot;,&quot;images/couple-connection-cards-7.avif&quot;]">
-              <img src="images/couple-connection-cards.avif" alt="Couple Connection Cards set of 50 relationship cards" class="card-img" loading="lazy">
+              <img src="images/couple-connection-cards.avif" alt="Couple Connection Cards set of 50 relationship cards" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">Couple Connection Cards</h3>
@@ -1667,7 +1669,7 @@
         <div class="game-card" data-category="romance">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/70e2989d02f87d98a1afd97e91d1f2ab.avif&quot;,&quot;images/fdc0022f-f08a-4904-a9d4-219d94f2f337.avif&quot;,&quot;images/5818bc1d-7655-4840-998d-067ccdf78376.avif&quot;,&quot;images/ccd728cd-2612-4088-a4e5-9554171f4969.avif&quot;,&quot;images/ddc06f3b-7187-4074-bee6-6f70e18df6e3.avif&quot;,&quot;images/694a7935-b06d-487e-b6c4-52812cd577c3.avif&quot;,&quot;images/d147bd97-56f6-4180-9f3b-4f41f77d5912.avif&quot;,&quot;images/c6879c20-3d0d-4a07-975c-b33933137cc9.avif&quot;,&quot;images/dffe2835-e977-4797-b595-60a9f75c8cd6.avif&quot;,&quot;images/4639719e-e7cf-4bc6-8009-8c08c726483a.avif&quot;]">
-              <img src="images/70e2989d02f87d98a1afd97e91d1f2ab.avif" alt="Couples Chat bonding deck for couples" class="card-img" loading="lazy">
+              <img src="images/70e2989d02f87d98a1afd97e91d1f2ab.avif" alt="Couples Chat bonding deck for couples" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">Couples Chat</h3>
@@ -1694,7 +1696,7 @@
         <div class="game-card" data-category="romance">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/5298417f-fc1e-4af1-b5bb-521563347dec.avif&quot;,&quot;images/8526b666-8d2f-4c85-beef-47768f42766e.avif&quot;,&quot;images/a0d61c1f-0e98-4e9f-b30a-89be597c1483.avif&quot;,&quot;images/7446180b-da90-4637-bb7f-031b9cfb8b98.avif&quot;,&quot;images/803191aa-9ec7-485d-b043-26916cfb30fb.avif&quot;,&quot;images/a115e71b-bec5-4110-8774-14482a1e6503.avif&quot;,&quot;images/30cc773f-36e1-4756-8169-196a0b0171e2.avif&quot;,&quot;images/97552b4e-cd42-4d78-8b2a-807da50c1e27.avif&quot;]">
-              <img src="images/5298417f-fc1e-4af1-b5bb-521563347dec.avif" alt="Soulmate Question Deck - photos coming soon" class="card-img" loading="lazy">
+              <img src="images/5298417f-fc1e-4af1-b5bb-521563347dec.avif" alt="Soulmate Question Deck - photos coming soon" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">Soulmate Question Deck</h3>
@@ -1721,7 +1723,7 @@
         <div class="game-card" data-category="romance">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/cba6efa667322a1aaef438b557a3af32.avif&quot;,&quot;images/01ad37c4-bd10-11ef-a4e8-0a580a660e6a.avif&quot;,&quot;images/44ecb5e9-6f50-43cb-9442-b6ea0e6000d1.avif&quot;,&quot;images/6e507fc2-354a-4d1c-a589-a7644d51eb5c.avif&quot;,&quot;images/3ef6b9bc-1614-47f8-9d70-dc9b66643e42.avif&quot;,&quot;images/30fb90dc-c703-4feb-913b-775d0e16b88d.avif&quot;,&quot;images/4e2fa49f-0e91-4b06-8aba-9c43e6f05d45.avif&quot;,&quot;images/38a7ae5c-cadc-43f7-b811-62035d5500f0.avif&quot;]">
-              <img src="images/cba6efa667322a1aaef438b557a3af32.avif" alt="Date Night Code" class="card-img" loading="lazy">
+              <img src="images/cba6efa667322a1aaef438b557a3af32.avif" alt="Date Night Code" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">Date Night Code</h3>
@@ -1748,7 +1750,7 @@
         <div class="game-card how-well-card" data-category="parties">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/7ed46f6f0197527e3167d2e1fe4d7c2b.jpg&quot;,&quot;images/9b6ae98a-071f-431b-b2c4-74587c42d7f1.avif&quot;,&quot;images/aad52cf9-beb2-4d3f-9e1a-653390d989ab.avif&quot;,&quot;images/70fdf363-c2a8-4747-a509-c78e1c157d90.avif&quot;,&quot;images/80795e69-2614-4a74-a2c8-aa405498c92d.avif&quot;,&quot;images/b659bced-4e9d-4de3-856a-73c1001a6f03.avif&quot;,&quot;images/90b79796-3e9c-4daf-ba89-126b31ee2cef.avif&quot;]">
-              <img src="images/7ed46f6f0197527e3167d2e1fe4d7c2b.jpg" alt="How Well Do You Know Me? after dinner amusements card game" class="card-img" loading="lazy">
+              <img src="images/7ed46f6f0197527e3167d2e1fe4d7c2b.jpg" alt="How Well Do You Know Me? after dinner amusements card game" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">How Well Do You Know Me?</h3>
@@ -1775,7 +1777,7 @@
         <div class="game-card" data-category="parties">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/thing%20fast%201.avif&quot;,&quot;images/thing%20fast.avif&quot;,&quot;images/thing%20fast3.avif&quot;,&quot;images/thing%20fast4.avif&quot;,&quot;images/thing%20fast5.avif&quot;,&quot;images/thing%20fast6.avif&quot;,&quot;images/9219a289-7ef0-40c6-a12a-23b62e17d017.avif&quot;,&quot;images/594b1a3e-6da5-4601-8c2f-0490f3db4ab6.avif&quot;,&quot;images/d7035dcb-9587-4d89-8c10-f93300653898.avif&quot;]">
-              <img src="images/thing%20fast%201.avif" alt="Think Fast! party card game - photos coming soon" class="card-img" loading="lazy">
+              <img src="images/thing%20fast%201.avif" alt="Think Fast! party card game - photos coming soon" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">Think Fast!</h3>
@@ -1802,7 +1804,7 @@
         <div class="game-card" data-category="mindfulness">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/35a6d9e0-b6bd-42b2-8c05-6759f3d40489.avif&quot;,&quot;images/87f40fcc-7eda-4beb-b323-1f856e5900f3.avif&quot;,&quot;images/0e5b7110-32d9-4b01-82bf-b1c8f11beea2.avif&quot;,&quot;images/f67b2026-c82a-4f7d-80bb-d7b6432e4c1a.avif&quot;,&quot;images/a43189ce-78b9-4b07-a4f6-00eae1961bb9.avif&quot;,&quot;images/c396ec01-cfbd-4650-ac87-35b3973e3e96.avif&quot;,&quot;images/29635e6e-d418-4851-97a9-ab68596eee1f.avif&quot;]">
-              <img src="images/35a6d9e0-b6bd-42b2-8c05-6759f3d40489.avif" alt="She Is 52-card mindfulness and affirmation deck" class="card-img" loading="lazy">
+              <img src="images/35a6d9e0-b6bd-42b2-8c05-6759f3d40489.avif" alt="She Is 52-card mindfulness and affirmation deck" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">She Is</h3>
@@ -1829,7 +1831,7 @@
         <div class="game-card" data-category="mindfulness">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/d936127524df247c581052b6e65df571.avif&quot;,&quot;images/4bf42132-1781-4b7d-ad42-06191ea19a8a.avif&quot;,&quot;images/f26b92f0-5e43-4cf5-a6f5-2d90c96e8a33.avif&quot;,&quot;images/1c8c4e7d-deb2-4354-b0dd-84326b8794dc.avif&quot;,&quot;images/45c44f5e-170b-46df-8c46-0064285e7fd8.avif&quot;,&quot;images/fcd77fff-ed64-4b92-9694-219a6d638232.avif&quot;,&quot;images/6fa2ea19-b0d6-461c-8952-b4da8a744e14.avif&quot;,&quot;images/78e751a0-306d-40e0-b528-1b34ad7ee310.avif&quot;]">
-              <img src="images/d936127524df247c581052b6e65df571.avif" alt="Let's Dig Deeper deep conversation cards" class="card-img" loading="lazy">
+              <img src="images/d936127524df247c581052b6e65df571.avif" alt="Let's Dig Deeper deep conversation cards" class="card-img" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <h3 class="card-title">Let's Dig Deeper</h3>
@@ -1856,7 +1858,7 @@
         <div class="game-card featured" data-category="bundle">
           <div class="card-inner">
             <div class="card-image-wrapper" data-images="[&quot;images/ChatGPT%20Image%2025%20sept.%202026,%2021_43_59.png&quot;]">
-              <img src="images/ChatGPT%20Image%2025%20sept.%202026,%2021_43_59.png" alt="The Royal Full Bundle pack" class="card-img" loading="lazy">
+              <img src="images/ChatGPT%20Image%2025%20sept.%202026,%2021_43_59.png" alt="The Royal Full Bundle pack" class="card-img" loading="lazy" decoding="async">
               <span class="badge-value badge-overlay free-shipping-badge">Free shipping · Best value</span>
             </div>
             <div class="card-content">
@@ -2410,7 +2412,7 @@
       });
     });
     var targetRotation = 0, shownRotation = 0, snapOffset = 0;
-    var frame = 0, snapTimer = 0;
+    var frame = 0, scrollFrame = 0, snapTimer = 0;
     var scrollStart = 0, stageAnchor = 0, stageEnd = 0, sourceLeft = 0, sourceTop = 0, sourceWidth = 0, sourceHeight = 0;
 
     function clamp(value,min,max){ return Math.max(min,Math.min(max,value)); }
@@ -2475,7 +2477,8 @@
       var scale = startScale+(endScale-startScale)*progress;
 
       clone.style.left = sourceLeft+'px';
-      clone.style.top = (sourceTop-stageAnchor+drop)+'px';
+      clone.style.top = (sourceTop-stageAnchor)+'px';
+      clone.style.setProperty('--orbit-drop',drop.toFixed(2)+'px');
       clone.style.width = sourceWidth+'px';
       clone.style.height = sourceHeight+'px';
       clone.style.opacity = opacity.toFixed(3);
@@ -2491,15 +2494,19 @@
       if(!frame) frame=window.requestAnimationFrame(animate);
     }
     function onScroll(){
-      update();
-      window.clearTimeout(snapTimer);
-      snapTimer=window.setTimeout(function(){
-        var progress=clamp((window.scrollY-scrollStart)/Math.max(1,stageEnd-scrollStart),0,1);
-        if(progress<=.001){ snapOffset=0; targetRotation=0; }
-        else if(progress>=.999){ targetRotation=360; snapOffset=360-progress*360; }
-        else { targetRotation=Math.round(targetRotation/120)*120; snapOffset=targetRotation-progress*360; }
-        if(!frame) frame=window.requestAnimationFrame(animate);
-      },170);
+      if(scrollFrame) return;
+      scrollFrame=window.requestAnimationFrame(function(){
+        scrollFrame=0;
+        update();
+        window.clearTimeout(snapTimer);
+        snapTimer=window.setTimeout(function(){
+          var progress=clamp((window.scrollY-scrollStart)/Math.max(1,stageEnd-scrollStart),0,1);
+          if(progress<=.001){ snapOffset=0; targetRotation=0; }
+          else if(progress>=.999){ targetRotation=360; snapOffset=360-progress*360; }
+          else { targetRotation=Math.round(targetRotation/120)*120; snapOffset=targetRotation-progress*360; }
+          if(!frame) frame=window.requestAnimationFrame(animate);
+        },170);
+      });
     }
     stack.style.setProperty('--scroll-rotation','0deg');
     clone.style.setProperty('--scroll-rotation','0deg');
@@ -3022,8 +3029,13 @@
     function clearActiveAtTop(){
       if(window.scrollY < 100) navLinks.forEach(function(link){ link.classList.remove('active'); });
     }
+    var scrollSpyFrame = 0;
     window.addEventListener('scroll', function(){
-      if(window.scrollY < 100) navLinks.forEach(function(link){ link.classList.remove('active'); });
+      if(scrollSpyFrame) return;
+      scrollSpyFrame=window.requestAnimationFrame(function(){
+        scrollSpyFrame=0;
+        if(window.scrollY < 100) navLinks.forEach(function(link){ link.classList.remove('active'); });
+      });
     }, {passive:true});
     clearActiveAtTop();
     if(!('IntersectionObserver' in window)) return;
