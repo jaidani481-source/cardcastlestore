@@ -961,69 +961,77 @@
     padding:20px 0 8px;
   }
   .reviews-empty-state[hidden]{display:none;}
-  .reviews-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));
-    grid-auto-rows:1fr;
-    align-items:stretch;
-    gap:clamp(16px,2.2vw,24px);
-  }
-  .reviews-grid[hidden]{display:none;}
-  .stars-dim{color:rgba(248,223,145,.3);}
-  .review-card{
-    display:flex;flex-direction:column;
-    height:100%;
-    min-width:0;
-    background:#120e0b;
-    border:1px solid rgba(229,184,66,.4);
-    outline:1px solid rgba(229,184,66,.15);
-    outline-offset:-6px;
-    border-radius:16px;
-    padding:22px;
+  .reviews-carousel-viewport{
+    position:relative;
     overflow:hidden;
-    box-shadow:0 14px 36px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.035);
-    transition:transform .28s cubic-bezier(.25,.8,.25,1),border-color .28s ease,box-shadow .28s ease;
+    padding:38px 18px 52px;
+    perspective:1200px;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
   }
-  .review-card:hover{transform:translateY(-4px);border-color:rgba(229,184,66,.5);box-shadow:0 24px 54px -24px rgba(0,0,0,.9),0 0 0 1px rgba(229,184,66,.08);}
-  .review-card-head{padding:0;}
-  .review-card-head .review-name{display:block;text-align:center;color:#f4e8cf;font:500 clamp(20px,1.8vw,24px)/1.2 'Playfair Display',Georgia,serif;}
-  .review-photo{position:relative;width:100%;aspect-ratio:auto;flex:none;overflow:hidden;background:#12110e;border:1px solid rgba(229,184,66,.2);border-radius:11px;}
-  .review-photos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin:0;padding:8px;}
-  .review-photos-grid img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:transform .2s ease;}
-  .review-photos-grid img:hover{transform:scale(1.02);}
-  .review-body{padding:10px 0 0;display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;}
-  .review-proof-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
-  .review-date{color:rgba(229,184,66,.82);font:600 14px/1.3 'Manrope','Inter',sans-serif;}
-  .review-stars{color:#d7a82f;font-size:23px;line-height:1;letter-spacing:.14em;text-shadow:0 0 14px rgba(215,168,47,.22);}
-  .review-person{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .review-name{font:500 22px 'Playfair Display',Georgia,serif;color:var(--parchment);}
-  .review-name.is-arabic{font-family:'Tajawal','Manrope',sans-serif;}
-  .review-deck-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(229,184,66,.1);border:1px solid rgba(229,184,66,.3);color:#e5b842;font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;}
-  .review-card-title{display:flex;justify-content:center;margin:0;text-align:center;}
-  .review-card-divider{display:flex;align-items:center;justify-content:center;margin:10px 0;}
-  .review-card-divider::before,.review-card-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(229,184,66,.35),transparent);}
-  .review-card-divider span{color:#e5b842;font-size:.65rem;padding:0 10px;opacity:.7;}
-  .review-comment{font-family:'Playfair Display',Georgia,serif;}
-  .review-text{
-    direction:auto;
+  #reviews-3d-carousel{
+    display:flex;
+    width:max-content;
+    animation:reviewsCarouselStream 48s linear infinite;
+    transform-style:preserve-3d;
+    will-change:transform;
+  }
+  #reviews-carousel-viewport:hover #reviews-3d-carousel,
+  #reviews-carousel-viewport:focus-within #reviews-3d-carousel{animation-play-state:paused;}
+  .reviews-carousel-group{display:flex;flex:none;align-items:stretch;gap:clamp(18px,2.4vw,32px);padding-right:clamp(18px,2.4vw,32px);}
+  @keyframes reviewsCarouselStream{to{transform:translateX(-50%);}}
+  .reviews-carousel-viewport[hidden]{display:none;}
+  .review-card{
+    position:relative;
+    display:flex;
+    flex:0 0 clamp(270px,28vw,340px);
+    flex-direction:column;
+    min-height:390px;
+    padding:28px 22px 20px;
+    overflow:hidden;
+    border:1px solid #e8bd4a33;
+    border-radius:18px;
+    background:#121212;
+    color:#f4e8cf;
+    transform:rotateY(-10deg) rotateX(3deg);
+    transform-style:preserve-3d;
+    transition:transform .45s cubic-bezier(.2,.75,.25,1),box-shadow .45s ease,border-color .45s ease;
+    box-shadow:0 16px 36px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.035);
+  }
+  .review-card:hover,.review-card:focus-within{
+    z-index:2;
+    transform:rotateY(0) rotateX(0) scale(1.03);
+    border-color:rgba(232,189,74,.62);
+    box-shadow:0 12px 35px rgba(232,189,74,.25),0 20px 44px rgba(0,0,0,.4);
+  }
+  .review-card::before{position:absolute;inset:8px;border:1px solid rgba(232,189,74,.12);border-radius:12px;content:"";pointer-events:none;}
+  .review-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:56px;}
+  .review-card-index{display:flex;flex-direction:column;align-items:center;color:#e8bd4a;font:700 16px/1.05 'Playfair Display','Cairo',serif;}
+  .review-card-index .suit{font-size:17px;}
+  .review-card-index-bottom{position:absolute;right:20px;bottom:14px;transform:rotate(180deg);}
+  .review-card-category{max-width:68%;overflow:hidden;padding:6px 11px;border:1px solid rgba(232,189,74,.3);border-radius:999px;background:rgba(232,189,74,.08);color:#e8bd4a;font:600 11px/1.25 'Manrope','Cairo',sans-serif;text-align:center;text-overflow:ellipsis;white-space:nowrap;}
+  .review-quote{
+    display:flex;
+    flex:1;
+    align-items:center;
+    justify-content:center;
+    margin:12px 0 24px;
+    color:#f0e7d4;
+    font:500 18px/1.75 'Playfair Display','Cairo',serif;
     text-align:center;
-    color:var(--text-secondary);
-    font:500 16px/1.8 'Playfair Display',Georgia,serif;
-    color:#eee5d3;
-    word-break:break-word;
     overflow-wrap:anywhere;
     white-space:pre-wrap;
-    min-width:0;
   }
-  .review-text.is-arabic{font-family:'Tajawal','Manrope',sans-serif;}
-  .review-comment,.review-text{
-    display:block !important;
-    -webkit-line-clamp:unset !important;
-    max-height:none !important;
-    overflow:visible !important;
-    text-overflow:clip !important;
-    white-space:normal !important;
-  }
+  .review-quote.is-arabic{font-family:'Cairo','Alexandria',sans-serif!important;font-size:17px;line-height:1.9;}
+  .review-card-bottom{position:relative;z-index:1;display:flex;align-items:center;gap:12px;min-height:64px;padding-top:13px;border-top:1px solid rgba(232,189,74,.2);}
+  .review-stars{flex:none;color:#e8bd4a;font-size:15px;line-height:1;letter-spacing:.08em;text-shadow:0 0 13px rgba(232,189,74,.28);white-space:nowrap;}
+  .review-ugc-photo{display:block;flex:none;width:54px;height:54px;overflow:hidden;border:1px solid rgba(232,189,74,.38);border-radius:9px;background:#1b1915;object-fit:cover;cursor:pointer;}
+  .review-ugc-placeholder{display:grid;place-items:center;color:rgba(232,189,74,.68);font-size:21px;cursor:default;}
+  .review-customer{display:flex;min-width:0;flex:1;flex-direction:column;gap:5px;}
+  .review-customer-name{overflow:hidden;color:#f4e8cf;font:600 13px/1.35 'Manrope','Cairo',sans-serif;text-overflow:ellipsis;white-space:nowrap;}
+  .review-customer-name.is-arabic{font-family:'Cairo','Alexandria',sans-serif!important;}
+  .review-verified{color:#cbbfa8;font:600 10px/1.25 'Manrope',sans-serif;white-space:nowrap;}
+  .review-verified .check{color:#e8bd4a;}
 
   /* ===== FOOTER ===== */
   footer{padding:64px 0 28px;border-top:1px solid var(--hairline);background:rgba(19,16,12,.6);}
@@ -1153,16 +1161,6 @@
   }
   .review-card.is-pending{border-color:rgba(229,184,66,.42);}
   .review-card.is-pending .review-photo img{opacity:.85;}
-  .review-photo.no-photo{
-    display:grid;place-items:center;gap:8px;
-    padding:18px;
-    background:linear-gradient(140deg,#241E15,#17130f);
-    color:var(--muted);
-    font:600 12.5px 'Tajawal','Manrope',sans-serif;
-    text-align:center;
-    direction:rtl;
-  }
-  .review-photo.no-photo .no-photo-icon{font-size:26px;line-height:1;}
   .review-lightbox{position:fixed;inset:0;z-index:99999 !important;display:flex;visibility:hidden;pointer-events:none;align-items:center;justify-content:center;overflow:auto;padding:clamp(14px,4vw,40px);background:rgba(5,5,5,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .22s ease,visibility .22s ease;}
   .review-lightbox.open{visibility:visible;pointer-events:auto;opacity:1;}
   .review-lightbox img{display:block;max-width:min(1100px,94vw);max-height:86dvh;object-fit:contain;border:1px solid rgba(229,184,66,.42);border-radius:14px;background:#0d0d0d;box-shadow:0 28px 100px rgba(0,0,0,.75),0 0 38px rgba(229,184,66,.12);cursor:zoom-in;transition:transform .2s ease;}
@@ -1346,15 +1344,10 @@
     .footer-legal{grid-template-columns:minmax(0,1fr);gap:18px;}
   }
   @media(max-width:620px){
-    .reviews-grid{grid-template-columns:minmax(0,1fr);gap:18px;}
-    .review-card{width:100%;}
-    .review-card{padding:16px;}
-    .review-card-head{padding:0;}
-    .review-body{padding:9px 0 0;}
-    .review-text{font-size:15.5px;line-height:1.8;}
-    .review-photos-grid{grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:7px;padding:8px;}
+    .reviews-carousel-viewport{padding:32px 12px 42px;}
+    .review-card{flex-basis:min(82vw,320px);padding:25px 18px 18px;}
+    .review-quote{font-size:16px;line-height:1.75;}
     .reviews-title{font-size:26px;}
-    .review-text{font-size:15.5px;}
     .footer-grid{grid-template-columns:minmax(0,1fr);gap:28px;}
     .footer-bottom{flex-direction:column;align-items:flex-start;}
     .footer-legal-links{gap:14px;}
@@ -1974,7 +1967,9 @@
 
       <p class="reviews-empty-state" id="reviews-empty-state">No reviews yet. Be the first to share your experience.</p>
 
-      <div class="reviews-grid" id="reviews-grid"></div>
+      <div class="reviews-carousel-viewport" id="reviews-carousel-viewport" hidden>
+        <div id="reviews-3d-carousel" aria-label="Customer reviews" aria-live="off"></div>
+      </div>
 
       <!-- ===== REVIEW SUBMISSION MODAL (dark glassmorphism) ===== -->
       <div class="review-modal-backdrop" id="review-modal-backdrop"></div>
@@ -2599,8 +2594,9 @@
 
   /* ---- DOM refs ---- */
   const section      = document.getElementById('reviews');
-  const grid         = document.getElementById('reviews-grid');
-  if(!section || !grid) return;
+  const carousel     = document.getElementById('reviews-3d-carousel');
+  const carouselViewport = document.getElementById('reviews-carousel-viewport');
+  if(!section || !carousel || !carouselViewport) return;
   const emptyState   = document.getElementById('reviews-empty-state');
   const backdropEl   = document.getElementById('review-modal-backdrop');
   const modal        = document.getElementById('review-modal');
@@ -2656,18 +2652,29 @@
     toastTimer = setTimeout(() => toastEl.classList.remove('open'), 4200);
   }
 
-  /* ---- dynamic render: seeded + user-submitted reviews in one grid ---- */
-  function starsMarkup(value){
-    const filled = Math.max(0, Math.min(5, Math.round(Number(value) || 0)));
-    return '★'.repeat(filled) + (filled < 5 ? '<span class="stars-dim">' + '★'.repeat(5 - filled) + '</span>' : '');
-  }
+  /* ---- dynamic render: approved Google Sheets reviews in the 3D carousel ---- */
+  const productCategories = {
+    'Love Memories':'Couples & Romance',
+    'Love Whispers':'Couples & Romance',
+    '88 Great Conversation Starters':'Couples & Romance',
+    'Couple Connection Cards':'Couples & Romance',
+    'Couples Chat':'Couples & Romance',
+    'Soulmate Question Deck':'Couples & Romance',
+    'Date Night Code':'Couples & Romance',
+    'How Well Do You Know Me?':'Friends & Parties',
+    'Think Fast!':'Friends & Parties',
+    'She Is':'Deep Chats',
+    "Let's Dig Deeper":'Deep Chats',
+    'The Royal Full Bundle':'Choose 4 cards'
+  };
 
-  function cardMarkup(review){
-    const name = review.name || review.Name || 'Customer';
+  function cardMarkup(review, index){
+    const name = review.name || review.Name || review.customerName || review['Customer Name'] || 'Customer';
+    const city = review.city || review.City || review.location || review.Location || '';
     const comment = review.comment || review.Comment || '';
     const ratingValue = review.rating || review.Rating || 0;
-    const date = review.date || review.createdAt || review['Created At'] || '';
     const deckName = review.product || review.deck || review.Product || "Let's Dig Deeper";
+    const categoryName = review.category || review.Category || productCategories[deckName] || deckName;
     let rawPhotos = review.photos || review.photo || review.photoUrls || review.photoURLs || review['Photo URLs'] || review['Photo URLs/Base64'] || review.customerMedia || review['Customer Media'] || [];
     let photos = Array.isArray(rawPhotos) ? rawPhotos : [];
     if(!photos.length && typeof rawPhotos === 'string' && rawPhotos.trim()){
@@ -2686,18 +2693,27 @@
     }
     const nameLanguageClass = /[\u0600-\u06FF]/.test(String(name)) ? ' is-arabic' : '';
     const commentLanguageClass = /[\u0600-\u06FF]/.test(String(comment)) ? ' is-arabic' : '';
+    const cardRank = index % 2 === 0 ? {rank:'A', suit:'♠'} : {rank:'K', suit:'♦'};
     const photo = photos.length
-      ? '<div class="review-photo"><div class="review-photos-grid">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('Customer photo ' + (photoIndex + 1) + ' from ' + name) + '" loading="lazy" decoding="async">').join('') + '</div></div>'
-      : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>No customer photo</span></div>';
-    return '<article class="review-card" data-review-id="' + esc(review.id) + '">'
-      +   '<div class="review-card-head"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(name) + '</span></div>'
-      + photo
-      + '<div class="review-body">'
-      +   '<div class="review-proof-row"><span class="review-date">' + esc(date) + '</span><p class="review-stars" aria-label="' + esc('Rated ' + ratingValue + ' out of 5 stars') + '">' + starsMarkup(ratingValue) + '</p></div>'
-      +   '<div class="review-card-title" dir="auto"><span class="review-deck-badge">🎴 ' + esc(deckName) + '</span></div>'
-      +   '<div class="review-card-divider" aria-hidden="true"><span>◆</span></div>'
-      +   '<p class="review-text review-comment' + commentLanguageClass + '" dir="auto" title="' + esc(comment) + '">' + esc(comment) + '</p>'
-      + '</div></article>';
+      ? '<img class="review-ugc-photo" src="' + esc(photos[0]) + '" data-review-photo="true" data-lightbox-src="' + esc(photos[0]) + '" alt="' + esc('Customer product photo from ' + name) + '" role="button" tabindex="0" loading="lazy" decoding="async">'
+      : '<span class="review-ugc-photo review-ugc-placeholder" aria-label="No customer photo">✦</span>';
+    const customerLabel = String(name) + (city ? ' • ' + String(city) : '');
+    return '<article class="review-card" data-review-id="' + esc(review.id) + '" data-rating="' + esc(ratingValue) + '">'
+      + '<div class="review-card-top">'
+      +   '<span class="review-card-index" aria-hidden="true">' + cardRank.rank + '<span class="suit">' + cardRank.suit + '</span></span>'
+      +   '<span class="review-card-category" dir="auto">' + esc(categoryName) + '</span>'
+      + '</div>'
+      + '<p class="review-quote' + commentLanguageClass + '" dir="auto" title="' + esc(comment) + '">' + esc(comment) + '</p>'
+      + '<div class="review-card-bottom">'
+      +   photo
+      +   '<div class="review-customer">'
+      +     '<span class="review-stars" aria-label="' + esc('Five gold stars. Customer rating: ' + ratingValue + ' out of 5.') + '">★★★★★</span>'
+      +     '<span class="review-customer-name' + nameLanguageClass + '" dir="auto">' + esc(customerLabel) + '</span>'
+      +     '<span class="review-verified"><span class="check" aria-hidden="true">✔</span> Verified Buyer</span>'
+      +   '</div>'
+      + '</div>'
+      + '<span class="review-card-index review-card-index-bottom" aria-hidden="true">' + cardRank.rank + '<span class="suit">' + cardRank.suit + '</span></span>'
+      + '</article>';
   }
 
   /* One delegated listener handles photos added on every render. */
@@ -2723,9 +2739,9 @@
   }
   window.CardCastleOverlayClosers.push(closeReviewLightbox);
 
-  grid.addEventListener('click', event => {
+  carousel.addEventListener('click', event => {
     const photo = event.target.closest('img[data-review-photo]');
-    if(!photo || !grid.contains(photo)) return;
+    if(!photo || !carousel.contains(photo)) return;
     lightboxReturnFocus = photo;
     lightboxImage.src = photo.getAttribute('data-lightbox-src') || photo.src;
     lightboxImage.alt = photo.alt || 'Customer review photo';
@@ -2733,6 +2749,12 @@
     lightbox.setAttribute('aria-hidden', 'false');
     window.CardCastleScrollLock.lock('review-lightbox');
     lightboxClose.focus();
+  });
+  carousel.addEventListener('keydown', event => {
+    if((event.key === 'Enter' || event.key === ' ') && event.target.matches('img[data-review-photo]')){
+      event.preventDefault();
+      event.target.click();
+    }
   });
   lightboxClose.addEventListener('click', closeReviewLightbox);
   lightboxImage.addEventListener('click', () => lightboxImage.classList.toggle('zoomed'));
@@ -2746,8 +2768,12 @@
   function render(){
     const source = reviews.filter(r => String(r.status || r.Status || '').trim().toLowerCase() === 'approved');
     const visible = source.slice().reverse();
-    grid.innerHTML = visible.map(cardMarkup).join('');
-    grid.hidden = visible.length === 0;
+    const cards = visible.map(cardMarkup).join('');
+    carousel.innerHTML = visible.length
+      ? '<div class="reviews-carousel-group">' + cards + '</div><div class="reviews-carousel-group" aria-hidden="true" inert>' + cards + '</div>'
+      : '';
+    carousel.style.animationDuration = Math.max(24, visible.length * 5) + 's';
+    carouselViewport.hidden = visible.length === 0;
     if(emptyState) emptyState.hidden = visible.length > 0;
   }
 
