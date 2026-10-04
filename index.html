@@ -464,12 +464,14 @@
   .deck-stack .card-blue.is-selected{transform:rotate3d(.2,-1,0,3deg) rotate(0deg) translate3d(0,-6%,0) scale(1.06);}
 
   /* Scroll-driven circular deck carousel inspired by the reference pin. */
-  .deck-stack.orbit-carousel{transform-style:preserve-3d;perspective:1400px;transition:opacity .3s ease,translate .65s ease,rotate .65s ease;translate:0 0 0;rotate:0 1 0 0deg;margin-top:clamp(-76px,-6vh,-36px);will-change:transform;}
-  @keyframes idle3DRotate{
-    0%,100%{translate:0 0 0;rotate:0 1 0 0deg;}
-    50%{translate:0 -7px 10px;rotate:0 1 0 1.2deg;}
+  .deck-stage{width:100%;margin-top:-60px;transform-style:preserve-3d;perspective:1400px;transition:transform .45s ease;animation:idle3DFloat 5s ease-in-out infinite;}
+  .deck-stage.is-scrolling{animation:none;}
+  @keyframes idle3DFloat{
+    0%,100%{transform:translateY(0px) rotateY(0deg) rotateX(0deg);}
+    50%{transform:translateY(-10px) rotateY(8deg) rotateX(-4deg);}
   }
-  .deck-stack.orbit-carousel.is-idle{animation:idle3DRotate 6s ease-in-out infinite;}
+  @media(max-width:1024px){.deck-stage{margin-top:0;}}
+  .deck-stack.orbit-carousel{transform-style:preserve-3d;perspective:1400px;transition:opacity .3s ease;will-change:transform;}
   .deck-stack.orbit-carousel.is-hidden{opacity:0;pointer-events:none;}
   .deck-stack.orbit-carousel.is-hidden .deck{pointer-events:none!important;}
   .deck-stack.orbit-carousel-scroll-clone{position:fixed!important;z-index:30!important;margin:0!important;max-width:none!important;overflow:visible!important;pointer-events:none!important;opacity:0;visibility:hidden;transition:top .28s ease-out,opacity .3s ease,visibility .3s ease;}
@@ -498,14 +500,14 @@
   .deck-stack.orbit-carousel:hover .deck{filter:brightness(1.04);}
   .deck-stack.orbit-carousel:hover .deck.is-selected{filter:brightness(1.1);}
   @media(max-width:768px){
-    .deck-stack.orbit-carousel .deck{top:42%;width:min(52%,230px);transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(105px) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(var(--orbit-scale,.72));}
+    .deck-stack.orbit-carousel .deck{top:46%;width:min(52%,230px);transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(105px) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(var(--orbit-scale,.72));}
     .deck-stack.orbit-carousel .deck.is-selected{transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(118px) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(calc(var(--orbit-scale,.72) + .08));}
   }
   .collection-section .wrap{max-width:1280px;}
   @media(prefers-reduced-motion:reduce){.deck-stack.orbit-carousel-scroll-clone,.deck-stack.orbit-carousel-scroll-clone .deck{transition:none;}}
   @media(prefers-reduced-motion:reduce){
     .deck-stack.orbit-carousel,.deck-stack.orbit-carousel .deck{transition:none;}
-    .deck-stack.orbit-carousel.is-idle{animation:none;}
+    .deck-stage{animation:none;transition:none;}
   }
 
   .deck-icon{font-size:36px;line-height:1;color:#FFFFFF;}
@@ -1495,7 +1497,8 @@
         </div>
       </div>
 
-      <div class="deck-stack" id="deck-stack">
+      <div class="deck-stage">
+        <div class="deck-stack" id="deck-stack">
         <div class="deck card card-green deck-mindful card-back" tabindex="0" role="button" data-category-target="mindfulness" aria-label="Open Deep Chats and Mindfulness games">
           <svg class="deck-watermark" viewBox="0 0 240 300" fill="none" aria-hidden="true"><circle cx="120" cy="150" r="82" stroke="#F7D98A" stroke-width="1.5"/><path d="M120 75c-28 24-42 51-42 78 0 38 20 66 42 72 22-6 42-34 42-72 0-27-14-54-42-78Z" stroke="#F7D98A" stroke-width="1.5"/><path d="M120 225V104M120 151c-17-18-34-25-52-25M120 151c17-18 34-25 52-25M120 184c-13-12-26-17-39-17M120 184c13-12 26-17 39-17" stroke="#F7D98A" stroke-width="1.5" stroke-linecap="round"/></svg>
           <div>
@@ -1528,7 +1531,8 @@
             <div class="deck-title">Think fast,<br>laugh faster.</div>
             <span class="deck-microcopy" lang="ar" dir="rtl">ضحك ولعب بلا حدود</span>
           </div>
-        </div>
+          </div>
+      </div>
       </div>
     </div>
   </section>
@@ -2375,10 +2379,11 @@
 <script>
   (function(){
     var stack = document.getElementById('deck-stack');
+    var stage = stack && stack.closest('.deck-stage');
     var hero = stack && stack.closest('.hero');
     var collection = document.querySelector('.collection-section');
     var productGrid = document.getElementById('game-grid');
-    if(!stack || !hero || !collection || !productGrid) return;
+    if(!stack || !stage || !hero || !collection || !productGrid) return;
 
     stack.classList.add('orbit-carousel');
     var clone = stack.cloneNode(true);
@@ -2456,7 +2461,7 @@
       if(!frame) frame=window.requestAnimationFrame(animate);
     };
     function update(){
-      stack.classList.toggle('is-idle',window.scrollY <= 0);
+      stage.classList.toggle('is-scrolling',window.scrollY > 5);
       measure();
       var y = window.scrollY;
       var progress = clamp((y-scrollStart)/Math.max(1,stageEnd-scrollStart),0,1);
