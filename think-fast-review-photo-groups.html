@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Think Fast — Review Photo Groups</title>
+  <style>
+    :root { color-scheme: dark; --gold: #e5b842; --panel: #17130f; --line: rgba(229,184,66,.34); }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 24px; background: #0d0d0c; color: #f3ead8; font: 15px/1.4 Arial, sans-serif; }
+    h1 { margin: 0 0 18px; color: var(--gold); font-size: 22px; }
+    .groups { display: grid; gap: 14px; max-width: 1200px; margin: auto; }
+    .group { display: flex; align-items: center; gap: 12px; min-height: 172px; padding: 12px; overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+    .label { flex: 0 0 76px; color: var(--gold); font-weight: 700; }
+    .photos { display: flex; align-items: center; gap: 10px; }
+    img, video { display: block; width: 140px; height: 144px; object-fit: contain; border: 1px solid rgba(229,184,66,.24); border-radius: 8px; background: #090807; }
+    @media (max-width: 600px) { body { padding: 12px; } .group { min-height: 136px; } img { width: 112px; height: 112px; } }
+  </style>
+</head>
+<body>
+  <main class="groups">
+    <h1>Think Fast — customer photo groups</h1>
+    <section class="group"><div class="label">Group 01</div><div class="photos"><img src="_thinkfast-photo-01.png" alt="Review photo 1"></div></section>
+    <section class="group"><div class="label">Group 02</div><div class="photos"><img src="_thinkfast-photo-02.png" alt="Review photo 2"><img src="_thinkfast-photo-03.png" alt="Review photo 3"><img src="_thinkfast-photo-04.png" alt="Review photo 4"></div></section>
+    <section class="group"><div class="label">Group 03</div><div class="photos"><img src="_thinkfast-photo-05.png" alt="Review photo 5"><img src="_thinkfast-photo-06.png" alt="Review photo 6"><video src="think-fast-video-02.mp4" controls preload="metadata" aria-label="Think Fast customer video 2"></video></div></section>
+    <section class="group"><div class="label">Group 04</div><div class="photos"><img src="_thinkfast-photo-07.png" alt="Review photo 7"><img src="_thinkfast-photo-08.png" alt="Review photo 8"></div></section>
+    <section class="group"><div class="label">Group 05</div><div class="photos"><img src="_thinkfast-photo-09.png" alt="Review photo 9"></div></section>
+    <section class="group"><div class="label">Group 06</div><div class="photos"><img src="_thinkfast-photo-10.png" alt="Review photo 10"></div></section>
+    <section class="group"><div class="label">Group 07</div><div class="photos"><img src="_thinkfast-photo-11.png" alt="Review photo 11"><img src="_thinkfast-photo-12.png" alt="Review photo 12"></div></section>
+    <section class="group"><div class="label">Group 08</div><div class="photos"><img src="_thinkfast-photo-13.png" alt="Review photo 13"><img src="_thinkfast-photo-14.png" alt="Review photo 14"></div></section>
+    <section class="group"><div class="label">Group 09</div><div class="photos"><img src="_thinkfast-photo-15.png" alt="Review photo 15"><video src="think-fast-video-01.mp4" controls preload="metadata" aria-label="Think Fast customer video 1"></video></div></section>
+    <section class="group"><div class="label">Group 10</div><div class="photos"><img src="_thinkfast-photo-16.png" alt="Review photo 16"><img src="_thinkfast-photo-17.png" alt="Review photo 17"></div></section>
+  </main>
+</body>
+</html>

@@ -464,7 +464,12 @@
   .deck-stack .card-blue.is-selected{transform:rotate3d(.2,-1,0,3deg) rotate(0deg) translate3d(0,-6%,0) scale(1.06);}
 
   /* Scroll-driven circular deck carousel inspired by the reference pin. */
-  .deck-stack.orbit-carousel{transform-style:preserve-3d;perspective:1400px;transition:opacity .3s ease;}
+  .deck-stack.orbit-carousel{transform-style:preserve-3d;perspective:1400px;transition:opacity .3s ease,translate .65s ease,rotate .65s ease;translate:0 0 0;rotate:0 1 0 0deg;margin-top:clamp(-64px,-5vh,-30px);will-change:transform;}
+  @keyframes ambient3DFloat{
+    0%,100%{translate:0 0 0;rotate:0 1 0 0deg;}
+    50%{translate:0 -7px 10px;rotate:0 1 0 1.2deg;}
+  }
+  .deck-stack.orbit-carousel.is-idle{animation:ambient3DFloat 6s ease-in-out infinite;}
   .deck-stack.orbit-carousel.is-hidden{opacity:0;pointer-events:none;}
   .deck-stack.orbit-carousel.is-hidden .deck{pointer-events:none!important;}
   .deck-stack.orbit-carousel-scroll-clone{position:fixed!important;z-index:30!important;margin:0!important;max-width:none!important;overflow:visible!important;pointer-events:none!important;opacity:0;visibility:hidden;transition:top .28s ease-out,opacity .3s ease,visibility .3s ease;}
@@ -474,7 +479,7 @@
   .deck-stack.orbit-carousel .deck{
     left:50%;top:42%;
     width:min(45%,250px);
-    transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(clamp(175px,16vw,200px)) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(.7);
+    transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(clamp(175px,16vw,200px)) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(var(--orbit-scale,.7));
     transform-origin:center;
     backface-visibility:hidden;
     -webkit-backface-visibility:hidden;
@@ -488,18 +493,19 @@
   .deck-stack.orbit-carousel .deck.card-green{--orbit-angle:120deg;}
   .deck-stack.orbit-carousel .deck.is-selected{
     z-index:auto;opacity:1;filter:brightness(1.08) saturate(1.04);
-    transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(clamp(170px,15.5vw,195px)) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(.86);
+    transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(clamp(170px,15.5vw,195px)) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(calc(var(--orbit-scale,.7) + .08));
   }
   .deck-stack.orbit-carousel:hover .deck{filter:brightness(1.04);}
   .deck-stack.orbit-carousel:hover .deck.is-selected{filter:brightness(1.1);}
   @media(max-width:768px){
-    .deck-stack.orbit-carousel .deck{top:42%;width:min(52%,230px);transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(105px) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(.72);}
-    .deck-stack.orbit-carousel .deck.is-selected{transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(118px) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(.88);}
+    .deck-stack.orbit-carousel .deck{top:42%;width:min(52%,230px);transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(105px) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(var(--orbit-scale,.72));}
+    .deck-stack.orbit-carousel .deck.is-selected{transform:translate(-50%,-50%) rotateY(calc(var(--orbit-angle,0deg) + var(--scroll-rotation,0deg))) translateZ(118px) rotateY(calc(0deg - var(--orbit-angle,0deg) - var(--scroll-rotation,0deg))) scale(calc(var(--orbit-scale,.72) + .08));}
   }
   .collection-section .wrap{max-width:1280px;}
   @media(prefers-reduced-motion:reduce){.deck-stack.orbit-carousel-scroll-clone,.deck-stack.orbit-carousel-scroll-clone .deck{transition:none;}}
   @media(prefers-reduced-motion:reduce){
-    .deck-stack.orbit-carousel .deck{transition:none;}
+    .deck-stack.orbit-carousel,.deck-stack.orbit-carousel .deck{transition:none;}
+    .deck-stack.orbit-carousel.is-idle{animation:none;}
   }
 
   .deck-icon{font-size:36px;line-height:1;color:#FFFFFF;}
@@ -841,7 +847,7 @@
     margin-top:14px;
     color:var(--parchment);
   }
-  .reviews-title .reviews-title-ar{display:block;direction:rtl;text-align:right;font-family:'Alexandria','Cairo',sans-serif!important;font-size:clamp(1.15em,3.5vw,1.38em);font-weight:700;letter-spacing:0;line-height:1.5;}
+  .reviews-title .reviews-title-ar{display:block;direction:rtl;text-align:right;font-family:'Cairo','Alexandria',sans-serif!important;font-size:clamp(1.15em,3.5vw,1.38em);font-weight:700;letter-spacing:0;line-height:1.5;}
   .reviews-title .reviews-title-en{display:block;font-family:'Playfair Display','Georgia',serif;font-weight:600;font-size:.82em;margin-top:6px;}
 
   /* ---- wallet cashback banner (glassmorphism) ---- */
@@ -892,6 +898,55 @@
   .btn-wallet:hover,.btn-wallet:focus-visible{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 26px 52px -20px rgba(229,184,66,.95);}
   .btn-wallet:focus-visible{outline:2px solid var(--brass-bright);outline-offset:3px;}
   .wallet-note{color:rgba(203,195,178,.78);font:600 12px/1.6 'Tajawal','Manrope',sans-serif;direction:rtl;max-width:34ch;}
+  /* Arabic font polish only; cashback banner geometry and visuals stay untouched. */
+  .wallet-banner [lang="ar"],.wallet-banner [dir="rtl"],.wallet-banner .btn-wallet,
+  .reviews-title .reviews-title-ar{font-family:'Cairo','Alexandria',sans-serif!important;}
+
+  /* CardCastle cashback reward component: styles stay inside the banner. */
+  #wallet-banner.banner-frame{width:min(1120px,100%);position:relative;overflow:hidden;margin:0 auto 52px;border:1px solid rgba(235,192,83,.47);border-radius:28px;box-shadow:0 35px 100px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.1);background:linear-gradient(118deg,#16110e 0%,#261712 51%,#18110e 100%);transition:transform .45s ease,box-shadow .45s ease;isolation:isolate;}
+  #wallet-banner.banner-frame:hover{transform:translateY(-4px);box-shadow:0 44px 110px rgba(0,0,0,.62),0 0 55px rgba(218,158,49,.11),inset 0 1px 0 rgba(255,255,255,.12);}
+  #wallet-banner.banner-frame::before{content:"";position:absolute;width:52%;height:150%;right:-12%;top:-35%;background:radial-gradient(ellipse,rgba(221,154,56,.23),transparent 67%);transform:rotate(16deg);pointer-events:none;z-index:0;}
+  #wallet-banner.banner-frame::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(120deg,rgba(255,255,255,.07),transparent 25%,transparent 72%,rgba(236,191,78,.07));z-index:2;}
+  #wallet-banner .banner-content{position:relative;z-index:1;min-height:500px;padding:clamp(2rem,5vw,5rem);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(230px,.65fr);align-items:center;gap:2rem;}
+  #wallet-banner .banner-copy{min-width:0;}
+  #wallet-banner .banner-kicker{display:flex;align-items:center;gap:12px;margin-bottom:20px;color:#d8bd77;font:700 11px/1.4 'Manrope',sans-serif;letter-spacing:.18rem;text-transform:uppercase;}
+  #wallet-banner .eyebrow-line{width:38px;height:1px;background:#e8bd4a;opacity:.8;flex:none;}
+  #wallet-banner .badge-glow{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(239,203,103,.52);border-radius:999px;padding:.46rem .8rem;background:rgba(111,75,22,.32);color:#f1d577;font:700 10px/1.4 'Manrope',sans-serif;letter-spacing:.08rem;animation:ccRewardBadgePulse 3.6s ease-in-out infinite;}
+  @keyframes ccRewardBadgePulse{0%,100%{box-shadow:0 0 0 rgba(232,189,74,0),inset 0 0 0 rgba(232,189,74,0)}50%{box-shadow:0 0 24px rgba(232,189,74,.25),inset 0 0 18px rgba(232,189,74,.06)}}
+  #wallet-banner .display-type{margin:20px 0 0;color:#fff6df;font-family:'Fraunces','Georgia',serif;font-size:clamp(2rem,4vw,3.4rem);font-weight:600;letter-spacing:-.045em;line-height:.98;text-wrap:balance;}
+  #wallet-banner .banner-description{max-width:610px;margin:20px 0 0;color:#d3c5b0;font:400 15px/1.7 'Manrope',sans-serif;}
+  #wallet-banner .arabic-accent{margin:16px 0 0;color:#e6bf61;font:500 15px/1.8 'Cairo','Alexandria',sans-serif!important;direction:rtl;text-align:left;}
+  #wallet-banner .action-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
+  #wallet-banner .review-btn,#wallet-banner .details-btn{min-height:48px;display:inline-flex;justify-content:center;align-items:center;gap:.6rem;border-radius:999px;padding:.8rem 1.15rem;font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:transform .2s ease,box-shadow .25s ease,background .25s ease;}
+  #wallet-banner .review-btn{border:1px solid transparent;background:#e8bd4a;color:#201307;}
+  #wallet-banner .details-btn{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#f4e8ca;}
+  #wallet-banner .review-btn:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(232,189,74,.22);}
+  #wallet-banner .details-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.1);}
+  #wallet-banner .review-btn:active,#wallet-banner .details-btn:active{transform:translateY(0);}
+  #wallet-banner .review-btn:focus-visible,#wallet-banner .details-btn:focus-visible{outline:2px solid #fff3c8;outline-offset:3px;}
+  #wallet-banner .banner-verified{display:flex;align-items:center;gap:8px;margin-top:24px;color:#dfbb5a;font:700 11px/1.5 'Manrope',sans-serif;letter-spacing:.11rem;text-transform:uppercase;}
+  #wallet-banner .banner-verified svg{width:16px;height:16px;flex:none;}
+  #wallet-banner .mini-card-scene{height:290px;position:relative;display:flex;align-items:center;justify-content:center;}
+  #wallet-banner .halo{position:absolute;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(235,187,74,.22),transparent 66%);filter:blur(7px);}
+  #wallet-banner .playing-card{position:absolute;width:158px;height:216px;border:1px solid rgba(255,239,183,.78);border-radius:16px;background:linear-gradient(145deg,#f4e4b1,#b78531);box-shadow:0 22px 30px rgba(0,0,0,.42),inset 0 0 0 6px rgba(66,37,13,.22);}
+  #wallet-banner .playing-card.back{transform:rotate(-14deg) translate(-42px,11px);background:linear-gradient(135deg,#6f451c,#21130d);border-color:rgba(215,161,60,.48);}
+  #wallet-banner .playing-card.front{display:flex;align-items:center;justify-content:center;color:#301b0b;font-family:'Fraunces',serif;font-size:5rem;transform:rotate(11deg) translate(28px,-3px);transition:transform .45s ease;}
+  #wallet-banner:hover .playing-card.front{transform:rotate(7deg) translate(34px,-9px);}
+  #wallet-banner .card-mark{position:absolute;color:#44250c;font:700 1.1rem 'Fraunces',serif;}
+  #wallet-banner .card-mark.top{top:15px;left:16px;}
+  #wallet-banner .card-mark.bottom{right:16px;bottom:15px;transform:rotate(180deg);}
+  #wallet-banner .details-panel{max-height:0;overflow:hidden;margin-top:0;opacity:0;transition:max-height .45s ease,opacity .3s ease,margin-top .45s ease;}
+  #wallet-banner .details-panel.is-open{max-height:260px;margin-top:1.25rem;opacity:1;}
+  #wallet-banner .details-inner{display:grid;gap:.65rem;border-top:1px solid rgba(235,199,105,.22);padding-top:1.05rem;}
+  #wallet-banner .details-inner h4{margin:0;color:#efd281;font:700 13px/1.5 'Manrope',sans-serif;letter-spacing:.1rem;text-transform:uppercase;}
+  #wallet-banner .details-inner p{margin:0;color:#cbbfa8;font:400 13px/1.5 'Manrope',sans-serif;}
+  #wallet-banner [hidden]{display:none!important;}
+  #wallet-banner .fade-in{animation:ccRewardFadeUp .7s both;}
+  #wallet-banner .fade-in.delay-1{animation-delay:.1s;}
+  #wallet-banner .fade-in.delay-2{animation-delay:.2s;}
+  #wallet-banner .fade-in.delay-3{animation-delay:.3s;}
+  @keyframes ccRewardFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:720px){#wallet-banner .banner-content{grid-template-columns:1fr;min-height:0;padding:2rem;}#wallet-banner .mini-card-scene{height:210px;order:-1;transform:scale(.84);margin:-1.75rem 0 -1.5rem;}#wallet-banner .action-row{flex-direction:column;align-items:stretch;}#wallet-banner .review-btn,#wallet-banner .details-btn{width:100%;}}
 
   /* ---- empty state: no approved reviews yet (minimal — the wallet-banner above already carries the CTA) ---- */
   .reviews-empty-state{
@@ -1856,17 +1911,51 @@
   <section class="section" id="reviews">
     <div class="wrap">
       <!-- ===== 15 DH WALLET CASHBACK BANNER ===== -->
-      <div class="wallet-banner" id="wallet-banner">
-        <div class="wallet-banner-text">
-          <span class="wallet-badge">🪙 15 DH CASHBACK REWARD</span>
-          <h3 class="wallet-headline" dir="rtl" lang="ar">ربح 15 DH فـ CardCastle Wallet ديالك! 📸</h3>
-          <p class="wallet-desc" dir="rtl" lang="ar">صور طلبك فاش يوصلك، وخلي رأيك الصريح لتفعيل 15 درهم كخصم فوري لطلبك القادم.</p>
+      <section data-template-id="reward-banner" class="banner-frame" id="wallet-banner" aria-labelledby="offer-title">
+        <div class="banner-content">
+          <div class="banner-copy">
+            <div class="banner-kicker fade-in"><span class="eyebrow-line" aria-hidden="true"></span><span>CARDCASTLE · BUYER REWARDS</span></div>
+            <div class="badge-glow fade-in delay-1">✦ <span>15 DH CASHBACK REWARD</span></div>
+            <h3 class="display-type fade-in delay-1" id="offer-title">15 DH Cashback Reward</h3>
+            <p class="banner-description fade-in delay-2">Instant discount on your next order when you photograph your received playing card deck and leave an honest review.</p>
+            <p class="arabic-accent fade-in delay-2" dir="rtl" lang="ar">شارك رأيك، وخذ مكافأتك.</p>
+            <div class="action-row fade-in delay-3">
+              <button id="review-button" class="review-btn" type="button" data-reviews-open="1">✉ <span>Leave a review</span></button>
+              <button id="details-button" class="details-btn" type="button" aria-expanded="false" aria-controls="details-panel"><span aria-hidden="true">＋</span><span id="view-details-label">View details</span><span id="hide-details-label" hidden>Hide details</span></button>
+            </div>
+            <div id="details-panel" class="details-panel" aria-hidden="true">
+              <div class="details-inner">
+                <h4>Reward conditions</h4>
+                <p>01 — Your deck must be from a completed CardCastle order.</p>
+                <p>02 — Include a clear photo of the playing-card deck you received.</p>
+                <p>03 — Cashback is issued as a 15 DH discount for your next order.</p>
+              </div>
+            </div>
+            <div class="banner-verified fade-in delay-3"><span aria-hidden="true">✓</span><span>Verified buyer reward</span></div>
+          </div>
+          <aside class="mini-card-scene fade-in delay-2" aria-label="Premium playing card deck illustration">
+            <div class="halo" aria-hidden="true"></div>
+            <div class="playing-card back" aria-hidden="true"></div>
+            <div class="playing-card front" aria-hidden="true"><span class="card-mark top">A♠</span><span>♠</span><span class="card-mark bottom">A♠</span></div>
+          </aside>
         </div>
-        <div class="wallet-banner-actions">
-          <button class="btn-wallet" type="button" data-reviews-open="1">📸 خلي رأيك وخود 15 DH</button>
-          <span class="wallet-note" dir="rtl" lang="ar">كايتفعل الرصيد من بعد ما نتحققو من الصورة ورقم الطلب.</span>
-        </div>
-      </div>
+      </section>
+      <script>
+        (function(){
+          var detailsButton=document.getElementById('details-button');
+          var detailsPanel=document.getElementById('details-panel');
+          var viewLabel=document.getElementById('view-details-label');
+          var hideLabel=document.getElementById('hide-details-label');
+          if(!detailsButton||!detailsPanel||!viewLabel||!hideLabel)return;
+          detailsButton.addEventListener('click',function(){
+            var isOpen=detailsPanel.classList.toggle('is-open');
+            detailsPanel.setAttribute('aria-hidden',String(!isOpen));
+            detailsButton.setAttribute('aria-expanded',String(isOpen));
+            viewLabel.hidden=isOpen;
+            hideLabel.hidden=!isOpen;
+          });
+        })();
+      </script>
 
 
       <div class="section-head">
@@ -2336,13 +2425,15 @@
       if(stageEnd <= stageStart + 100) stageEnd = stageStart + Math.max(300,window.innerHeight * .55);
     }
     function updateDepth(){
-      var cards = allDecks.map(function(deck){
-        var angle = ((Number(deck.dataset.orbitBase || 0) + shownRotation) % 360 + 360) % 360;
-        return {deck:deck,distance:Math.min(angle,360-angle)};
-      }).sort(function(a,b){ return a.distance-b.distance; });
-      cards.forEach(function(item,index){
-        item.deck.style.zIndex = String(5-index);
-        item.deck.style.opacity = index === 0 ? '1' : (index === 1 ? '.9' : '.84');
+      roots.forEach(function(root){
+        var cards = Array.prototype.map.call(root.querySelectorAll('.deck'),function(deck){
+          var angle = ((Number(deck.dataset.orbitBase || 0) + shownRotation) % 360 + 360) % 360;
+          return {deck:deck,distance:Math.min(angle,360-angle)};
+        }).sort(function(a,b){ return a.distance-b.distance; });
+        cards.forEach(function(item,index){
+          item.deck.style.zIndex = index === 0 ? '10' : '5';
+          item.deck.style.opacity = index === 0 ? '1' : '.8';
+        });
       });
     }
     function animate(){
@@ -2353,7 +2444,19 @@
       if(shownRotation !== targetRotation) frame=window.requestAnimationFrame(animate);
       else frame=0;
     }
+    window.cardCastleFocusDeck = function(deck){
+      if(!deck) return;
+      var base = Number(deck.dataset.orbitBase || (deck.classList.contains('card-red') ? -120 : (deck.classList.contains('card-green') ? 120 : 0)));
+      var desired = -base;
+      while(desired-shownRotation > 180) desired -= 360;
+      while(desired-shownRotation < -180) desired += 360;
+      var progress = clamp((window.scrollY-stageStart)/Math.max(1,stageEnd-stageStart),0,1);
+      targetRotation = desired;
+      snapOffset = desired-progress*360;
+      if(!frame) frame=window.requestAnimationFrame(animate);
+    };
     function update(){
+      stack.classList.toggle('is-idle',window.scrollY <= 0);
       measure();
       var y = window.scrollY;
       var progress = clamp((y-stageStart)/Math.max(1,stageEnd-stageStart),0,1);
@@ -2362,15 +2465,20 @@
       var fadeOut = 1-clamp((progress-.78)/.22,0,1);
       var opacity = mobile || y < stageStart || y >= stageEnd ? 0 : fadeIn*fadeOut;
       var drop = Math.min(150,window.innerHeight*.22)*progress;
+      var startScale = mobile ? 1 : 1.15;
+      var endScale = mobile ? .72 : .7;
+      var scale = startScale+(endScale-startScale)*progress;
 
       clone.style.left = sourceLeft+'px';
       clone.style.top = (sourceTop-stageStart+drop)+'px';
       clone.style.width = sourceWidth+'px';
       clone.style.height = sourceHeight+'px';
       clone.style.opacity = opacity.toFixed(3);
+      clone.style.setProperty('--orbit-scale',scale.toFixed(3));
       clone.classList.toggle('is-visible',opacity>.02);
       var originalOpacity = mobile || y < stageStart ? 1 : 1-fadeIn;
       stack.style.opacity = originalOpacity.toFixed(3);
+      stack.style.setProperty('--orbit-scale',scale.toFixed(3));
       stack.inert = originalOpacity <= .02;
       stack.classList.toggle('is-hidden',originalOpacity<=.02);
 
@@ -2395,35 +2503,25 @@
     window.addEventListener('resize',onScroll,{passive:true});
   })();
 
+  function selectDeckCard(categoryTarget){
+    const deck = document.querySelector('#deck-stack .deck[data-category-target="' + categoryTarget + '"]');
+    if(!deck) return;
+    document.querySelectorAll('.deck.is-selected').forEach(card => card.classList.remove('is-selected'));
+    deck.classList.add('is-selected');
+    const visualClone = document.getElementById('deck-scroll-orbit-clone');
+    if(visualClone){
+      visualClone.querySelectorAll('.deck').forEach(card => {
+        card.classList.toggle('is-selected',card.dataset.categoryTarget === categoryTarget);
+      });
+    }
+    if(window.cardCastleFocusDeck) window.cardCastleFocusDeck(deck);
+  }
+  window.cardCastleSelectDeck = selectDeckCard;
+
   document.querySelectorAll('#deck-stack .deck[data-category-target]').forEach(deck => {
     const activate = () => {
       if(!deck.classList.contains('is-selected')){
-        const stack = document.getElementById('deck-stack');
-        document.querySelectorAll('.deck.is-selected').forEach(card => {
-          card.classList.remove('is-selected');
-          card.style.removeProperty('--orbit-angle');
-          card.dataset.orbitBase = card.classList.contains('card-red') ? '-120' : (card.classList.contains('card-green') ? '120' : '0');
-        });
-        const rotation = stack ? (parseFloat(stack.style.getPropertyValue('--scroll-rotation')) || 0) : 0;
-        deck.dataset.orbitBase = String(-rotation);
-        deck.style.setProperty('--orbit-angle', (-rotation) + 'deg');
-        deck.style.zIndex = '5';
-        deck.style.opacity = '1';
-        deck.classList.add('is-selected');
-        const visualClone = document.getElementById('deck-scroll-orbit-clone');
-        if(visualClone){
-          visualClone.querySelectorAll('.deck').forEach(card => {
-            const selected = card.dataset.categoryTarget === deck.dataset.categoryTarget;
-            card.classList.toggle('is-selected',selected);
-            if(selected){
-              card.dataset.orbitBase = String(-rotation);
-              card.style.setProperty('--orbit-angle',(-rotation) + 'deg');
-            } else {
-              card.dataset.orbitBase = card.classList.contains('card-red') ? '-120' : (card.classList.contains('card-green') ? '120' : '0');
-              card.style.removeProperty('--orbit-angle');
-            }
-          });
-        }
+        selectDeckCard(deck.dataset.categoryTarget);
         return;
       }
       const tab = document.querySelector('.filter-tab[data-filter="' + deck.dataset.categoryTarget + '"]');
@@ -2449,6 +2547,7 @@
       tab.classList.add('active');
       tab.setAttribute('aria-selected','true');
       var filter = tab.getAttribute('data-filter');
+      if(filter !== 'all' && window.cardCastleSelectDeck) window.cardCastleSelectDeck(filter);
 
       cards.forEach(function(card){
         var cat = card.getAttribute('data-category');
@@ -2527,7 +2626,7 @@
     const script = document.createElement('script');
     const cleanup = () => { delete window[callback]; script.remove(); };
     window[callback] = data => {
-      reviews = Array.isArray(data) ? data.filter(item => item && item.status === 'approved') : [];
+      reviews = Array.isArray(data) ? data.filter(item => item && String(item.status || item.Status || '').trim().toLowerCase() === 'approved') : [];
       render();
       cleanup();
     };
@@ -2552,21 +2651,40 @@
   }
 
   function cardMarkup(review){
-    const photos = Array.isArray(review.photo) ? review.photo : (review.photo ? [review.photo] : []);
-    const deckName = review.product || review.deck || "Let's Dig Deeper";
-    const nameLanguageClass = /[\u0600-\u06FF]/.test(String(review.name || '')) ? ' is-arabic' : '';
-    const commentLanguageClass = /[\u0600-\u06FF]/.test(String(review.comment || '')) ? ' is-arabic' : '';
+    const name = review.name || review.Name || 'Customer';
+    const comment = review.comment || review.Comment || '';
+    const ratingValue = review.rating || review.Rating || 0;
+    const date = review.date || review.createdAt || review['Created At'] || '';
+    const deckName = review.product || review.deck || review.Product || "Let's Dig Deeper";
+    let rawPhotos = review.photos || review.photo || review.photoUrls || review.photoURLs || review['Photo URLs'] || review['Photo URLs/Base64'] || review.customerMedia || review['Customer Media'] || [];
+    let photos = Array.isArray(rawPhotos) ? rawPhotos : [];
+    if(!photos.length && typeof rawPhotos === 'string' && rawPhotos.trim()){
+      const photoText = rawPhotos.trim();
+      if(photoText.charAt(0) === '['){
+        try{ const parsedPhotos = JSON.parse(photoText); photos = Array.isArray(parsedPhotos) ? parsedPhotos : [photoText]; }
+        catch(error){ photos = [photoText]; }
+      } else if(/^data:image\//i.test(photoText) || /^https?:\/\//i.test(photoText)) photos = [photoText];
+      else photos = photoText.split(/[\n|;]/).map(value => value.trim()).filter(Boolean);
+    }
+    if(!photos.length){
+      for(let i=1;i<=12;i++){
+        const photoValue = review['Photo ' + i] || review['Media ' + i] || review['Media ' + i + ' Preview'];
+        if(photoValue) photos.push(photoValue);
+      }
+    }
+    const nameLanguageClass = /[\u0600-\u06FF]/.test(String(name)) ? ' is-arabic' : '';
+    const commentLanguageClass = /[\u0600-\u06FF]/.test(String(comment)) ? ' is-arabic' : '';
     const photo = photos.length
-      ? '<div class="review-photo"><div class="review-photos-grid">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('Customer photo ' + (photoIndex + 1) + ' from ' + review.name) + '" loading="lazy" decoding="async">').join('') + '</div></div>'
+      ? '<div class="review-photo"><div class="review-photos-grid">' + photos.map((src, photoIndex) => '<img src="' + esc(src) + '" data-review-photo="true" data-lightbox-src="' + esc(src) + '" alt="' + esc('Customer photo ' + (photoIndex + 1) + ' from ' + name) + '" loading="lazy" decoding="async">').join('') + '</div></div>'
       : '<div class="review-photo no-photo"><span class="no-photo-icon">📷</span><span>No customer photo</span></div>';
     return '<article class="review-card" data-review-id="' + esc(review.id) + '">'
-      +   '<div class="review-card-head"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(review.name) + '</span></div>'
+      +   '<div class="review-card-head"><span class="review-name' + nameLanguageClass + '" dir="auto">' + esc(name) + '</span></div>'
       + photo
       + '<div class="review-body">'
-      +   '<div class="review-proof-row"><span class="review-date">' + esc(review.date) + '</span><p class="review-stars" aria-label="' + esc('Rated ' + review.rating + ' out of 5 stars') + '">' + starsMarkup(review.rating) + '</p></div>'
+      +   '<div class="review-proof-row"><span class="review-date">' + esc(date) + '</span><p class="review-stars" aria-label="' + esc('Rated ' + ratingValue + ' out of 5 stars') + '">' + starsMarkup(ratingValue) + '</p></div>'
       +   '<div class="review-card-title" dir="auto"><span class="review-deck-badge">🎴 ' + esc(deckName) + '</span></div>'
       +   '<div class="review-card-divider" aria-hidden="true"><span>◆</span></div>'
-      +   '<p class="review-text review-comment' + commentLanguageClass + '" dir="auto" title="' + esc(review.comment) + '">' + esc(review.comment) + '</p>'
+      +   '<p class="review-text review-comment' + commentLanguageClass + '" dir="auto" title="' + esc(comment) + '">' + esc(comment) + '</p>'
       + '</div></article>';
   }
 
@@ -2614,7 +2732,7 @@
   });
 
   function render(){
-    const source = reviews.filter(r => r.status === 'approved');
+    const source = reviews.filter(r => String(r.status || r.Status || '').trim().toLowerCase() === 'approved');
     const visible = source.slice().reverse();
     grid.innerHTML = visible.map(cardMarkup).join('');
     grid.hidden = visible.length === 0;
@@ -2650,8 +2768,8 @@
     [nameError,phoneError,productError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
   }
 
-  /* Any element with [data-reviews-open] opens the modal (banner CTA, empty-state CTA…). */
-  Array.prototype.forEach.call(document.querySelectorAll('[data-reviews-open]'), button => {
+  /* Bind the cashback CTA explicitly alongside other review-open controls. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-reviews-open], .wallet-banner .btn-wallet'), button => {
     button.addEventListener('click', openModal);
   });
   const modalClose = document.getElementById('review-modal-close');
