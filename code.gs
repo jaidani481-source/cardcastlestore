@@ -2,8 +2,7 @@
  * CardCastle Store review API.
  * Bind this script to the reviews spreadsheet, then deploy it as a web app.
  * Reviews are added with Status=Pending. Set Status to Approved in the sheet
- * to publish a review on the store website. Public comments use the separate
- * Review Interactions sheet and stay Pending until manually approved.
+ * to publish a review on the store website.
  */
 const SHEET_NAME = 'Reviews';
 const MEDIA_DRAFTS_SHEET_NAME = 'Review Media Drafts';
@@ -52,11 +51,8 @@ function doPost(e) {
     if (review.action === 'thinkFastBatchDrafts') {
       return output_(JSON.stringify(createThinkFastBatchDrafts_(review)), ContentService.MimeType.JSON);
     }
-    if (review.action === 'reviewInteraction') {
-      return output_(JSON.stringify(saveReviewInteraction_(review)), ContentService.MimeType.JSON);
-    }
-    if (review.action === 'like' || review.action === 'comment' || review.action === 'addComment') {
-      review.type = review.action === 'like' ? 'Like' : 'Comment';
+    if (review.action === 'reviewInteraction' || review.action === 'like' || review.action === 'comment' || review.action === 'addComment') {
+      if (!review.type) review.type = review.action === 'like' ? 'Like' : 'Comment';
       const result = saveReviewInteraction_(review);
       return output_(JSON.stringify(Object.assign({ status: 'success' }, result)), ContentService.MimeType.JSON);
     }
@@ -110,17 +106,17 @@ function getApprovedReviews_() {
   return values.slice(1)
     .filter(row => String(row[col.Status != null ? col.Status : 5] || '').trim().toLowerCase() === 'approved')
     .map(row => {
-      const reviewId = row[col['Review ID'] != null ? col['Review ID'] : 6];
-      if (!reviewId || String(reviewId).trim().toLowerCase() === 'approved') return null;
+      const id = row[col['Review ID'] != null ? col['Review ID'] : 6];
+      if (!id || String(id).trim().toLowerCase() === 'approved') return null;
       let photos = [];
       let videos = [];
-      const photoColumn = col['Photo URLs'];
-      const videoColumn = col['Video URLs'];
-      try { photos = JSON.parse(photoColumn != null ? row[photoColumn] || '[]' : '[]'); } catch (_) {}
-      try { videos = JSON.parse(videoColumn != null ? row[videoColumn] || '[]' : '[]'); } catch (_) {}
+      const photoCol = col['Photo URLs'];
+      const videoCol = col['Video URLs'];
+      try { photos = JSON.parse(photoCol != null ? row[photoCol] || '[]' : '[]'); } catch (_) {}
+      try { videos = JSON.parse(videoCol != null ? row[videoCol] || '[]' : '[]'); } catch (_) {}
       const createdAt = row[col['Created At'] != null ? col['Created At'] : 0];
       return {
-        id: String(reviewId).trim(),
+        id: String(id).trim(),
         name: String(row[col.Name != null ? col.Name : 1] || ''),
         city: String(row[col.City != null ? col.City : 2] || ''),
         phone: String(col.Phone != null ? row[col.Phone] || '' : ''),
@@ -139,17 +135,6 @@ function getApprovedReviews_() {
     .filter(Boolean);
 }
 
-function getSheet_() {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  if (!spreadsheet) throw new Error('Bind this Apps Script project to the reviews spreadsheet.');
-  let sheet = spreadsheet.getSheetByName(SHEET_NAME);
-  if (!sheet) sheet = spreadsheet.insertSheet(SHEET_NAME);
-  ensureHeaders_(sheet, HEADERS);
-  const col = headerMap_(sheet);
-  ['Photo URLs', 'Video URLs'].forEach(name => { if (col[name]) sheet.hideColumns(col[name]); });
-  return sheet;
-}
-
 function getReviewInteractions_(reviewIdValue, actorIdValue) {
   const reviewId = cleanText_(reviewIdValue, 100);
   const actorId = cleanText_(actorIdValue, 100);
@@ -158,13 +143,12 @@ function getReviewInteractions_(reviewIdValue, actorIdValue) {
 
   const sheet = getInteractionsSheet_();
   const values = sheet.getDataRange().getValues();
-  const headers = values[0].map(value => String(value).trim());
   const col = {};
-  headers.forEach((header, index) => { col[header] = index; });
-  const interactions = values.slice(1).filter(row => String(row[col['Review ID']] || '') === reviewId);
-  const likes = interactions.filter(row => String(row[col.Type] || '') === 'Like' && String(row[col.Status] || '') === 'Active');
-  const comments = interactions
-    .filter(row => String(row[col.Type] || '') === 'Comment' && String(row[col.Status] || '').toLowerCase() === 'approved')
+  values[0].forEach((header, index) => { col[String(header).trim()] = index; });
+  const rows = values.slice(1).filter(row => String(row[col['Review ID']] || '') === reviewId);
+  const likes = rows.filter(row => row[col.Type] === 'Like' && row[col.Status] === 'Active');
+  const comments = rows
+    .filter(row => row[col.Type] === 'Comment' && String(row[col.Status] || '').toLowerCase() === 'approved')
     .slice(-50)
     .reverse()
     .map(row => ({
@@ -174,14 +158,12 @@ function getReviewInteractions_(reviewIdValue, actorIdValue) {
         ? Utilities.formatDate(row[col['Created At']], Session.getScriptTimeZone(), 'dd MMM yyyy')
         : String(row[col['Created At']] || '')
     }));
-  const commentCount = interactions.filter(row =>
-    String(row[col.Type] || '') === 'Comment' && String(row[col.Status] || '').toLowerCase() === 'approved'
-  ).length;
   return {
+    status: 'success',
     apiVersion: 2,
     likeCount: likes.length,
     liked: !!actorId && likes.some(row => String(row[col['Actor ID']] || '') === actorId),
-    commentCount: commentCount,
+    commentCount: comments.length,
     comments: comments
   };
 }
@@ -189,7 +171,8 @@ function getReviewInteractions_(reviewIdValue, actorIdValue) {
 function saveReviewInteraction_(interaction) {
   const reviewId = cleanText_(interaction.reviewId, 100);
   const actorId = cleanText_(interaction.actorId, 100);
-  const type = cleanText_(interaction.type, 20);
+  const action = String(interaction.type || '').toLowerCase();
+  const type = action === 'like' ? 'Like' : action === 'comment' ? 'Comment' : interaction.type;
   if (!reviewId || !/^[A-Za-z0-9_-]{16,100}$/.test(actorId)) throw new Error('A valid review and visitor ID are required.');
   if (type !== 'Like' && type !== 'Comment') throw new Error('Unsupported review interaction.');
   if (!isApprovedReview_(reviewId)) throw new Error('This review is unavailable.');
@@ -199,19 +182,16 @@ function saveReviewInteraction_(interaction) {
   lock.waitLock(10000);
   try {
     const values = sheet.getDataRange().getValues();
-    const headers = values[0].map(value => String(value).trim());
     const col = {};
-    headers.forEach((header, index) => { col[header] = index; });
+    values[0].forEach((header, index) => { col[String(header).trim()] = index; });
     if (type === 'Like') {
-      const existingRow = values.findIndex((row, index) =>
-        index > 0 &&
-        String(row[col['Review ID']] || '') === reviewId &&
-        String(row[col.Type] || '') === 'Like' &&
-        String(row[col['Actor ID']] || '') === actorId &&
-        String(row[col.Status] || '') === 'Active'
+      const existingIndex = values.findIndex((row, index) =>
+        index > 0 && String(row[col['Review ID']] || '') === reviewId &&
+        row[col.Type] === 'Like' && String(row[col['Actor ID']] || '') === actorId &&
+        row[col.Status] === 'Active'
       );
-      if (existingRow > 0) {
-        sheet.deleteRow(existingRow + 1);
+      if (existingIndex > 0) {
+        sheet.deleteRow(existingIndex + 1);
         return { ok: true, liked: false };
       }
       appendByHeaders_(sheet, {
@@ -221,12 +201,11 @@ function saveReviewInteraction_(interaction) {
       return { ok: true, liked: true };
     }
 
-    const name = cleanText_(interaction.name, 80);
-    const comment = cleanText_(interaction.comment, 500);
+    const name = cleanText_(interaction.name || interaction.author, 80);
+    const comment = cleanText_(interaction.comment || interaction.text, 500);
     if (!name || comment.length < 2) throw new Error('Enter your name and a comment of at least 2 characters.');
     const recentComments = values.slice(1).filter(row =>
-      String(row[col.Type] || '') === 'Comment' &&
-      String(row[col['Actor ID']] || '') === actorId &&
+      row[col.Type] === 'Comment' && String(row[col['Actor ID']] || '') === actorId &&
       row[col['Created At']] instanceof Date &&
       Date.now() - row[col['Created At']].getTime() < 24 * 60 * 60 * 1000
     );
@@ -250,8 +229,9 @@ function isApprovedReview_(reviewId) {
   const headers = values[0].map(value => String(value).trim());
   const idCol = headers.indexOf('Review ID') >= 0 ? headers.indexOf('Review ID') : 6;
   const statusCol = headers.indexOf('Status') >= 0 ? headers.indexOf('Status') : 5;
-  return idCol >= 0 && statusCol >= 0 && values.slice(1).some(row =>
-    String(row[idCol] || '') === reviewId && String(row[statusCol] || '').trim().toLowerCase() === 'approved'
+  return values.slice(1).some(row =>
+    String(row[idCol] || '').trim() === reviewId &&
+    String(row[statusCol] || '').trim().toLowerCase() === 'approved'
   );
 }
 
@@ -263,6 +243,17 @@ function getInteractionsSheet_() {
   ensureHeaders_(sheet, INTERACTION_HEADERS);
   const actorCol = headerMap_(sheet)['Actor ID'];
   if (actorCol && !sheet.isColumnHiddenByUser(actorCol)) sheet.hideColumns(actorCol);
+  return sheet;
+}
+
+function getSheet_() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  if (!spreadsheet) throw new Error('Bind this Apps Script project to the reviews spreadsheet.');
+  let sheet = spreadsheet.getSheetByName(SHEET_NAME);
+  if (!sheet) sheet = spreadsheet.insertSheet(SHEET_NAME);
+  ensureHeaders_(sheet, HEADERS);
+  const col = headerMap_(sheet);
+  ['Photo URLs', 'Video URLs'].forEach(name => { if (col[name]) sheet.hideColumns(col[name]); });
   return sheet;
 }
 
