@@ -842,7 +842,8 @@
 
   /* ===== CUSTOMER PHOTO REVIEWS ===== */
   #reviews{scroll-margin-top:120px;}
-  #reviews .section-head{max-width:720px;}
+  #reviews .reviews-section-head{max-width:720px;margin-left:auto;margin-right:0;direction:rtl;text-align:right;}
+  #reviews .reviews-section-head .eyebrow{color:#e8bd4a;}
   .reviews-title{
     font-family:'Tajawal','Fraunces',serif;
     font-weight:800;
@@ -850,8 +851,8 @@
     margin-top:14px;
     color:var(--parchment);
   }
-  .reviews-title .reviews-title-ar{display:block;direction:rtl;text-align:right;font-family:'Cairo','Alexandria',sans-serif!important;font-size:clamp(1.15em,3.5vw,1.38em);font-weight:700;letter-spacing:0;line-height:1.5;}
-  .reviews-title .reviews-title-en{display:block;font-family:'Playfair Display','Georgia',serif;font-weight:600;font-size:.82em;margin-top:6px;}
+  .reviews-title .reviews-title-ar{display:block;direction:rtl;text-align:right;font-family:'Cairo','Alexandria',sans-serif!important;font-size:clamp(1.15em,3.5vw,1.38em);font-weight:600;letter-spacing:0;line-height:1.5;}
+  .reviews-title .reviews-title-en{display:block;direction:ltr;text-align:right;font-family:'Playfair Display','Georgia',serif;font-weight:600;font-size:.82em;margin-top:6px;}
 
   /* ---- wallet cashback banner (glassmorphism) ---- */
   .wallet-banner{
@@ -917,9 +918,8 @@
   #wallet-banner .eyebrow-line{width:38px;height:1px;background:#e8bd4a;opacity:.8;flex:none;}
   #wallet-banner .badge-glow{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(239,203,103,.52);border-radius:999px;padding:.46rem .8rem;background:rgba(111,75,22,.32);color:#f1d577;font:700 10px/1.4 'Manrope',sans-serif;letter-spacing:.08rem;animation:ccRewardBadgePulse 3.6s ease-in-out infinite;}
   @keyframes ccRewardBadgePulse{0%,100%{box-shadow:0 0 0 rgba(232,189,74,0),inset 0 0 0 rgba(232,189,74,0)}50%{box-shadow:0 0 24px rgba(232,189,74,.25),inset 0 0 18px rgba(232,189,74,.06)}}
-  #wallet-banner .display-type{margin:20px 0 0;color:#fff6df;font-family:'Fraunces','Georgia',serif;font-size:clamp(2rem,4vw,3.4rem);font-weight:600;letter-spacing:-.045em;line-height:.98;text-wrap:balance;}
+  #wallet-banner .display-type{margin:20px 0 0;color:#fff6df;font-family:'Playfair Display','Georgia',serif;font-size:clamp(2rem,4vw,3.4rem);font-weight:600;letter-spacing:-.045em;line-height:.98;text-wrap:balance;}
   #wallet-banner .banner-description{max-width:610px;margin:20px 0 0;color:#d3c5b0;font:400 15px/1.7 'Manrope',sans-serif;}
-  #wallet-banner .arabic-accent{margin:16px 0 0;color:#e6bf61;font:500 15px/1.8 'Cairo','Alexandria',sans-serif!important;direction:rtl;text-align:left;}
   #wallet-banner .action-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
   #wallet-banner .review-btn,#wallet-banner .details-btn{min-height:48px;display:inline-flex;justify-content:center;align-items:center;gap:.6rem;border-radius:999px;padding:.8rem 1.15rem;font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:transform .2s ease,box-shadow .25s ease,background .25s ease;}
   #wallet-banner .review-btn{border:1px solid transparent;background:#e8bd4a;color:#201307;}
@@ -1007,7 +1007,6 @@
   .review-card::before{position:absolute;inset:8px;border:1px solid rgba(232,189,74,.12);border-radius:12px;content:"";pointer-events:none;}
   .review-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:56px;}
   .review-card-index{display:flex;flex-direction:column;align-items:center;color:#e8bd4a;font:700 16px/1.05 'Playfair Display','Cairo',serif;}
-  .review-card-index .suit{font-size:17px;}
   .review-card-index-bottom{position:absolute;right:20px;bottom:14px;transform:rotate(180deg);}
   .review-card-category{max-width:68%;overflow:hidden;padding:6px 11px;border:1px solid rgba(232,189,74,.3);border-radius:999px;background:rgba(232,189,74,.08);color:#e8bd4a;font:600 11px/1.25 'Manrope','Cairo',sans-serif;text-align:center;text-overflow:ellipsis;white-space:nowrap;}
   .review-quote{
@@ -1913,14 +1912,13 @@
       <section data-template-id="reward-banner" class="banner-frame" id="wallet-banner" aria-labelledby="offer-title">
         <div class="banner-content">
           <div class="banner-copy">
-            <div class="banner-kicker fade-in"><span class="eyebrow-line" aria-hidden="true"></span><span>CARDCASTLE · BUYER REWARDS</span></div>
-            <div class="badge-glow fade-in delay-1">✦ <span>15 DH CASHBACK REWARD</span></div>
+            <div class="banner-kicker fade-in"><span class="eyebrow-line" aria-hidden="true"></span><span>PERSONALIZED - RATING REWARDS</span></div>
+            <div class="badge-glow fade-in delay-1">🎁 <span>15 DH CASHBACK REWARD</span></div>
             <h3 class="display-type fade-in delay-1" id="offer-title">15 DH Cashback Reward</h3>
-            <p class="banner-description fade-in delay-2">Instant discount on your next order when you photograph your received playing card deck and leave an honest review.</p>
-            <p class="arabic-accent fade-in delay-2" dir="rtl" lang="ar">شارك رأيك، وخذ مكافأتك.</p>
+            <p class="banner-description fade-in delay-2">A minute of co-creation: Share your honest review, claim your discount on your next order, and help the community choose with confidence! ✨</p>
             <div class="action-row fade-in delay-3">
-              <button id="review-button" class="review-btn" type="button" data-reviews-open="1">✉ <span>Leave a review</span></button>
-              <button id="details-button" class="details-btn" type="button" aria-expanded="false" aria-controls="details-panel"><span aria-hidden="true">＋</span><span id="view-details-label">View details</span><span id="hide-details-label" hidden>Hide details</span></button>
+              <button id="review-button" class="review-btn" type="button" data-reviews-open="1">📷 <span>Leave a review</span> ➔</button>
+              <button id="details-button" class="details-btn" type="button" aria-expanded="false" aria-controls="details-panel"><span aria-hidden="true">👁</span><span id="view-details-label">View details</span><span id="hide-details-label" hidden>Hide details</span></button>
             </div>
             <div id="details-panel" class="details-panel" aria-hidden="true">
               <div class="details-inner">
@@ -1932,10 +1930,10 @@
             </div>
             <div class="banner-verified fade-in delay-3"><span aria-hidden="true">✓</span><span>Verified buyer reward</span></div>
           </div>
-          <aside class="mini-card-scene fade-in delay-2" aria-label="Premium playing card deck illustration">
+          <aside class="mini-card-scene fade-in delay-2" aria-label="Conversation game card illustration">
             <div class="halo" aria-hidden="true"></div>
             <div class="playing-card back" aria-hidden="true"></div>
-            <div class="playing-card front" aria-hidden="true"><span class="card-mark top">A♠</span><span>♠</span><span class="card-mark bottom">A♠</span></div>
+            <div class="playing-card front" aria-hidden="true"><span class="card-mark top">“</span><span>💬</span><span class="card-mark bottom">✨</span></div>
           </aside>
         </div>
       </section>
@@ -1957,8 +1955,8 @@
       </script>
 
 
-      <div class="section-head">
-        <span class="eyebrow">Verified buyer photos</span>
+      <div class="section-head reviews-section-head">
+        <span class="eyebrow">VERIFIED BUYER PHOTOS</span>
         <h2 class="reviews-title" id="reviews-title">
           <span class="reviews-title-ar" dir="rtl" lang="ar">شنو كايقولو الزبناء ديالنا</span>
           <span class="reviews-title-en">What Our Players Say</span>
@@ -2693,14 +2691,14 @@
     }
     const nameLanguageClass = /[\u0600-\u06FF]/.test(String(name)) ? ' is-arabic' : '';
     const commentLanguageClass = /[\u0600-\u06FF]/.test(String(comment)) ? ' is-arabic' : '';
-    const cardRank = index % 2 === 0 ? {rank:'A', suit:'♠'} : {rank:'K', suit:'♦'};
+    const cardMark = ['“”','?','✨'][index % 3];
     const photo = photos.length
       ? '<img class="review-ugc-photo" src="' + esc(photos[0]) + '" data-review-photo="true" data-lightbox-src="' + esc(photos[0]) + '" alt="' + esc('Customer product photo from ' + name) + '" role="button" tabindex="0" loading="lazy" decoding="async">'
       : '<span class="review-ugc-photo review-ugc-placeholder" aria-label="No customer photo">✦</span>';
     const customerLabel = String(name) + (city ? ' • ' + String(city) : '');
     return '<article class="review-card" data-review-id="' + esc(review.id) + '" data-rating="' + esc(ratingValue) + '">'
       + '<div class="review-card-top">'
-      +   '<span class="review-card-index" aria-hidden="true">' + cardRank.rank + '<span class="suit">' + cardRank.suit + '</span></span>'
+      +   '<span class="review-card-index" aria-hidden="true">' + cardMark + '</span>'
       +   '<span class="review-card-category" dir="auto">' + esc(categoryName) + '</span>'
       + '</div>'
       + '<p class="review-quote' + commentLanguageClass + '" dir="auto" title="' + esc(comment) + '">' + esc(comment) + '</p>'
@@ -2712,7 +2710,7 @@
       +     '<span class="review-verified"><span class="check" aria-hidden="true">✔</span> Verified Buyer</span>'
       +   '</div>'
       + '</div>'
-      + '<span class="review-card-index review-card-index-bottom" aria-hidden="true">' + cardRank.rank + '<span class="suit">' + cardRank.suit + '</span></span>'
+      + '<span class="review-card-index review-card-index-bottom" aria-hidden="true">' + cardMark + '</span>'
       + '</article>';
   }
 
