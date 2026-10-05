@@ -910,15 +910,14 @@
   #wallet-banner.banner-frame::before{content:"";position:absolute;width:52%;height:150%;right:-12%;top:-35%;background:radial-gradient(ellipse,rgba(221,154,56,.23),transparent 67%);transform:rotate(16deg) translateZ(0);pointer-events:none;z-index:0;}
   #wallet-banner.banner-frame::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(120deg,rgba(255,255,255,.07),transparent 25%,transparent 72%,rgba(236,191,78,.07));transform:translateZ(0);z-index:2;}
   .luxury-shell::before,.luxury-shell::after,.grain{pointer-events:none;transform:translateZ(0);}
-  #wallet-banner .banner-content{position:relative;z-index:1;min-height:500px;padding:clamp(2rem,5vw,5rem);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(230px,.65fr);align-items:center;gap:2rem;}
-  #wallet-banner .banner-copy{min-width:0;}
-  #wallet-banner .banner-kicker{display:flex;align-items:center;gap:12px;margin-bottom:20px;color:#d8bd77;font:700 11px/1.4 'Manrope',sans-serif;letter-spacing:.18rem;text-transform:uppercase;}
-  #wallet-banner .eyebrow-line{width:38px;height:1px;background:#e8bd4a;opacity:.8;flex:none;}
-  #wallet-banner .badge-glow{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(239,203,103,.52);border-radius:999px;padding:.46rem .8rem;background:rgba(111,75,22,.32);color:#f1d577;font:700 10px/1.4 'Manrope',sans-serif;letter-spacing:.08rem;animation:ccRewardBadgePulse 3.6s ease-in-out infinite;}
+  #wallet-banner .banner-content{position:relative;z-index:1;min-height:0;padding:clamp(1.25rem,3vw,2rem);display:block;}
+  #wallet-banner .banner-copy{width:min(100%,760px);margin:0 auto;text-align:center;}
+  #wallet-banner .banner-kicker{display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:#d8bd77;font:700 11px/1.4 'Manrope',sans-serif;letter-spacing:.18rem;text-transform:uppercase;}
+  #wallet-banner .badge-glow{display:inline-flex;align-items:center;gap:.65rem;margin:0;padding:.62rem 1rem;border:1px solid rgba(239,203,103,.52);border-radius:999px;background:rgba(111,75,22,.32);color:#ffe39a;font:700 clamp(1.2rem,2.7vw,1.55rem)/1.2 'Playfair Display','Georgia',serif;letter-spacing:.01em;text-decoration:none;text-transform:none;text-shadow:0 1px 12px rgba(232,189,74,.2);animation:ccRewardBadgePulse 3.6s ease-in-out infinite;}
+  #wallet-banner .reward-amount{font-family:'Manrope',sans-serif;font-variant-numeric:lining-nums;font-weight:800;letter-spacing:-.04em;}
   @keyframes ccRewardBadgePulse{0%,100%{box-shadow:0 0 0 rgba(232,189,74,0),inset 0 0 0 rgba(232,189,74,0)}50%{box-shadow:0 0 24px rgba(232,189,74,.25),inset 0 0 18px rgba(232,189,74,.06)}}
-  #wallet-banner .display-type{margin:20px 0 0;color:#fff6df;font-family:'Playfair Display','Georgia',serif;font-size:2rem;font-weight:600;letter-spacing:-.045em;line-height:1.12;text-wrap:balance;}
-  #wallet-banner .banner-description{max-width:610px;margin:20px 0 0;color:rgba(244,232,207,.88);font:400 15px/1.6 'Manrope',sans-serif;}
-  #wallet-banner .action-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
+  #wallet-banner .banner-description{max-width:610px;margin:12px auto 0;color:rgba(244,232,207,.88);font:400 15px/1.6 'Manrope',sans-serif;}
+  #wallet-banner .action-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:16px;}
   #wallet-banner .review-btn,#wallet-banner .details-btn{min-height:48px;display:inline-flex;justify-content:center;align-items:center;gap:.6rem;border-radius:999px;padding:.8rem 1.15rem;font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:transform .2s ease,box-shadow .25s ease,background .25s ease;}
   #wallet-banner .review-btn{border:1px solid transparent;background:#e8bd4a;color:#201307;}
   #wallet-banner .details-btn{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#f4e8ca;}
@@ -926,17 +925,8 @@
   #wallet-banner .details-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.1);}
   #wallet-banner .review-btn:active,#wallet-banner .details-btn:active{transform:translateY(0);}
   #wallet-banner .review-btn:focus-visible,#wallet-banner .details-btn:focus-visible{outline:2px solid #fff3c8;outline-offset:3px;}
-  #wallet-banner .banner-verified{display:flex;align-items:center;gap:8px;margin-top:24px;color:#dfbb5a;font:700 11px/1.5 'Manrope',sans-serif;letter-spacing:.11rem;text-transform:uppercase;}
+  #wallet-banner .banner-verified{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;color:#dfbb5a;font:700 11px/1.5 'Manrope',sans-serif;letter-spacing:.11rem;text-transform:uppercase;}
   #wallet-banner .banner-verified svg{width:16px;height:16px;flex:none;}
-  #wallet-banner .mini-card-scene{height:290px;position:relative;display:flex;align-items:center;justify-content:center;}
-  #wallet-banner .halo{position:absolute;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(235,187,74,.22),transparent 66%);filter:blur(7px);}
-  #wallet-banner .playing-card{position:absolute;width:158px;height:216px;border:1px solid rgba(255,239,183,.78);border-radius:16px;background:linear-gradient(145deg,#f4e4b1,#b78531);box-shadow:0 22px 30px rgba(0,0,0,.42),inset 0 0 0 6px rgba(66,37,13,.22);}
-  #wallet-banner .playing-card.back{transform:rotate(-14deg) translate(-42px,11px);background:linear-gradient(135deg,#6f451c,#21130d);border-color:rgba(215,161,60,.48);}
-  #wallet-banner .playing-card.front{display:flex;align-items:center;justify-content:center;color:#301b0b;font-family:'Fraunces',serif;font-size:5rem;transform:rotate(11deg) translate(28px,-3px);transition:transform .45s ease;}
-  #wallet-banner:hover .playing-card.front{transform:rotate(7deg) translate(34px,-9px);}
-  #wallet-banner .card-mark{position:absolute;color:#44250c;font:700 1.1rem 'Fraunces',serif;}
-  #wallet-banner .card-mark.top{top:15px;left:16px;}
-  #wallet-banner .card-mark.bottom{right:16px;bottom:15px;transform:rotate(180deg);}
   #wallet-banner .details-panel{max-height:0;overflow:hidden;margin-top:0;opacity:0;transition:max-height .45s ease,opacity .3s ease,margin-top .45s ease;}
   #wallet-banner .details-panel.is-open{max-height:260px;margin-top:1.25rem;opacity:1;}
   #wallet-banner .details-inner{display:grid;gap:.65rem;border-top:1px solid rgba(235,199,105,.22);padding-top:1.05rem;}
@@ -948,7 +938,7 @@
   #wallet-banner .fade-in.delay-2{animation-delay:.2s;}
   #wallet-banner .fade-in.delay-3{animation-delay:.3s;}
   @keyframes ccRewardFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-  @media(max-width:720px){#wallet-banner .banner-content{grid-template-columns:1fr;min-height:0;padding:2rem;}#wallet-banner .mini-card-scene{height:210px;order:-1;transform:scale(.84);margin:-1.75rem 0 -1.5rem;}#wallet-banner .action-row{flex-direction:column;align-items:stretch;}#wallet-banner .review-btn,#wallet-banner .details-btn{width:100%;}}
+  @media(max-width:720px){#wallet-banner .banner-content{padding:1.25rem 1rem;}#wallet-banner .banner-kicker{font-size:10px;letter-spacing:.12rem;}#wallet-banner .action-row{flex-direction:column;align-items:center;margin-top:14px;}#wallet-banner .review-btn,#wallet-banner .details-btn{width:min(100%,320px);}}
 
   /* ---- empty state: no approved reviews yet (minimal — the wallet-banner above already carries the CTA) ---- */
   .reviews-empty-state{
@@ -1929,10 +1919,9 @@
       <section data-template-id="reward-banner" class="banner-frame" id="wallet-banner" aria-labelledby="offer-title">
         <div class="banner-content">
           <div class="banner-copy">
-            <div class="banner-kicker fade-in"><span class="eyebrow-line" aria-hidden="true"></span><span>PERSONALIZED - RATING REWARDS</span></div>
-            <div class="badge-glow fade-in delay-1">🎁 <span>15 DH CASHBACK REWARD</span></div>
-            <h3 class="display-type fade-in delay-1" id="offer-title">15 DH Cashback Reward</h3>
-            <p class="banner-description fade-in delay-2">A minute of co-creation: Share your honest review, claim your discount on your next order, and help the community choose with confidence! ✨</p>
+            <div class="banner-kicker fade-in"><span>PERSONALIZED - RATING REWARDS</span></div>
+            <h2 class="badge-glow fade-in delay-1" id="offer-title">🎁 <span><span class="reward-amount">15</span> DH Cashback Reward</span></h2>
+            <p class="banner-description fade-in delay-2">Share your honest review, get 15 DH off your next order, and help fellow players choose with confidence! ✨</p>
             <div class="action-row fade-in delay-3">
               <button id="review-button" class="review-btn" type="button" data-reviews-open="1">📷 <span>Leave a review</span> ➔</button>
               <button id="details-button" class="details-btn" type="button" aria-expanded="false" aria-controls="details-panel"><span aria-hidden="true">👁</span><span id="view-details-label">View details</span><span id="hide-details-label" hidden>Hide details</span></button>
@@ -1947,11 +1936,6 @@
             </div>
             <div class="banner-verified fade-in delay-3"><span aria-hidden="true">✓</span><span>Verified buyer reward</span></div>
           </div>
-          <aside class="mini-card-scene fade-in delay-2" aria-label="Conversation game card illustration">
-            <div class="halo" aria-hidden="true"></div>
-            <div class="playing-card back" aria-hidden="true"></div>
-            <div class="playing-card front" aria-hidden="true"><span class="card-mark top">“</span><span>💬</span><span class="card-mark bottom">✨</span></div>
-          </aside>
         </div>
       </section>
       <script>
@@ -2678,25 +2662,34 @@
   let interactionRefreshRunning = false;
   let activeCommentReviewId = '';
   let commentsReturnFocus = null;
+  let apiCallbackSequence = 0;
 
   function requestApi(parameters, onSuccess, onFailure){
     const query = new URLSearchParams(parameters);
     query.set('_', Date.now().toString(36) + Math.random().toString(36).slice(2));
-    const url = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + query.toString();
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20000);
-    fetch(url, {method:'GET',mode:'cors',cache:'no-store',signal:controller.signal})
-      .then(response => {
-        if(!response.ok) throw new Error('The review service returned HTTP ' + response.status + '.');
-        return response.json();
-      })
-      .then(onSuccess)
-      .catch(error => {
-        onFailure(error && error.name === 'AbortError'
-          ? new Error('The review service timed out.')
-          : error);
-      })
-      .finally(() => clearTimeout(timeout));
+    const callbackName = '__cardCastleApiCallback' + Date.now().toString(36) + (++apiCallbackSequence);
+    query.set('callback', callbackName);
+    const script = document.createElement('script');
+    let settled = false;
+    const cleanup = () => {
+      if(settled) return false;
+      settled = true;
+      clearTimeout(timeout);
+      script.remove();
+      delete window[callbackName];
+      return true;
+    };
+    const timeout = setTimeout(() => {
+      if(cleanup()) onFailure(new Error('The review service timed out.'));
+    }, 20000);
+    window[callbackName] = data => {
+      if(cleanup()) onSuccess(data);
+    };
+    script.onerror = () => {
+      if(cleanup()) onFailure(new Error('Could not reach the review service.'));
+    };
+    script.src = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + query.toString();
+    document.head.appendChild(script);
   }
 
   function parseReviewMedia(value){
@@ -2753,7 +2746,7 @@
     });
   }
 
-  /* The deployed Apps Script endpoint supports readable cross-origin JSON requests. */
+  /* Apps Script ContentService lacks reliable CORS headers, so use its JSONP callback for reads. */
   function loadFromBackend(){
     if(!usingBackend){ render(); return; }
     if(emptyState){
