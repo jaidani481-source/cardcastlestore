@@ -918,8 +918,8 @@
   #wallet-banner .eyebrow-line{width:38px;height:1px;background:#e8bd4a;opacity:.8;flex:none;}
   #wallet-banner .badge-glow{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(239,203,103,.52);border-radius:999px;padding:.46rem .8rem;background:rgba(111,75,22,.32);color:#f1d577;font:700 10px/1.4 'Manrope',sans-serif;letter-spacing:.08rem;animation:ccRewardBadgePulse 3.6s ease-in-out infinite;}
   @keyframes ccRewardBadgePulse{0%,100%{box-shadow:0 0 0 rgba(232,189,74,0),inset 0 0 0 rgba(232,189,74,0)}50%{box-shadow:0 0 24px rgba(232,189,74,.25),inset 0 0 18px rgba(232,189,74,.06)}}
-  #wallet-banner .display-type{margin:20px 0 0;color:#fff6df;font-family:'Playfair Display','Georgia',serif;font-size:clamp(2rem,4vw,3.4rem);font-weight:600;letter-spacing:-.045em;line-height:.98;text-wrap:balance;}
-  #wallet-banner .banner-description{max-width:610px;margin:20px 0 0;color:#d3c5b0;font:400 15px/1.7 'Manrope',sans-serif;}
+  #wallet-banner .display-type{margin:20px 0 0;color:#fff6df;font-family:'Playfair Display','Georgia',serif;font-size:2rem;font-weight:600;letter-spacing:-.045em;line-height:1.12;text-wrap:balance;}
+  #wallet-banner .banner-description{max-width:610px;margin:20px 0 0;color:rgba(244,232,207,.88);font:400 15px/1.6 'Manrope',sans-serif;}
   #wallet-banner .action-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
   #wallet-banner .review-btn,#wallet-banner .details-btn{min-height:48px;display:inline-flex;justify-content:center;align-items:center;gap:.6rem;border-radius:999px;padding:.8rem 1.15rem;font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:transform .2s ease,box-shadow .25s ease,background .25s ease;}
   #wallet-banner .review-btn{border:1px solid transparent;background:#e8bd4a;color:#201307;}
@@ -1022,7 +1022,16 @@
     white-space:pre-wrap;
   }
   .review-quote.is-arabic{font-family:'Cairo','Alexandria',sans-serif!important;font-size:17px;line-height:1.9;}
-  .review-card-bottom{position:relative;z-index:1;display:flex;align-items:center;gap:12px;min-height:64px;padding-top:13px;border-top:1px solid rgba(232,189,74,.2);}
+  .review-social-bar{position:relative;z-index:1;display:flex;align-items:center;gap:14px;width:max-content;margin:auto 0 0;padding:10px 0 0;border-top:1px solid rgba(232,189,74,.12);color:rgba(244,232,207,.58);}
+  .review-social-action{display:inline-flex;align-items:center;justify-content:center;gap:3px;min-width:15px;height:15px;padding:0;border:0;background:transparent;color:inherit;font:500 10px/1 'Manrope',sans-serif;cursor:pointer;}
+  .review-social-action:disabled{cursor:not-allowed;opacity:.38;}
+  .review-social-action:focus-visible{outline:1px solid #e8bd4a;outline-offset:3px;border-radius:3px;}
+  .review-social-action .social-icon{display:block;width:14px;height:14px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.6;}
+  .review-social-action.review-social-likes .social-icon{fill:currentColor;stroke:none;}
+  .review-social-action.is-active{color:#e8bd4a;}
+  .review-social-count{font-size:10px;}
+  #reviews-3d-carousel.is-paused{animation-play-state:paused;}
+  .review-card-bottom{position:relative;z-index:1;display:flex;align-items:center;gap:12px;min-height:64px;margin-bottom:14px;}
   .review-stars{flex:none;color:#e8bd4a;font-size:15px;line-height:1;letter-spacing:.08em;text-shadow:0 0 13px rgba(232,189,74,.28);white-space:nowrap;}
   .review-ugc-photo{display:block;flex:none;width:54px;height:54px;overflow:hidden;border:1px solid rgba(232,189,74,.38);border-radius:9px;background:#1b1915;object-fit:cover;cursor:pointer;}
   .review-ugc-placeholder{display:grid;place-items:center;color:rgba(232,189,74,.68);font-size:21px;cursor:default;}
@@ -1314,6 +1323,14 @@
   .review-form-note{margin-top:12px;min-height:19px;font:600 14px/1.65 'Tajawal','Manrope',sans-serif;text-align:center;direction:rtl;}
   .review-form-note.ok{color:#9fe0b6;}
   .review-form-note.err{color:#f5a3a3;}
+  .review-comments-modal{gap:0;}
+  .review-comments-list{display:flex;flex-direction:column;gap:10px;min-height:72px;max-height:220px;overflow-y:auto;padding:4px 2px 14px;}
+  .review-comment-item{padding:10px 12px;border:1px solid rgba(232,189,74,.16);border-radius:10px;background:rgba(18,18,18,.55);}
+  .review-comment-item strong{display:block;margin-bottom:4px;color:#e8bd4a;font:600 12px/1.4 'Manrope','Cairo',sans-serif;}
+  .review-comment-item p{margin:0;color:#f4e8cf;font:400 13px/1.6 'Manrope','Cairo',sans-serif;overflow-wrap:anywhere;}
+  .review-comment-item time{display:block;margin-top:5px;color:var(--muted);font:400 10px/1.4 'Manrope',sans-serif;}
+  #review-comments-form{flex:none;padding-bottom:22px;}
+  #review-comments-form .review-field textarea{min-height:80px;}
   .reviews-toast{
     position:fixed;left:50%;bottom:26px;z-index:302;
     display:none;
@@ -1965,6 +1982,14 @@
 
       <p class="reviews-empty-state" id="reviews-empty-state">No reviews yet. Be the first to share your experience.</p>
 
+      <template id="review-social-bar-template">
+        <div class="review-social-bar" aria-label="Review social engagement">
+          <button class="review-social-action review-social-likes" type="button" data-review-action="like" aria-label="Like review" aria-pressed="false" disabled><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg><span class="review-social-count" data-like-count>0</span></button>
+          <button class="review-social-action review-social-comment" type="button" data-review-action="comment" aria-label="View or add comments" disabled><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.5a8.4 8.4 0 0 1-12.2 7.5L3 20l1.2-4.7a8.5 8.5 0 1 1 16.3-3.8Z"/></svg><span class="review-social-count" data-comment-count>0</span></button>
+          <button class="review-social-action review-social-send" type="button" data-review-action="share" aria-label="Share review" disabled><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
+        </div>
+      </template>
+
       <div class="reviews-carousel-viewport" id="reviews-carousel-viewport" hidden>
         <div id="reviews-3d-carousel" aria-label="Customer reviews" aria-live="off"></div>
       </div>
@@ -2041,6 +2066,24 @@
           <p class="review-form-note" id="review-form-note"></p>
         </form>
       </div>
+
+      <div class="review-modal-backdrop" id="review-comments-backdrop"></div>
+      <section class="review-modal review-comments-modal" id="review-comments-modal" role="dialog" aria-modal="true" aria-labelledby="review-comments-title" aria-hidden="true">
+        <div class="review-modal-head">
+          <div>
+            <h3 id="review-comments-title">تعليقات المراجعة</h3>
+            <p>التعليقات كاتبان من بعد ما نراجعوها.</p>
+          </div>
+          <button class="icon-button" id="review-comments-close" type="button" aria-label="إغلاق التعليقات"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+        </div>
+        <div class="review-comments-list" id="review-comments-list" aria-live="polite"></div>
+        <form id="review-comments-form" novalidate>
+          <label class="review-field"><span>الاسم ديالك</span><input id="review-comment-name" type="text" maxlength="80" required></label>
+          <label class="review-field"><span>التعليق ديالك</span><textarea id="review-comment-text" maxlength="500" required></textarea></label>
+          <button class="btn btn-primary review-submit" id="review-comment-submit" type="submit">إرسال التعليق</button>
+          <p class="review-form-note" id="review-comments-note" role="status" aria-live="polite"></p>
+        </form>
+      </section>
       <div class="reviews-toast" id="reviews-toast" role="status" aria-live="polite"></div>
     </div>
   </section>
@@ -2581,7 +2624,7 @@
 (function(){
   'use strict';
 
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwehmOWadSkEdDOET4jJbL1nR5Qq_12-wr22Asw2BeECEGih4dnTv2FMsjBEH_skb2O/exec";
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4C7mu7ZSrOKVPVCRLgXKcdJOq7gb3OdoRW5VUzXNLCAkbINd4nptTb1X-yzjjNdKT/exec";
   const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
   const PHONE_PATTERN = /^0[567]\d{8}$/;
 
@@ -2594,11 +2637,21 @@
   const section      = document.getElementById('reviews');
   const carousel     = document.getElementById('reviews-3d-carousel');
   const carouselViewport = document.getElementById('reviews-carousel-viewport');
-  if(!section || !carousel || !carouselViewport) return;
+  const socialBarTemplate = document.getElementById('review-social-bar-template');
+  if(!section || !carousel || !carouselViewport || !socialBarTemplate) return;
   const emptyState   = document.getElementById('reviews-empty-state');
   const backdropEl   = document.getElementById('review-modal-backdrop');
   const modal        = document.getElementById('review-modal');
   const form         = document.getElementById('review-form');
+  const commentsBackdrop = document.getElementById('review-comments-backdrop');
+  const commentsModal = document.getElementById('review-comments-modal');
+  const commentsClose = document.getElementById('review-comments-close');
+  const commentsList = document.getElementById('review-comments-list');
+  const commentsForm = document.getElementById('review-comments-form');
+  const commentsName = document.getElementById('review-comment-name');
+  const commentsText = document.getElementById('review-comment-text');
+  const commentsSubmit = document.getElementById('review-comment-submit');
+  const commentsNote = document.getElementById('review-comments-note');
   const submitButton = form ? form.querySelector('[type="submit"]') : null;
   const submitButtonLabel = submitButton ? submitButton.textContent : 'نشر المراجعة';
   const note         = document.getElementById('review-form-note');
@@ -2624,23 +2677,101 @@
   let reviews = [];
   let rating = 0;
   let toastTimer = null;
+  let interactionApiReady = false;
+  let interactionApiWarningShown = false;
+  let activeCommentReviewId = '';
+  let commentsReturnFocus = null;
+
+  function requestJsonp(parameters, onSuccess, onFailure){
+    const callback = 'cardCastleApi_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
+    const script = document.createElement('script');
+    let settled = false;
+    const cleanup = () => {
+      if(settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      delete window[callback];
+      script.remove();
+    };
+    const fail = error => { cleanup(); onFailure(error); };
+    const timeout = setTimeout(() => fail(new Error('The review service timed out.')), 15000);
+    window[callback] = data => { cleanup(); onSuccess(data); };
+    script.onerror = () => fail(new Error('Could not reach the review service.'));
+    const query = new URLSearchParams(Object.assign({}, parameters, {callback:callback}));
+    script.src = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + query.toString();
+    document.head.appendChild(script);
+  }
+
+  function parseReviewMedia(value){
+    if(Array.isArray(value)) return value;
+    if(typeof value !== 'string' || !value.trim()) return [];
+    const text = value.trim();
+    if(text.charAt(0) === '['){
+      try{
+        const parsed = JSON.parse(text);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch(error){
+        console.warn('Could not parse review photo URLs.', error);
+        return [];
+      }
+    }
+    return /^https?:\/\//i.test(text) || /^data:image\//i.test(text) ? [text] : [];
+  }
+
+  function normalizeReviewResponse(response){
+    const source = Array.isArray(response) ? response
+      : response && Array.isArray(response.data) ? response.data
+      : response && Array.isArray(response.reviews) ? response.reviews
+      : null;
+    if(!source) throw new Error('The review API returned an unsupported response.');
+    return source.map(item => {
+      const review = item || {};
+      const explicitStatus = review.status || review.Status || review.photoUrl || review['Photo URL'] || '';
+      const misalignedColumns = !explicitStatus
+        && String(review.id || '').trim().toLowerCase() === 'approved'
+        && /^temu-\d+$/i.test(String(review.product || '').trim());
+      const rawStatus = explicitStatus || (misalignedColumns ? 'approved' : '');
+      const legacyShape = !review.status && !review.Status && typeof review.product === 'number';
+      let comment = review.comment || review.Comment || '';
+      let photos = review.photo || review.photos || review.photoUrls || review.photoURLs || review['Photo URLs'] || review['Photo URLs/Base64'] || review.customerMedia || review['Customer Media'] || [];
+      let product = review.product || review.deck || review.Product || '';
+      let ratingValue = review.rating || review.Rating || 0;
+      if(legacyShape){
+        comment = review.rating || '';
+        ratingValue = review.product;
+        product = review.date || review.deck || '';
+        photos = review.comment || review.photo || review.photoUrl || [];
+      }
+      const parsedPhotos = parseReviewMedia(photos);
+      return Object.assign({}, review, {
+        id:String(review.reviewId || review.reviewID || review['Review ID'] || (misalignedColumns ? review.product : '') || (legacyShape && review.likes) || review.id || '').trim(),
+        name:review.name || review.Name || review.customerName || review['Customer Name'] || 'Customer',
+        city:review.city || review.City || review.location || review.Location || '',
+        comment:String(comment == null ? '' : comment),
+        rating:ratingValue,
+        product:String(misalignedColumns ? (review.deck || review.productName || 'Customer Review') : product || "Let's Dig Deeper"),
+        photo:parsedPhotos,
+        status:String(rawStatus).trim().toLowerCase()
+      });
+    });
+  }
 
   /* JSONP avoids the cross-origin fetch restriction on Apps Script ContentService. */
   function loadFromBackend(){
     if(!usingBackend){ render(); return; }
-    const callback = 'cardCastleReviews_' + Date.now();
-    const script = document.createElement('script');
-    const cleanup = () => { delete window[callback]; script.remove(); };
-    window[callback] = data => {
-      reviews = Array.isArray(data) ? data.filter(item => item && String(item.status || item.Status || '').trim().toLowerCase() === 'approved') : [];
-      render();
-      cleanup();
-    };
-    script.onerror = () => { cleanup(); if(note) note.textContent = 'تعذر تحميل التقييمات حالياً.'; };
-    script.src = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callback;
-    document.head.appendChild(script);
+    requestJsonp({}, data => {
+      try{
+        reviews = normalizeReviewResponse(data).filter(item => item.status === 'approved');
+        render();
+      } catch(error){
+        console.error(error);
+        if(note) note.textContent = 'صيغة بيانات المراجعات غير مدعومة. راجع نشر Apps Script.';
+      }
+    }, error => {
+      console.error(error);
+      if(note) note.textContent = 'تعذر تحميل التقييمات حالياً.';
+    });
   }
-  loadFromBackend();
 
   function toast(message){
     if(!toastEl) return;
@@ -2649,6 +2780,56 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toastEl.classList.remove('open'), 4200);
   }
+
+  function setInteractionButtonsEnabled(enabled){
+    interactionApiReady = enabled;
+    carousel.querySelectorAll('[data-review-action]').forEach(button => {
+      const requiresApi = button.getAttribute('data-review-action') !== 'share';
+      button.disabled = requiresApi && !enabled;
+      if(requiresApi && !enabled) button.title = 'حدّث نشر Google Apps Script باش تفعل التفاعلات.';
+      else button.removeAttribute('title');
+    });
+    if(commentsSubmit) commentsSubmit.disabled = !enabled;
+  }
+
+  function loadInteractionData(reviewId, onSuccess, onFailure){
+    requestJsonp({action:'interactions',reviewId:reviewId,actorId:getActorId()}, onSuccess, onFailure);
+  }
+
+  function checkInteractionApi(){
+    if(!usingBackend) return;
+    requestJsonp({action:'capabilities'}, data => {
+      if(data && Number(data.apiVersion) >= 2 && (!Array.isArray(data.capabilities) || data.capabilities.indexOf('interactions') >= 0)){
+        setInteractionButtonsEnabled(true);
+        refreshAllInteractions();
+        return;
+      }
+      setInteractionButtonsEnabled(false);
+      if(!interactionApiWarningShown){
+        toast('التفاعلات مازال ما تفعلوش: خاص تحديث ونشر code.gs فـ Google Apps Script.');
+        interactionApiWarningShown = true;
+      }
+    }, error => {
+      setInteractionButtonsEnabled(false);
+      console.error(error);
+      toast('تعذر الاتصال بخدمة تفاعلات المراجعات.');
+    });
+  }
+
+  function getActorId(){
+    const storageKey = 'cardcastle-review-visitor-id';
+    let actorId = localStorage.getItem(storageKey);
+    if(!actorId || !/^[A-Za-z0-9_-]{16,100}$/.test(actorId)){
+      actorId = window.crypto && typeof window.crypto.randomUUID === 'function'
+        ? window.crypto.randomUUID()
+        : 'visitor-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+      localStorage.setItem(storageKey, actorId);
+    }
+    return actorId;
+  }
+
+  loadFromBackend();
+  checkInteractionApi();
 
   /* ---- dynamic render: approved Google Sheets reviews in the 3D carousel ---- */
   const productCategories = {
@@ -2701,17 +2882,85 @@
       +   '<span class="review-card-index" aria-hidden="true">' + cardMark + '</span>'
       +   '<span class="review-card-category" dir="auto">' + esc(categoryName) + '</span>'
       + '</div>'
-      + '<p class="review-quote' + commentLanguageClass + '" dir="auto" title="' + esc(comment) + '">' + esc(comment) + '</p>'
       + '<div class="review-card-bottom">'
       +   photo
       +   '<div class="review-customer">'
-      +     '<span class="review-stars" aria-label="' + esc('Five gold stars. Customer rating: ' + ratingValue + ' out of 5.') + '">★★★★★</span>'
       +     '<span class="review-customer-name' + nameLanguageClass + '" dir="auto">' + esc(customerLabel) + '</span>'
+      +     '<span class="review-stars" aria-label="' + esc('Five gold stars. Customer rating: ' + ratingValue + ' out of 5.') + '">★★★★★</span>'
       +     '<span class="review-verified"><span class="check" aria-hidden="true">✔</span> Verified Buyer</span>'
       +   '</div>'
       + '</div>'
+      + '<p class="review-quote' + commentLanguageClass + '" dir="auto" title="' + esc(comment) + '">' + esc(comment) + '</p>'
+      + socialBarTemplate.innerHTML
       + '<span class="review-card-index review-card-index-bottom" aria-hidden="true">' + cardMark + '</span>'
       + '</article>';
+  }
+
+  function updateReviewInteractionCards(reviewId, data){
+    Array.prototype.forEach.call(carousel.querySelectorAll('.review-card'), card => {
+      if(card.getAttribute('data-review-id') !== String(reviewId)) return;
+      const likeButton = card.querySelector('[data-review-action="like"]');
+      const commentButton = card.querySelector('[data-review-action="comment"]');
+      if(likeButton){
+        likeButton.setAttribute('aria-pressed', data.liked ? 'true' : 'false');
+        likeButton.classList.toggle('is-active', !!data.liked);
+        likeButton.setAttribute('aria-label', data.liked ? 'Unlike review' : 'Like review');
+        likeButton.querySelector('[data-like-count]').textContent = String(Number(data.likeCount) || 0);
+      }
+      if(commentButton && Array.isArray(data.comments)){
+        const count = Number(data.commentCount) || data.comments.length;
+        commentButton.querySelector('[data-comment-count]').textContent = String(count);
+        commentButton.setAttribute('aria-label', count + (count === 1 ? ' approved comment' : ' approved comments; view or add comments'));
+      }
+    });
+  }
+
+  function refreshReviewInteractions(reviewId, onSuccess, onFailure){
+    try{
+      loadInteractionData(reviewId, data => {
+        const interactions = data && data.interactions && typeof data.interactions === 'object'
+          ? (data.interactions[reviewId] || data.interactions)
+          : data;
+        const normalized = interactions && typeof interactions === 'object' ? {
+          likeCount:Number(interactions.likeCount != null ? interactions.likeCount : interactions.likes) || 0,
+          liked:!!(interactions.liked != null ? interactions.liked : interactions.isLiked),
+          commentCount:Number(interactions.commentCount != null ? interactions.commentCount : interactions.commentsCount) || 0,
+          comments:Array.isArray(interactions.comments) ? interactions.comments : []
+        } : null;
+        if(!data || Number(data.apiVersion) < 2 || !normalized){
+          const error = new Error('The review interaction API is not available.');
+          if(onFailure) onFailure(error);
+          return;
+        }
+        normalized.commentCount = normalized.commentCount || normalized.comments.length;
+        updateReviewInteractionCards(reviewId, normalized);
+        if(onSuccess) onSuccess(normalized);
+      }, error => {
+        if(onFailure) onFailure(error);
+        else {
+          console.error(error);
+          toast('تعذر تحميل اللايكات والتعليقات.');
+        }
+      });
+    } catch(error){
+      if(onFailure) onFailure(error);
+      else {
+        console.error(error);
+        toast('خاص تفعيل التخزين المحلي للتفاعلات فهاد المتصفح.');
+      }
+    }
+  }
+
+  function refreshAllInteractions(){
+    const mainGroup = carousel.querySelector('.reviews-carousel-group:not([aria-hidden])');
+    if(!mainGroup) return;
+    const seen = {};
+    mainGroup.querySelectorAll('.review-card').forEach(card => {
+      const reviewId = card.getAttribute('data-review-id');
+      if(!reviewId || seen[reviewId]) return;
+      seen[reviewId] = true;
+      refreshReviewInteractions(reviewId);
+    });
   }
 
   /* One delegated listener handles photos added on every render. */
@@ -2737,7 +2986,147 @@
   }
   window.CardCastleOverlayClosers.push(closeReviewLightbox);
 
+  function postReviewInteraction(payload){
+    if(!usingBackend || !interactionApiReady) return Promise.reject(new Error('خاص تحديث خدمة التفاعلات أولاً.'));
+    const action = String(payload.type || '').toLowerCase();
+    if(action !== 'like' && action !== 'comment') return Promise.reject(new Error('نوع التفاعل غير صالح.'));
+    const apiAction = action === 'comment' ? 'addComment' : 'like';
+    const requestPayload = Object.assign({action:apiAction,actorId:getActorId()},payload);
+    if(action === 'comment'){
+      requestPayload.author = payload.name;
+      requestPayload.text = payload.comment;
+    }
+    return fetch(GOOGLE_SCRIPT_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(requestPayload)
+    });
+  }
+
+  function openReviewComments(reviewId, trigger){
+    if(!interactionApiReady){ toast('تفاعلات المراجعات غير مفعّلة حالياً.'); return; }
+    activeCommentReviewId = reviewId;
+    commentsReturnFocus = trigger;
+    commentsList.textContent = 'كنحمّلو التعليقات...';
+    commentsNote.textContent = '';
+    commentsNote.className = 'review-form-note';
+    commentsBackdrop.classList.add('open');
+    commentsModal.classList.add('open');
+    commentsModal.setAttribute('aria-hidden','false');
+    window.CardCastleScrollLock.lock('review-comments');
+    setTimeout(() => { if(commentsName) commentsName.focus(); }, 60);
+    refreshReviewInteractions(reviewId, data => {
+      if(activeCommentReviewId === reviewId && commentsModal.classList.contains('open')) showApprovedComments(data.comments);
+    }, error => {
+      console.error(error);
+      if(activeCommentReviewId === reviewId && commentsModal.classList.contains('open')) commentsList.textContent = 'تعذر تحميل التعليقات. حاول مرة أخرى.';
+    });
+  }
+
+  function closeReviewComments(){
+    if(!commentsModal || !commentsModal.classList.contains('open')) return;
+    commentsModal.classList.remove('open');
+    commentsBackdrop.classList.remove('open');
+    commentsModal.setAttribute('aria-hidden','true');
+    window.CardCastleScrollLock.unlock('review-comments');
+    if(commentsReturnFocus && commentsReturnFocus.isConnected) commentsReturnFocus.focus();
+  }
+
+  function showApprovedComments(comments){
+    if(!comments.length){
+      commentsList.textContent = 'ما كاين حتى تعليق موافَق عليه دابا. كتب أول تعليق!';
+      return;
+    }
+    commentsList.innerHTML = comments.map(item =>
+      '<article class="review-comment-item"><strong>' + esc(item.name || 'Customer') + '</strong><p>' +
+      esc(item.comment || '') + '</p>' + (item.date ? '<time>' + esc(item.date) + '</time>' : '') + '</article>'
+    ).join('');
+  }
+
+  async function shareReview(reviewId, card){
+    const url = new URL(window.location.href);
+    url.hash = 'review-' + encodeURIComponent(reviewId);
+    const shareData = {
+      title:'CardCastle customer review',
+      text:(card.querySelector('.review-quote') || {}).textContent || 'Customer review',
+      url:url.href
+    };
+    if(typeof navigator.share === 'function'){
+      try{
+        await navigator.share(shareData);
+        return;
+      } catch(error){
+        if(error && error.name === 'AbortError') return;
+        console.warn('Native sharing was unavailable; trying link copy.', error);
+      }
+    }
+    try{
+      if(navigator.clipboard && typeof navigator.clipboard.writeText === 'function'){
+        await navigator.clipboard.writeText(url.href);
+      } else {
+        const temporaryInput = document.createElement('textarea');
+        temporaryInput.value = url.href;
+        temporaryInput.setAttribute('readonly','');
+        temporaryInput.style.position = 'fixed';
+        temporaryInput.style.opacity = '0';
+        document.body.appendChild(temporaryInput);
+        temporaryInput.select();
+        const copied = document.execCommand('copy');
+        temporaryInput.remove();
+        if(!copied) throw new Error('Copy to clipboard was denied.');
+      }
+      toast('تنسخ رابط المراجعة. تقدر دابا تصيفطو.');
+    } catch(error){
+      console.error(error);
+      toast('ما قدرناش نشاركو الرابط من هاد المتصفح.');
+    }
+  }
+
+  async function handleReviewAction(button){
+    const card = button.closest('.review-card');
+    if(!card) return;
+    const reviewId = card.getAttribute('data-review-id');
+    if(!reviewId) return;
+    const action = button.getAttribute('data-review-action');
+    if(action === 'comment'){
+      openReviewComments(reviewId, button);
+      return;
+    }
+    if(action === 'share'){
+      await shareReview(reviewId, card);
+      return;
+    }
+    if(action !== 'like' || !interactionApiReady) return;
+
+    const currentlyLiked = button.getAttribute('aria-pressed') === 'true';
+    const countElement = button.querySelector('[data-like-count]');
+    const currentCount = Number(countElement ? countElement.textContent : 0) || 0;
+    const busyButtons = Array.prototype.filter.call(carousel.querySelectorAll('[data-review-action="like"]'), item =>
+      item.closest('.review-card').getAttribute('data-review-id') === reviewId
+    );
+    busyButtons.forEach(item => { item.disabled = true; });
+    updateReviewInteractionCards(reviewId, {liked:!currentlyLiked,likeCount:Math.max(0,currentCount + (currentlyLiked ? -1 : 1))});
+    busyButtons.forEach(item => { item.disabled = true; });
+    try{
+      await postReviewInteraction({reviewId:reviewId,type:'Like'});
+      setTimeout(() => refreshReviewInteractions(reviewId), 700);
+    } catch(error){
+      console.error(error);
+      refreshReviewInteractions(reviewId);
+      toast('تعذر حفظ اللايك. حاول مرة أخرى.');
+    } finally{
+      setTimeout(() => busyButtons.forEach(item => { item.disabled = !interactionApiReady; }), 900);
+    }
+  }
+
   carousel.addEventListener('click', event => {
+    const actionButton = event.target.closest('[data-review-action]');
+    if(actionButton && carousel.contains(actionButton)){
+      event.preventDefault();
+      handleReviewAction(actionButton);
+      return;
+    }
     const photo = event.target.closest('img[data-review-photo]');
     if(!photo || !carousel.contains(photo)) return;
     lightboxReturnFocus = photo;
@@ -2773,6 +3162,22 @@
     carousel.style.animationDuration = Math.max(24, visible.length * 5) + 's';
     carouselViewport.hidden = visible.length === 0;
     if(emptyState) emptyState.hidden = visible.length > 0;
+    setInteractionButtonsEnabled(interactionApiReady);
+    if(interactionApiReady) refreshAllInteractions();
+    const sharedReview = window.location.hash.match(/^#review-(.+)$/);
+    if(sharedReview){
+      let targetReviewId = sharedReview[1];
+      try{ targetReviewId = decodeURIComponent(targetReviewId); } catch(error){ console.warn('Invalid review link fragment.', error); }
+      const targetCard = Array.prototype.find.call(carousel.querySelectorAll('.reviews-carousel-group:not([aria-hidden]) .review-card'), card =>
+        card.getAttribute('data-review-id') === targetReviewId
+      );
+      if(targetCard){
+        carousel.style.animation = 'none';
+        const group = targetCard.parentElement;
+        carousel.style.transform = 'translateX(-' + (targetCard.offsetLeft + (group ? group.offsetLeft : 0)) + 'px)';
+        targetCard.scrollIntoView({behavior:'smooth',block:'center',inline:'center'});
+      }
+    }
   }
 
   /* ---- modal ---- */
@@ -2812,6 +3217,46 @@
   if(modalClose) modalClose.addEventListener('click', closeModal);
   if(backdropEl) backdropEl.addEventListener('click', closeModal);
   document.addEventListener('keydown', event => { if(event.key === 'Escape' && modal && modal.classList.contains('open')) closeModal(); });
+
+  if(commentsClose) commentsClose.addEventListener('click', closeReviewComments);
+  if(commentsBackdrop) commentsBackdrop.addEventListener('click', closeReviewComments);
+  window.CardCastleOverlayClosers.push(closeReviewComments);
+  document.addEventListener('keydown', event => {
+    if(event.key === 'Escape' && commentsModal && commentsModal.classList.contains('open')) closeReviewComments();
+  });
+  if(commentsForm) commentsForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    const name = commentsName.value.trim();
+    const comment = commentsText.value.trim();
+    if(name.length < 2 || comment.length < 2){
+      commentsNote.textContent = 'دخل الاسم وتعليق فيه جوج حروف على الأقل.';
+      commentsNote.className = 'review-form-note err';
+      return;
+    }
+    commentsSubmit.disabled = true;
+    commentsNote.textContent = '';
+    try{
+      await postReviewInteraction({
+        reviewId:activeCommentReviewId,
+        type:'Comment',
+        name:name,
+        comment:comment
+      });
+      commentsForm.reset();
+      commentsNote.textContent = 'شكراً! التعليق تسيفط، وغادي يبان من بعد الموافقة عليه.';
+      commentsNote.className = 'review-form-note ok';
+      const submittedReviewId = activeCommentReviewId;
+      setTimeout(() => refreshReviewInteractions(submittedReviewId, data => {
+        if(activeCommentReviewId === submittedReviewId && commentsModal.classList.contains('open')) showApprovedComments(data.comments);
+      }), 700);
+    } catch(error){
+      console.error(error);
+      commentsNote.textContent = 'تعذر إرسال التعليق. حاول مرة أخرى.';
+      commentsNote.className = 'review-form-note err';
+    } finally{
+      commentsSubmit.disabled = !interactionApiReady;
+    }
+  });
 
   /* ---- interactive 1-5 star rating ---- */
   starButtons.forEach(button => {
