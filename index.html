@@ -842,17 +842,15 @@
 
   /* ===== CUSTOMER PHOTO REVIEWS ===== */
   #reviews{scroll-margin-top:120px;}
-  #reviews .reviews-section-head{max-width:720px;margin-left:auto;margin-right:0;direction:rtl;text-align:right;}
-  #reviews .reviews-section-head .eyebrow{color:#e8bd4a;}
+  #reviews .reviews-section-head{max-width:1120px;margin:0 auto; padding-left:clamp(18px,4vw,56px);direction:ltr;text-align:left;}
   .reviews-title{
-    font-family:'Tajawal','Fraunces',serif;
-    font-weight:800;
-    line-height:1.28;
-    margin-top:14px;
-    color:var(--parchment);
+    margin-top:0;
+    color:#f4e8cf;
+    font:600 clamp(2.2rem,4vw,2.5rem)/1.2 'Playfair Display','Georgia',serif;
+    text-align:left;
+    letter-spacing:-.025em;
+    text-shadow:0 8px 28px rgba(232,189,74,.12);
   }
-  .reviews-title .reviews-title-ar{display:block;direction:rtl;text-align:right;font-family:'Cairo','Alexandria',sans-serif!important;font-size:clamp(1.15em,3.5vw,1.38em);font-weight:600;letter-spacing:0;line-height:1.5;}
-  .reviews-title .reviews-title-en{display:block;direction:ltr;text-align:right;font-family:'Playfair Display','Georgia',serif;font-weight:600;font-size:.82em;margin-top:6px;}
 
   /* ---- wallet cashback banner (glassmorphism) ---- */
   .wallet-banner{
@@ -966,9 +964,12 @@
     overflow:hidden;
     padding:38px 18px 52px;
     perspective:1200px;
+    touch-action:pan-y;
+    cursor:grab;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
     mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
   }
+  .reviews-carousel-viewport.is-dragging{cursor:grabbing;user-select:none;}
   #reviews-3d-carousel{
     display:flex;
     width:max-content;
@@ -999,8 +1000,7 @@
     box-shadow:0 16px 36px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.035);
   }
   .review-card:hover,.review-card:focus-within{
-    z-index:2;
-    transform:rotateY(0) rotateX(0) scale(1.03);
+    z-index:30;
     border-color:rgba(232,189,74,.62);
     box-shadow:0 12px 35px rgba(232,189,74,.25),0 20px 44px rgba(0,0,0,.4);
   }
@@ -1022,8 +1022,8 @@
     white-space:pre-wrap;
   }
   .review-quote.is-arabic{font-family:'Cairo','Alexandria',sans-serif!important;font-size:17px;line-height:1.9;}
-  .review-social-bar{position:relative;z-index:1;display:flex;align-items:center;gap:14px;width:max-content;margin:auto 0 0;padding:10px 0 0;border-top:1px solid rgba(232,189,74,.12);color:rgba(244,232,207,.58);}
-  .review-social-action{display:inline-flex;align-items:center;justify-content:center;gap:3px;min-width:15px;height:15px;padding:0;border:0;background:transparent;color:inherit;font:500 10px/1 'Manrope',sans-serif;cursor:pointer;}
+  .review-social-bar{position:relative;z-index:30;display:flex;align-items:center;gap:14px;width:max-content;margin:auto 0 0;padding:10px 0 0;border-top:1px solid rgba(232,189,74,.12);color:rgba(244,232,207,.58);pointer-events:auto!important;}
+  .review-social-action,.review-social-bar .like-btn,.review-social-bar .comment-btn{position:relative;z-index:30;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:34px;height:34px;padding:0;border:0;background:transparent;color:inherit;font:500 10px/1 'Manrope',sans-serif;cursor:pointer;pointer-events:auto!important;}
   .review-social-action:disabled{cursor:not-allowed;opacity:.38;}
   .review-social-action:focus-visible{outline:1px solid #e8bd4a;outline-offset:3px;border-radius:3px;}
   .review-social-action .social-icon{display:block;width:14px;height:14px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.6;}
@@ -1363,7 +1363,7 @@
     .reviews-carousel-viewport{padding:32px 12px 42px;}
     .review-card{flex-basis:min(82vw,320px);padding:25px 18px 18px;}
     .review-quote{font-size:16px;line-height:1.75;}
-    .reviews-title{font-size:26px;}
+    .reviews-title{font-size:clamp(2rem,8vw,2.2rem);}
     .footer-grid{grid-template-columns:minmax(0,1fr);gap:28px;}
     .footer-bottom{flex-direction:column;align-items:flex-start;}
     .footer-legal-links{gap:14px;}
@@ -1973,11 +1973,7 @@
 
 
       <div class="section-head reviews-section-head">
-        <span class="eyebrow">VERIFIED BUYER PHOTOS</span>
-        <h2 class="reviews-title" id="reviews-title">
-          <span class="reviews-title-ar" dir="rtl" lang="ar">شنو كايقولو الزبناء ديالنا</span>
-          <span class="reviews-title-en">What Our Players Say</span>
-        </h2>
+        <h2 class="reviews-title" id="reviews-title">What Our Players Say</h2>
       </div>
 
       <p class="reviews-empty-state" id="reviews-empty-state">No reviews yet. Be the first to share your experience.</p>
@@ -2679,27 +2675,28 @@
   let toastTimer = null;
   let interactionApiReady = false;
   let interactionApiWarningShown = false;
+  let interactionRefreshRunning = false;
   let activeCommentReviewId = '';
   let commentsReturnFocus = null;
 
-  function requestJsonp(parameters, onSuccess, onFailure){
-    const callback = 'cardCastleApi_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
-    const script = document.createElement('script');
-    let settled = false;
-    const cleanup = () => {
-      if(settled) return;
-      settled = true;
-      clearTimeout(timeout);
-      delete window[callback];
-      script.remove();
-    };
-    const fail = error => { cleanup(); onFailure(error); };
-    const timeout = setTimeout(() => fail(new Error('The review service timed out.')), 15000);
-    window[callback] = data => { cleanup(); onSuccess(data); };
-    script.onerror = () => fail(new Error('Could not reach the review service.'));
-    const query = new URLSearchParams(Object.assign({}, parameters, {callback:callback}));
-    script.src = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + query.toString();
-    document.head.appendChild(script);
+  function requestApi(parameters, onSuccess, onFailure){
+    const query = new URLSearchParams(parameters);
+    query.set('_', Date.now().toString(36) + Math.random().toString(36).slice(2));
+    const url = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + query.toString();
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+    fetch(url, {method:'GET',mode:'cors',cache:'no-store',signal:controller.signal})
+      .then(response => {
+        if(!response.ok) throw new Error('The review service returned HTTP ' + response.status + '.');
+        return response.json();
+      })
+      .then(onSuccess)
+      .catch(error => {
+        onFailure(error && error.name === 'AbortError'
+          ? new Error('The review service timed out.')
+          : error);
+      })
+      .finally(() => clearTimeout(timeout));
   }
 
   function parseReviewMedia(value){
@@ -2756,19 +2753,31 @@
     });
   }
 
-  /* JSONP avoids the cross-origin fetch restriction on Apps Script ContentService. */
+  /* The deployed Apps Script endpoint supports readable cross-origin JSON requests. */
   function loadFromBackend(){
     if(!usingBackend){ render(); return; }
-    requestJsonp({}, data => {
+    if(emptyState){
+      emptyState.textContent = 'Loading customer reviews…';
+      emptyState.hidden = false;
+    }
+    requestApi({}, data => {
       try{
         reviews = normalizeReviewResponse(data).filter(item => item.status === 'approved');
         render();
       } catch(error){
         console.error(error);
+        if(emptyState){
+          emptyState.textContent = 'Could not read the reviews right now. Please refresh and try again.';
+          emptyState.hidden = false;
+        }
         if(note) note.textContent = 'صيغة بيانات المراجعات غير مدعومة. راجع نشر Apps Script.';
       }
     }, error => {
       console.error(error);
+      if(emptyState){
+        emptyState.textContent = 'Could not load reviews. Check your connection and refresh the page.';
+        emptyState.hidden = false;
+      }
       if(note) note.textContent = 'تعذر تحميل التقييمات حالياً.';
     });
   }
@@ -2793,12 +2802,12 @@
   }
 
   function loadInteractionData(reviewId, onSuccess, onFailure){
-    requestJsonp({action:'interactions',reviewId:reviewId,actorId:getActorId()}, onSuccess, onFailure);
+    requestApi({action:'interactions',reviewId:reviewId,actorId:getActorId()}, onSuccess, onFailure);
   }
 
   function checkInteractionApi(){
     if(!usingBackend) return;
-    requestJsonp({action:'capabilities'}, data => {
+    requestApi({action:'capabilities'}, data => {
       if(data && Number(data.apiVersion) >= 2 && (!Array.isArray(data.capabilities) || data.capabilities.indexOf('interactions') >= 0)){
         setInteractionButtonsEnabled(true);
         refreshAllInteractions();
@@ -2952,15 +2961,31 @@
   }
 
   function refreshAllInteractions(){
+    if(interactionRefreshRunning) return;
     const mainGroup = carousel.querySelector('.reviews-carousel-group:not([aria-hidden])');
     if(!mainGroup) return;
-    const seen = {};
+    const seen = new Set();
+    const reviewIds = [];
     mainGroup.querySelectorAll('.review-card').forEach(card => {
       const reviewId = card.getAttribute('data-review-id');
-      if(!reviewId || seen[reviewId]) return;
-      seen[reviewId] = true;
-      refreshReviewInteractions(reviewId);
+      if(!reviewId || seen.has(reviewId)) return;
+      seen.add(reviewId);
+      reviewIds.push(reviewId);
     });
+    if(!reviewIds.length) return;
+    interactionRefreshRunning = true;
+    let index = 0;
+    const loadNext = () => {
+      if(index >= reviewIds.length){
+        interactionRefreshRunning = false;
+        return;
+      }
+      refreshReviewInteractions(reviewIds[index++], loadNext, error => {
+        console.error(error);
+        setTimeout(loadNext, 250);
+      });
+    };
+    loadNext();
   }
 
   /* One delegated listener handles photos added on every render. */
@@ -2998,9 +3023,22 @@
     }
     return fetch(GOOGLE_SCRIPT_URL, {
       method:'POST',
-      mode:'no-cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
       body:JSON.stringify(requestPayload)
+    }).then(async response => {
+      let result;
+      try{
+        result = await response.json();
+      } catch(error){
+        throw new Error('خدمة التفاعلات رجعات جواب غير مفهوم.');
+      }
+      if(!response.ok || !result || result.ok === false || result.status === 'error'){
+        throw new Error(result && (result.error || result.message) || 'ما قدرناش نسجلو التفاعل.');
+      }
+      if(result.ok !== true && result.status !== 'success' && result.status !== 'Pending' && typeof result.liked !== 'boolean' && result.message !== 'Comment added'){
+        throw new Error('خدمة التفاعلات ما أكداتش الحفظ.');
+      }
+      return result;
     });
   }
 
@@ -3120,7 +3158,71 @@
     }
   }
 
+  let carouselDrag = null;
+  let suppressCarouselClickUntil = 0;
+  function setCarouselAutoScrollPaused(paused){
+    carousel.classList.toggle('is-paused', paused);
+    const animation = carousel.getAnimations().find(item => item.effect && item.effect.target === carousel);
+    if(!animation) return;
+    if(paused) animation.pause();
+    else animation.play();
+  }
+  carouselViewport.addEventListener('pointerenter', () => setCarouselAutoScrollPaused(true));
+  carouselViewport.addEventListener('pointerleave', event => {
+    if(carouselDrag || (event.relatedTarget && carouselViewport.contains(event.relatedTarget))) return;
+    setCarouselAutoScrollPaused(carouselViewport.contains(document.activeElement));
+  });
+  carouselViewport.addEventListener('focusin', () => setCarouselAutoScrollPaused(true));
+  carouselViewport.addEventListener('focusout', event => {
+    if(event.relatedTarget && carouselViewport.contains(event.relatedTarget)) return;
+    if(!carouselViewport.matches(':hover')) setCarouselAutoScrollPaused(false);
+  });
+  carouselViewport.addEventListener('pointerdown', event => {
+    if(event.button !== 0 || !event.isPrimary || event.target.closest('button,a,input,textarea,select,[data-review-photo]')) return;
+    const animation = carousel.getAnimations().find(item => item.effect && item.effect.target === carousel);
+    if(!animation) return;
+    const timing = animation.effect.getTiming();
+    const duration = Number(timing.duration);
+    const travelDistance = carousel.scrollWidth / 2;
+    if(!Number.isFinite(duration) || duration <= 0 || travelDistance <= 0) return;
+    carouselDrag = {
+      pointerId:event.pointerId,
+      startX:event.clientX,
+      startTime:Number(animation.currentTime) || 0,
+      animation:animation,
+      duration:duration,
+      travelDistance:travelDistance,
+      moved:false
+    };
+    animation.pause();
+    carouselViewport.classList.add('is-dragging');
+    carouselViewport.setPointerCapture(event.pointerId);
+  });
+  carouselViewport.addEventListener('pointermove', event => {
+    if(!carouselDrag || event.pointerId !== carouselDrag.pointerId) return;
+    const delta = event.clientX - carouselDrag.startX;
+    if(Math.abs(delta) > 4) carouselDrag.moved = true;
+    if(!carouselDrag.moved) return;
+    carouselDrag.animation.currentTime = carouselDrag.startTime - delta * carouselDrag.duration / carouselDrag.travelDistance;
+  });
+  function finishCarouselDrag(event){
+    if(!carouselDrag || (event && event.pointerId !== carouselDrag.pointerId)) return;
+    const drag = carouselDrag;
+    carouselDrag = null;
+    carouselViewport.classList.remove('is-dragging');
+    if(drag.moved) suppressCarouselClickUntil = Date.now() + 350;
+    if(event && carouselViewport.hasPointerCapture(event.pointerId)) carouselViewport.releasePointerCapture(event.pointerId);
+    setCarouselAutoScrollPaused(carouselViewport.matches(':hover') || carouselViewport.contains(document.activeElement));
+  }
+  carouselViewport.addEventListener('pointerup', finishCarouselDrag);
+  carouselViewport.addEventListener('pointercancel', finishCarouselDrag);
+
   carousel.addEventListener('click', event => {
+    if(Date.now() < suppressCarouselClickUntil){
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
     const actionButton = event.target.closest('[data-review-action]');
     if(actionButton && carousel.contains(actionButton)){
       event.preventDefault();
@@ -3161,7 +3263,10 @@
       : '';
     carousel.style.animationDuration = Math.max(24, visible.length * 5) + 's';
     carouselViewport.hidden = visible.length === 0;
-    if(emptyState) emptyState.hidden = visible.length > 0;
+    if(emptyState){
+      emptyState.hidden = visible.length > 0;
+      if(!visible.length) emptyState.textContent = 'No reviews yet. Be the first to share your experience.';
+    }
     setInteractionButtonsEnabled(interactionApiReady);
     if(interactionApiReady) refreshAllInteractions();
     const sharedReview = window.location.hash.match(/^#review-(.+)$/);
@@ -3251,7 +3356,7 @@
       }), 700);
     } catch(error){
       console.error(error);
-      commentsNote.textContent = 'تعذر إرسال التعليق. حاول مرة أخرى.';
+      commentsNote.textContent = 'تعذر إرسال التعليق: ' + (error && error.message ? error.message : 'حاول مرة أخرى.');
       commentsNote.className = 'review-form-note err';
     } finally{
       commentsSubmit.disabled = !interactionApiReady;
