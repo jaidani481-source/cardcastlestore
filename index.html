@@ -994,7 +994,8 @@
     border-color:rgba(232,189,74,.62);
     box-shadow:0 12px 35px rgba(232,189,74,.25),0 20px 44px rgba(0,0,0,.4);
   }
-  .review-card::before{position:absolute;inset:8px;border:1px solid rgba(232,189,74,.12);border-radius:12px;content:"";pointer-events:none;}
+  .review-card::before,.review-card::after,.card-overlay{pointer-events:none!important;}
+  .review-card::before{position:absolute;inset:8px;border:1px solid rgba(232,189,74,.12);border-radius:12px;content:"";pointer-events:none!important;}
   .review-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:56px;}
   .review-card-index{display:flex;flex-direction:column;align-items:center;color:#e8bd4a;font:700 16px/1.05 'Playfair Display','Cairo',serif;}
   .review-card-index-bottom{position:absolute;right:20px;bottom:14px;transform:rotate(180deg);}
@@ -1012,8 +1013,9 @@
     white-space:pre-wrap;
   }
   .review-quote.is-arabic{font-family:'Cairo','Alexandria',sans-serif!important;font-size:17px;line-height:1.9;}
-  .review-social-bar{position:relative;z-index:30;display:flex;align-items:center;gap:14px;width:max-content;margin:auto 0 0;padding:10px 0 0;border-top:1px solid rgba(232,189,74,.12);color:rgba(244,232,207,.58);pointer-events:auto!important;}
-  .review-social-action,.review-social-bar .like-btn,.review-social-bar .comment-btn{position:relative;z-index:30;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:34px;height:34px;padding:0;border:0;background:transparent;color:inherit;font:500 10px/1 'Manrope',sans-serif;cursor:pointer;pointer-events:auto!important;}
+  .review-social-bar{position:relative;z-index:100;display:flex;align-items:center;gap:14px;width:max-content;margin:auto 0 0;padding:10px 0 0;border-top:1px solid rgba(232,189,74,.12);color:rgba(244,232,207,.58);pointer-events:auto!important;}
+  .review-social-action,.review-social-bar .like-btn,.review-social-bar .comment-btn,.review-social-bar .share-btn{position:relative!important;z-index:100!important;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:34px;height:34px;padding:0;border:0;background:transparent;color:inherit;font:500 10px/1 'Manrope',sans-serif;cursor:pointer!important;pointer-events:auto!important;}
+  .review-social-action *{position:relative;z-index:100;pointer-events:auto!important;cursor:pointer!important;}
   .review-social-action:disabled{cursor:not-allowed;opacity:.38;}
   .review-social-action:focus-visible{outline:1px solid #e8bd4a;outline-offset:3px;border-radius:3px;}
   .review-social-action .social-icon{display:block;width:14px;height:14px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.6;}
@@ -1964,9 +1966,9 @@
 
       <template id="review-social-bar-template">
         <div class="review-social-bar" aria-label="Review social engagement">
-          <button class="review-social-action review-social-likes" type="button" data-review-action="like" aria-label="Like review" aria-pressed="false" disabled><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg><span class="review-social-count" data-like-count>0</span></button>
-          <button class="review-social-action review-social-comment" type="button" data-review-action="comment" aria-label="View or add comments" disabled><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.5a8.4 8.4 0 0 1-12.2 7.5L3 20l1.2-4.7a8.5 8.5 0 1 1 16.3-3.8Z"/></svg><span class="review-social-count" data-comment-count>0</span></button>
-          <button class="review-social-action review-social-send" type="button" data-review-action="share" aria-label="Share review" disabled><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
+          <button class="review-social-action review-social-likes like-btn" type="button" data-review-action="like" aria-label="Like review" aria-pressed="false" disabled><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg><span class="review-social-count" data-like-count>0</span></button>
+          <button class="review-social-action review-social-comment comment-btn" type="button" data-review-action="comment" aria-label="View or add comments" disabled><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.5a8.4 8.4 0 0 1-12.2 7.5L3 20l1.2-4.7a8.5 8.5 0 1 1 16.3-3.8Z"/></svg><span class="review-social-count" data-comment-count>0</span></button>
+          <button class="review-social-action review-social-send share-btn" type="button" data-review-action="share" aria-label="Share review" disabled><svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
         </div>
       </template>
 
@@ -3210,16 +3212,21 @@
   carouselViewport.addEventListener('pointerup', finishCarouselDrag);
   carouselViewport.addEventListener('pointercancel', finishCarouselDrag);
 
+  function bindReviewActionButtons(){
+    carousel.querySelectorAll('[data-review-action]').forEach(button => {
+      button.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        if(Date.now() < suppressCarouselClickUntil) return;
+        handleReviewAction(button);
+      });
+    });
+  }
+
   carousel.addEventListener('click', event => {
     if(Date.now() < suppressCarouselClickUntil){
       event.preventDefault();
       event.stopPropagation();
-      return;
-    }
-    const actionButton = event.target.closest('[data-review-action]');
-    if(actionButton && carousel.contains(actionButton)){
-      event.preventDefault();
-      handleReviewAction(actionButton);
       return;
     }
     const photo = event.target.closest('img[data-review-photo]');
@@ -3254,6 +3261,7 @@
     carousel.innerHTML = visible.length
       ? '<div class="reviews-carousel-group">' + cards + '</div><div class="reviews-carousel-group" aria-hidden="true" inert>' + cards + '</div>'
       : '';
+    bindReviewActionButtons();
     carousel.style.animationDuration = Math.max(24, visible.length * 5) + 's';
     carouselViewport.hidden = visible.length === 0;
     if(emptyState){
