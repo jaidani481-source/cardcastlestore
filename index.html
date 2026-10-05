@@ -3015,7 +3015,7 @@
     commentsModal.classList.add('open');
     commentsModal.setAttribute('aria-hidden','false');
     window.CardCastleScrollLock.lock('review-comments');
-    setTimeout(() => { if(commentsName) commentsName.focus(); }, 60);
+    setTimeout(() => { if(commentsText) commentsText.focus(); }, 60);
     refreshReviewInteractions(reviewId, data => {
       if(activeCommentReviewId === reviewId && commentsModal.classList.contains('open')) showApprovedComments(data.comments);
     }, error => {
