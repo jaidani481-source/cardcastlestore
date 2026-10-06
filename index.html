@@ -915,9 +915,12 @@
   #wallet-banner .banner-copy{width:min(100%,760px);margin:0 auto;text-align:center;}
   #wallet-banner .banner-kicker{display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:#d8bd77;font:700 11px/1.4 'Manrope',sans-serif;letter-spacing:.18rem;text-transform:uppercase;}
   #wallet-banner .badge-glow{display:inline-flex;align-items:center;gap:.65rem;margin:0;padding:.62rem 1rem;border:1px solid rgba(239,203,103,.52);border-radius:999px;background:rgba(111,75,22,.32);color:#ffe39a;font:700 clamp(1.2rem,2.7vw,1.55rem)/1.2 'Playfair Display','Georgia',serif;letter-spacing:.01em;text-decoration:none;text-transform:none;text-shadow:0 1px 12px rgba(232,189,74,.2);animation:ccRewardBadgePulse 3.6s ease-in-out infinite;}
+  #wallet-banner .reward-gift{position:relative;left:2mm;display:inline-flex;align-items:center;vertical-align:middle;margin-right:6px;font-size:1.3em;line-height:1;transform-origin:center;animation:ccRewardGiftPulse 1.8s ease-in-out infinite;}
+  @keyframes ccRewardGiftPulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 2px rgba(240,198,84,.25));}50%{transform:scale(1.18);filter:drop-shadow(0 0 9px rgba(240,198,84,.72));}}
   #wallet-banner .reward-amount{font-family:'Manrope',sans-serif;font-variant-numeric:lining-nums;font-weight:800;letter-spacing:-.04em;}
   @keyframes ccRewardBadgePulse{0%,100%{box-shadow:0 0 0 rgba(232,189,74,0),inset 0 0 0 rgba(232,189,74,0)}50%{box-shadow:0 0 24px rgba(232,189,74,.25),inset 0 0 18px rgba(232,189,74,.06)}}
-  #wallet-banner .banner-description{max-width:610px;margin:12px auto 0;color:rgba(244,232,207,.88);font:400 15px/1.6 'Manrope',sans-serif;}
+  #wallet-banner .banner-description{max-width:610px;margin:12px auto 0;color:#f0e6d2;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14.5px;font-weight:400;letter-spacing:.3px;line-height:1.6;}
+  #wallet-banner .gold-highlight{display:inline-block;color:#f0c654!important;font-weight:700;text-shadow:0 0 10px rgba(240,198,84,.35);}
   #wallet-banner .action-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:16px;}
   #wallet-banner .review-btn,#wallet-banner .details-btn{min-height:48px;display:inline-flex;justify-content:center;align-items:center;gap:.6rem;border-radius:999px;padding:.8rem 1.15rem;font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:transform .2s ease,box-shadow .25s ease,background .25s ease;}
   #wallet-banner .review-btn{border:1px solid transparent;background:#e8bd4a;color:#201307;}
@@ -939,7 +942,7 @@
   #wallet-banner .fade-in.delay-2{animation-delay:.2s;}
   #wallet-banner .fade-in.delay-3{animation-delay:.3s;}
   @keyframes ccRewardFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-  @media(max-width:720px){#wallet-banner .banner-content{padding:1.25rem 1rem;}#wallet-banner .banner-kicker{font-size:10px;letter-spacing:.12rem;}#wallet-banner .action-row{flex-direction:column;align-items:center;margin-top:14px;}#wallet-banner .review-btn,#wallet-banner .details-btn{width:min(100%,320px);}}
+  @media(max-width:720px){#wallet-banner .banner-content{padding:1.25rem 1rem;}#wallet-banner .banner-kicker{font-size:10px;letter-spacing:.12rem;}#wallet-banner .banner-description{font-size:13.5px;}#wallet-banner .action-row{flex-direction:column;align-items:center;margin-top:14px;}#wallet-banner .review-btn,#wallet-banner .details-btn{width:min(100%,320px);}}
 
   /* ---- empty state: no approved reviews yet (minimal — the wallet-banner above already carries the CTA) ---- */
   .reviews-empty-state{
@@ -1955,8 +1958,8 @@
         <div class="banner-content">
           <div class="banner-copy">
             <div class="banner-kicker fade-in"><span>PERSONALIZED - RATING REWARDS</span></div>
-            <h2 class="badge-glow fade-in delay-1" id="offer-title">🎁 <span><span class="reward-amount">10 DH – 20 DH</span> Cashback Reward</span></h2>
-            <p class="banner-description fade-in delay-2">Share your game night review with a photo! Get 10 DH for standard photo reviews, or UP TO 20 DH for aesthetic gameplay photos! 📸✨</p>
+            <h2 class="badge-glow fade-in delay-1" id="offer-title"><span class="reward-gift" aria-hidden="true">🎁</span> <span><span class="reward-amount">10% – 20%</span> Cashback Reward</span></h2>
+            <p class="banner-description fade-in delay-2">Snap your game night vibes! Earn <span class="gold-highlight">10% cashback</span> for a photo review, or UP TO <span class="gold-highlight">20%</span> when you showcase your <span class="gold-highlight">aesthetic setup.</span></p>
             <div class="action-row fade-in delay-3">
               <button id="review-button" class="review-btn" type="button" data-reviews-open="1">📷 <span>Leave a review</span> ➔</button>
               <button id="details-button" class="details-btn" type="button" aria-expanded="false" aria-controls="details-panel"><span aria-hidden="true">👁</span><span id="view-details-label">View details</span><span id="hide-details-label" hidden>Hide details</span></button>
