@@ -17,7 +17,7 @@
 <meta name="twitter:image" content="https://cardcastle.store/images/love-memories.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700&family=Cairo:wght@500;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700&family=Allura&family=Cairo:wght@500;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     /* ---- Official CardCastle brand variables ---- */
@@ -842,15 +842,16 @@
 
   /* ===== CUSTOMER PHOTO REVIEWS ===== */
   #reviews{scroll-margin-top:120px;}
-  #reviews .reviews-section-head{max-width:1120px;margin:0 auto; padding-left:clamp(18px,4vw,56px);direction:ltr;text-align:left;}
-  .reviews-title{
-    margin-top:0;
-    color:#f4e8cf;
-    font:600 clamp(2.2rem,4vw,2.5rem)/1.2 'Playfair Display','Georgia',serif;
-    text-align:left;
-    letter-spacing:-.025em;
-    text-shadow:0 8px 28px rgba(232,189,74,.12);
-  }
+  #reviews .reviews-section-head{position:relative;display:flex;justify-content:center;max-width:1120px;margin:0 auto 42px;padding:clamp(42px,6vw,70px) 18px clamp(26px,4vw,44px);direction:ltr;text-align:center;isolation:isolate;}
+  #reviews .reviews-section-head::before{position:absolute;inset:0;z-index:-1;border:1px solid rgba(232,189,74,.1);border-radius:20px;background:radial-gradient(ellipse at 50% 55%,rgba(232,189,74,.105),transparent 61%),linear-gradient(135deg,rgba(232,189,74,.035),transparent 38%,rgba(232,189,74,.045));content:"";}
+  #reviews .reviews-section-head::after{position:absolute;right:0;bottom:12px;left:0;z-index:-1;height:1px;background:linear-gradient(90deg,transparent,rgba(232,189,74,.4),transparent);content:"";}
+  #reviews .reviews-title{position:relative;display:block;margin:0;padding:0 clamp(46px,7vw,84px) 0 0;color:#f3d77e;font:700 clamp(3.2rem,7.8vw,6.3rem)/.98 'Playfair Display','Georgia',serif;text-align:center;letter-spacing:-.055em;text-shadow:0 3px 0 #74470e,0 8px 28px rgba(232,189,74,.22);}
+  .reviews-title-script{position:absolute;top:-.53em;left:5%;color:#fff8e9;font:400 clamp(3.6rem,7.5vw,6.2rem)/.8 'Allura','Brush Script MT',cursive;letter-spacing:0;text-shadow:0 2px 12px rgba(255,248,233,.14);transform:rotate(-7deg);}
+  .reviews-title-gold{position:relative;display:inline-block;}
+  .reviews-title-gold::after{position:absolute;right:2%;bottom:-.13em;left:2%;height:4px;border-radius:50%;background:linear-gradient(90deg,transparent,#e8bd4a 18%,#ffe18a 53%,#c88918 83%,transparent);content:"";transform:rotate(-1.5deg);box-shadow:0 0 12px rgba(232,189,74,.5);}
+  .reviews-title-mark{position:absolute;top:8%;right:0;width:clamp(42px,6vw,72px);height:clamp(42px,6vw,72px);color:#f4c545;filter:drop-shadow(0 0 12px rgba(232,189,74,.34));}
+  .reviews-title-mark path{fill:rgba(232,189,74,.07);stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;}
+  .reviews-title-mark text{fill:#ffd75f;font:700 8px 'Manrope',sans-serif;letter-spacing:.06em;}
 
   /* ---- wallet cashback banner (glassmorphism) ---- */
   .wallet-banner{
@@ -980,29 +981,43 @@
     display:flex;
     flex:0 0 clamp(270px,28vw,340px);
     flex-direction:column;
-    min-height:390px;
-    padding:28px 22px 20px;
-    overflow:hidden;
-    border:1px solid #e8bd4a33;
-    border-radius:18px;
-    background:#121212;
+    min-height:420px;
     color:#f4e8cf;
     transform:rotateY(-10deg) rotateX(3deg);
     transform-style:preserve-3d;
-    transition:transform .45s cubic-bezier(.2,.75,.25,1),box-shadow .45s ease,border-color .45s ease;
-    box-shadow:0 16px 36px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.035);
+    perspective:1200px;
+    transition:transform .45s cubic-bezier(.2,.75,.25,1);
   }
-  .review-card:hover,.review-card:focus-within{
-    z-index:30;
-    border-color:rgba(232,189,74,.62);
-    box-shadow:0 12px 35px rgba(232,189,74,.25),0 20px 44px rgba(0,0,0,.4);
-  }
-  .review-card::before,.review-card::after,.card-overlay{pointer-events:none!important;}
-  .review-card::before{position:absolute;inset:8px;border:1px solid rgba(232,189,74,.12);border-radius:12px;content:"";pointer-events:none!important;}
+  .review-card:hover,.review-card:focus-within{z-index:30;}
+  .review-card-inner{position:relative;flex:1;min-height:420px;transform-style:preserve-3d;transition:transform .72s cubic-bezier(.2,.75,.25,1);}
+  .review-card.is-flipped .review-card-inner{transform:rotateY(180deg);}
+  .review-card-face{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;border:1px solid #e8bd4a44;border-radius:18px;background:#121212;color:#f4e8cf;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 16px 36px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.035);transition:border-color .3s ease,box-shadow .3s ease;}
+  .review-card:hover .review-card-face,.review-card:focus-within .review-card-face{border-color:rgba(232,189,74,.68);box-shadow:0 12px 35px rgba(232,189,74,.25),0 20px 44px rgba(0,0,0,.4);}
+  .review-card-front{position:relative;inset:auto;min-height:420px;padding:24px 20px 18px;}
+  .review-card-back{align-items:center;justify-content:center;padding:14px;transform:rotateY(180deg);}
+  .review-card-back[hidden]{display:none;}
+  .review-photo-full{display:block;width:100%;height:100%;min-height:0;object-fit:contain;border-radius:10px;background:#090909;}
+  .review-photo-missing{display:grid;flex:1;width:100%;place-items:center;color:rgba(244,232,207,.7);font:500 15px/1.5 'Manrope',sans-serif;text-align:center;}
+  .review-photo-flip-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;min-height:42px;margin-top:12px;padding:9px 12px;border:1px solid rgba(232,189,74,.44);border-radius:999px;background:linear-gradient(120deg,#e8bd4a,#f4d978);color:#201307;font:800 12px/1.3 'Manrope',sans-serif;cursor:pointer;box-shadow:0 8px 20px rgba(232,189,74,.13);transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;}
+  .review-photo-flip-btn:hover:not(:disabled),.review-photo-flip-btn:focus-visible{transform:translateY(-2px);box-shadow:0 12px 25px rgba(232,189,74,.25);filter:brightness(1.04);}
+  .review-photo-flip-btn:focus-visible{outline:2px solid #fff3c8;outline-offset:3px;}
+  .review-photo-flip-btn:disabled{opacity:.5;cursor:not-allowed;}
+  .review-card-avatar{display:grid;flex:none;width:54px;height:54px;place-items:center;overflow:hidden;padding:0;border:1px solid rgba(232,189,74,.55);border-radius:12px;background:linear-gradient(145deg,rgba(232,189,74,.2),rgba(111,75,22,.45));color:#ffe39a;font:700 21px/1 'Playfair Display',serif;}
+  .review-card-avatar.initial-avatar{border-radius:50%;}
+  .review-card-avatar.has-photo{cursor:pointer;}
+  .review-card-avatar:disabled{cursor:default;}
+  .review-card-avatar img{display:block;width:100%;height:100%;object-fit:cover;}
+  .review-card-front .review-card-top{flex:none;}
+  .review-card-front .review-card-bottom{flex:none;}
+  .review-card-front .review-quote{flex:1;}
+  .review-card-back .review-photo-back-btn{position:absolute;right:24px;bottom:22px;left:24px;width:auto;margin-top:0;}
+  .review-card-back .review-photo-missing + .review-photo-back-btn{flex:none;}
   @media(hover:hover) and (pointer:fine){.review-card{transform:none;transform-style:flat;}}
+  @media(prefers-reduced-motion:reduce){.review-card-inner{transition-duration:.01ms;}}
+  .review-card::before,.review-card::after,.card-overlay{pointer-events:none!important;}
+  .review-card-face::before,.review-card-face::after{pointer-events:none!important;}
+  .review-card-face::before{position:absolute;inset:8px;border:1px solid rgba(232,189,74,.12);border-radius:12px;content:"";}
   .review-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:56px;}
-  .review-card-index{display:flex;flex-direction:column;align-items:center;color:#e8bd4a;font:700 16px/1.05 'Playfair Display','Cairo',serif;}
-  .review-card-index-bottom{position:absolute;right:20px;bottom:14px;transform:rotate(180deg);}
   .review-card-category{max-width:68%;overflow:hidden;padding:6px 11px;border:1px solid rgba(232,189,74,.3);border-radius:999px;background:rgba(232,189,74,.08);color:#e8bd4a;font:600 11px/1.25 'Manrope','Cairo',sans-serif;text-align:center;text-overflow:ellipsis;white-space:nowrap;}
   .review-quote{
     display:flex;
@@ -1017,25 +1032,21 @@
     white-space:pre-wrap;
   }
   .review-quote.is-arabic{font-family:'Cairo','Alexandria',sans-serif!important;font-size:17px;line-height:1.9;}
-  .review-social-bar{position:relative;z-index:100;display:flex;align-items:center;gap:14px;width:max-content;margin:auto 0 0;padding:10px 0 0;border-top:1px solid rgba(232,189,74,.12);color:rgba(244,232,207,.58);pointer-events:auto!important;}
-  .review-social-action,.review-social-bar .like-btn,.review-social-bar .comment-btn,.review-social-bar .share-btn{position:relative!important;z-index:100!important;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:34px;height:34px;padding:0;border:0;background:transparent;color:inherit;font:500 10px/1 'Manrope',sans-serif;cursor:pointer!important;pointer-events:auto!important;}
+  .review-social-bar{position:relative;z-index:100;display:flex;align-items:center;gap:16px;width:max-content;margin:auto 0 0;padding:10px 0 0;border-top:1px solid rgba(232,189,74,.2);color:#f4e8cf;pointer-events:auto!important;}
+  .review-social-action,.review-social-bar .like-btn,.review-social-bar .comment-btn,.review-social-bar .share-btn{position:relative!important;z-index:100!important;display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:38px;height:38px;padding:0;border:0;background:transparent;color:#f4e8cf;font:600 11px/1 'Manrope',sans-serif;cursor:pointer!important;pointer-events:auto!important;}
   .review-social-action *{position:relative;z-index:100;pointer-events:auto!important;cursor:pointer!important;}
   .review-social-action:disabled{cursor:not-allowed;opacity:.38;}
   .review-social-action:focus-visible{outline:1px solid #e8bd4a;outline-offset:3px;border-radius:3px;}
-  .review-social-action .social-icon{display:block;width:14px;height:14px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.6;}
+  .review-social-action .social-icon{display:block;width:19px;height:19px;fill:none;stroke:#e8bd4a;stroke-linecap:round;stroke-linejoin:round;stroke-width:2;}
   .review-social-action.review-social-likes .social-icon{fill:currentColor;stroke:none;}
   .review-social-action.is-active{color:#e8bd4a;}
-  .review-social-count{font-size:10px;}
+  .review-social-count{color:#fff2cf;font-size:11px;}
   #reviews-3d-carousel.is-paused{animation-play-state:paused;}
   .review-card-bottom{position:relative;z-index:1;display:flex;align-items:center;gap:12px;min-height:64px;margin-bottom:14px;}
   .review-stars{flex:none;color:#e8bd4a;font-size:15px;line-height:1;letter-spacing:.08em;text-shadow:0 0 13px rgba(232,189,74,.28);white-space:nowrap;}
-  .review-ugc-photo{display:block;flex:none;width:54px;height:54px;overflow:hidden;border:1px solid rgba(232,189,74,.38);border-radius:9px;background:#1b1915;object-fit:cover;cursor:pointer;}
-  .review-ugc-placeholder{display:grid;place-items:center;color:rgba(232,189,74,.68);font-size:21px;cursor:default;}
   .review-customer{display:flex;min-width:0;flex:1;flex-direction:column;gap:5px;}
   .review-customer-name{overflow:hidden;color:#f4e8cf;font:600 13px/1.35 'Manrope','Cairo',sans-serif;text-overflow:ellipsis;white-space:nowrap;}
   .review-customer-name.is-arabic{font-family:'Cairo','Alexandria',sans-serif!important;}
-  .review-verified{color:#cbbfa8;font:600 10px/1.25 'Manrope',sans-serif;white-space:nowrap;}
-  .review-verified .check{color:#e8bd4a;}
   #review-comments-form .review-field input,#review-comments-form .review-field textarea{direction:ltr;text-align:left;font-family:'Manrope',sans-serif;}
 
   /* ===== FOOTER ===== */
@@ -1320,14 +1331,28 @@
   .review-form-note{margin-top:12px;min-height:19px;font:600 14px/1.65 'Tajawal','Manrope',sans-serif;text-align:center;direction:rtl;}
   .review-form-note.ok{color:#9fe0b6;}
   .review-form-note.err{color:#f5a3a3;}
+  #review-comments-modal[dir="ltr"]{text-align:left!important;direction:ltr!important;}
+  #review-comments-modal[dir="ltr"] .review-modal-head,
+  #review-comments-modal[dir="ltr"] .review-modal-head h3,
+  #review-comments-modal[dir="ltr"] .review-modal-head p,
+  #review-comments-modal[dir="ltr"] .review-field,
+  #review-comments-modal[dir="ltr"] .review-field>span,
+  #review-comments-modal[dir="ltr"] .review-form-note,
+  #review-comments-modal[dir="ltr"] .review-submit{direction:ltr!important;text-align:left!important;}
   .review-comments-modal{gap:0;}
-  .review-comments-list{display:flex;flex-direction:column;gap:10px;min-height:72px;max-height:220px;overflow-y:auto;padding:4px 2px 14px;}
+  .review-comments-list{display:flex;flex-direction:column;gap:10px;min-height:0;max-height:220px;overflow-y:auto;padding:4px 2px 14px;}
+  .review-comments-list[hidden]{display:none!important;}
   .review-comment-item{padding:10px 12px;border:1px solid rgba(232,189,74,.16);border-radius:10px;background:rgba(18,18,18,.55);}
   .review-comment-item strong{display:block;margin-bottom:4px;color:#e8bd4a;font:600 12px/1.4 'Manrope','Cairo',sans-serif;}
   .review-comment-item p{margin:0;color:#f4e8cf;font:400 13px/1.6 'Manrope','Cairo',sans-serif;overflow-wrap:anywhere;}
   .review-comment-item time{display:block;margin-top:5px;color:var(--muted);font:400 10px/1.4 'Manrope',sans-serif;}
   #review-comments-form{flex:none;padding-bottom:22px;}
+  #review-comments-form .review-field{display:block;width:100%;text-align:left!important;}
+  #review-comments-form .review-field>span{display:block;width:100%;text-align:left!important;}
+  #review-comments-form .review-field input,#review-comments-form .review-field textarea{direction:ltr!important;text-align:left!important;font-family:'Manrope',sans-serif;}
   #review-comments-form .review-field textarea{min-height:80px;}
+  #review-comments-form .review-submit{direction:ltr!important;justify-content:flex-start!important;text-align:left!important;padding-left:18px;}
+  #review-comments-note{direction:ltr!important;text-align:left!important;}
   .reviews-toast{
     position:fixed;left:50%;bottom:26px;z-index:302;
     display:none;
@@ -1360,7 +1385,10 @@
     .reviews-carousel-viewport{padding:32px 12px 42px;}
     .review-card{flex-basis:min(82vw,320px);padding:25px 18px 18px;}
     .review-quote{font-size:16px;line-height:1.75;}
-    .reviews-title{font-size:clamp(2rem,8vw,2.2rem);}
+    #reviews .reviews-section-head{margin-bottom:32px;padding:42px 10px 24px;}
+    #reviews .reviews-title{padding-right:48px;font-size:clamp(2.65rem,11vw,4rem);}
+    .reviews-title-script{top:-.5em;left:5%;font-size:clamp(3.25rem,13vw,4.7rem);}
+    .reviews-title-mark{top:8%;width:42px;height:42px;}
     .footer-grid{grid-template-columns:minmax(0,1fr);gap:28px;}
     .footer-bottom{flex-direction:column;align-items:flex-start;}
     .footer-legal-links{gap:14px;}
@@ -1927,8 +1955,8 @@
         <div class="banner-content">
           <div class="banner-copy">
             <div class="banner-kicker fade-in"><span>PERSONALIZED - RATING REWARDS</span></div>
-            <h2 class="badge-glow fade-in delay-1" id="offer-title">🎁 <span><span class="reward-amount">15</span> DH Cashback Reward</span></h2>
-            <p class="banner-description fade-in delay-2">Share your honest review, get 15 DH off your next order, and help fellow players choose with confidence! ✨</p>
+            <h2 class="badge-glow fade-in delay-1" id="offer-title">🎁 <span><span class="reward-amount">10 DH – 20 DH</span> Cashback Reward</span></h2>
+            <p class="banner-description fade-in delay-2">Share your game night review with a photo! Get 10 DH for standard photo reviews, or UP TO 20 DH for aesthetic gameplay photos! 📸✨</p>
             <div class="action-row fade-in delay-3">
               <button id="review-button" class="review-btn" type="button" data-reviews-open="1">📷 <span>Leave a review</span> ➔</button>
               <button id="details-button" class="details-btn" type="button" aria-expanded="false" aria-controls="details-panel"><span aria-hidden="true">👁</span><span id="view-details-label">View details</span><span id="hide-details-label" hidden>Hide details</span></button>
@@ -1938,7 +1966,7 @@
                 <h4>Reward conditions</h4>
                 <p>01 — Your deck must be from a completed CardCastle order.</p>
                 <p>02 — Include a clear photo of the playing-card deck you received.</p>
-                <p>03 — Cashback is issued as a 15 DH discount for your next order.</p>
+                <p>03 — Cashback is between 10 and 20 DH off your next order, depending on photo style.</p>
               </div>
             </div>
             <div class="banner-verified fade-in delay-3"><span aria-hidden="true">✓</span><span>Verified buyer reward</span></div>
@@ -1964,7 +1992,14 @@
 
 
       <div class="section-head reviews-section-head">
-        <h2 class="reviews-title" id="reviews-title">What Our Players Say</h2>
+        <h2 class="reviews-title" id="reviews-title" aria-label="What Our Players Say">
+          <span class="reviews-title-script" aria-hidden="true">What</span>
+          <span class="reviews-title-gold" aria-hidden="true">Our Players Say</span>
+          <svg class="reviews-title-mark" viewBox="0 0 72 64" aria-hidden="true" focusable="false">
+            <path d="M12 6h48a8 8 0 0 1 8 8v25a8 8 0 0 1-8 8H31L17 58l2-11h-7a8 8 0 0 1-8-8V14a8 8 0 0 1 8-8Z"/>
+            <text x="36" y="34" text-anchor="middle">★★★★★</text>
+          </svg>
+        </h2>
       </div>
 
       <p class="reviews-empty-state" id="reviews-empty-state">No reviews yet. Be the first to share your experience.</p>
@@ -2047,7 +2082,7 @@
           <label class="review-field review-upload"><div class="label-row"><span>صورة ديالك</span><span class="en-label">Order Photo *</span></div>
             <input id="review-image" name="photo" type="file" accept="image/*" multiple required>
             <span id="review-image-count" class="review-upload-hint" aria-live="polite"></span>
-            <span class="review-upload-hint">خاصة صورة ديال الطلب (JPG / PNG / WEBP — الحد الأقصى 1.5MB) باش نتحققو ونتفعلو 15 DH فـ الـ Wallet.</span>
+            <span class="review-upload-hint">خاصة صورة ديال الطلب (JPG / PNG / WEBP — الحد الأقصى 1.5MB) باش نتحققو ونتفعلو مكافأة بين 10 و20 DH.</span>
           </label>
           <img id="review-image-preview" alt="معاينة الصورة" hidden>
           <span class="field-error" id="review-image-error"></span>
@@ -2058,19 +2093,19 @@
       </div>
 
       <div class="review-modal-backdrop" id="review-comments-backdrop"></div>
-      <section class="review-modal review-comments-modal" id="review-comments-modal" role="dialog" aria-modal="true" aria-labelledby="review-comments-title" aria-hidden="true">
+      <section class="review-modal review-comments-modal" id="review-comments-modal" dir="ltr" role="dialog" aria-modal="true" aria-labelledby="review-comments-title" aria-hidden="true">
         <div class="review-modal-head">
           <div>
-            <h3 id="review-comments-title">تعليقات المراجعة</h3>
-            <p>التعليقات كاتبان من بعد ما نراجعوها.</p>
+            <h3 id="review-comments-title">Review Comments</h3>
+            <p>Comments appear once reviewed and approved.</p>
           </div>
-          <button class="icon-button" id="review-comments-close" type="button" aria-label="إغلاق التعليقات"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+          <button class="icon-button" id="review-comments-close" type="button" aria-label="Close comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         </div>
-        <div class="review-comments-list" id="review-comments-list" aria-live="polite"></div>
+        <div class="review-comments-list" id="review-comments-list" aria-live="polite" hidden></div>
         <form id="review-comments-form" novalidate>
           <label class="review-field"><span>Your name</span><input id="review-comment-name" type="text" lang="en" dir="ltr" autocomplete="name" placeholder="Enter your name" maxlength="80" required></label>
-          <label class="review-field"><span>Your comment</span><textarea id="review-comment-text" lang="en" dir="ltr" placeholder="Write your comment in English..." maxlength="500" required></textarea></label>
-          <button class="btn btn-primary review-submit" id="review-comment-submit" type="submit">إرسال التعليق</button>
+          <label class="review-field"><span>Your comment</span><textarea id="review-comment-text" lang="en" dir="ltr" placeholder="Write your comment..." maxlength="500" required></textarea></label>
+          <button class="btn btn-primary review-submit" id="review-comment-submit" type="submit">Post Comment</button>
           <p class="review-form-note" id="review-comments-note" role="status" aria-live="polite"></p>
         </form>
       </section>
@@ -2860,15 +2895,32 @@
     'The Royal Full Bundle':'Choose 4 cards'
   };
 
+  function cleanReviewField(value){
+    const cleaned = String(value == null ? '' : value)
+      .replace(/\b(?:n\/a|not available|undefined|null)\b/gi, '')
+      .replace(/\s+/g, ' ')
+      .replace(/^[\s,•|–-]+|[\s,•|–-]+$/g, '')
+      .trim();
+    return /^(?:-|—|none)$/i.test(cleaned) ? '' : cleaned;
+  }
+
+  function cleanReviewComment(value){
+    return String(value == null ? '' : value)
+      .replace(/,\s*,+/g, ',')
+      .replace(/[ \t]{2,}/g, ' ')
+      .replace(/\s+([,.!?])/g, '$1')
+      .trim();
+  }
+
   function cardMarkup(review, index){
-    const name = review.name || review.Name || review.customerName || review['Customer Name'] || 'Customer';
-    const city = review.city || review.City || review.location || review.Location || '';
-    const comment = review.comment || review.Comment || '';
+    const name = cleanReviewField(review.name || review.Name || review.customerName || review['Customer Name']) || 'Customer';
+    const city = cleanReviewField(review.city || review.City || review.location || review.Location || '');
+    const comment = cleanReviewComment(review.comment || review.Comment || '');
     const ratingValue = review.rating || review.Rating || 0;
     const deckName = review.product || review.deck || review.Product || "Let's Dig Deeper";
     const categoryName = review.category || review.Category || productCategories[deckName] || deckName;
     let rawPhotos = review.photos || review.photo || review.photoUrls || review.photoURLs || review['Photo URLs'] || review['Photo URLs/Base64'] || review.customerMedia || review['Customer Media'] || [];
-    let photos = Array.isArray(rawPhotos) ? rawPhotos : [];
+    let photos = Array.isArray(rawPhotos) ? rawPhotos.filter(value => typeof value === 'string') : [];
     if(!photos.length && typeof rawPhotos === 'string' && rawPhotos.trim()){
       const photoText = rawPhotos.trim();
       if(photoText.charAt(0) === '['){
@@ -2883,29 +2935,37 @@
         if(photoValue) photos.push(photoValue);
       }
     }
+    photos = photos.map(value => String(value).trim()).filter(value => /^https?:\/\//i.test(value) || /^data:image\//i.test(value));
     const nameLanguageClass = /[\u0600-\u06FF]/.test(String(name)) ? ' is-arabic' : '';
     const commentLanguageClass = /[\u0600-\u06FF]/.test(String(comment)) ? ' is-arabic' : '';
-    const cardMark = ['“”','?','✨'][index % 3];
-    const photo = photos.length
-      ? '<img class="review-ugc-photo" src="' + esc(photos[0]) + '" data-review-photo="true" data-lightbox-src="' + esc(photos[0]) + '" alt="' + esc('Customer product photo from ' + name) + '" role="button" tabindex="0" loading="lazy" decoding="async">'
-      : '<span class="review-ugc-photo review-ugc-placeholder" aria-label="No customer photo">✦</span>';
-    const customerLabel = String(name) + (city ? ' • ' + String(city) : '');
+    const hasPhoto = photos.length > 0;
+    const buyerPhoto = hasPhoto
+      ? '<img src="' + esc(photos[0]) + '" alt="' + esc('Buyer photo from ' + name) + '" loading="lazy" decoding="async">'
+      : esc(Array.from(name.trim())[0] || 'C');
+    const customerLabel = name + (city ? ' • ' + city + ' 📍' : ' • Verified Buyer');
+    const photoBack = hasPhoto
+      ? '<img class="review-photo-full" src="' + esc(photos[0]) + '" alt="' + esc('Full buyer photo from ' + name) + '" loading="lazy" decoding="async">'
+      : '<div class="review-photo-missing">No buyer photo was provided.</div>';
     return '<article class="review-card" data-review-id="' + esc(review.id) + '" data-rating="' + esc(ratingValue) + '">'
-      + '<div class="review-card-top">'
-      +   '<span class="review-card-index" aria-hidden="true">' + cardMark + '</span>'
-      +   '<span class="review-card-category" dir="auto">' + esc(categoryName) + '</span>'
-      + '</div>'
-      + '<div class="review-card-bottom">'
-      +   photo
-      +   '<div class="review-customer">'
-      +     '<span class="review-customer-name' + nameLanguageClass + '" dir="auto">' + esc(customerLabel) + '</span>'
-      +     '<span class="review-stars" aria-label="' + esc('Five gold stars. Customer rating: ' + ratingValue + ' out of 5.') + '">★★★★★</span>'
-      +     '<span class="review-verified"><span class="check" aria-hidden="true">✔</span> Verified Buyer</span>'
+      + '<div class="review-card-inner">'
+      +   '<div class="review-card-face review-card-front">'
+      +     '<div class="review-card-top"><span class="review-card-category" dir="auto">' + esc(categoryName) + '</span></div>'
+      +     '<div class="review-card-bottom">'
+      +       '<button class="review-card-avatar' + (hasPhoto ? ' has-photo' : ' initial-avatar') + '" type="button" data-review-flip="photo" aria-label="' + esc(hasPhoto ? 'View buyer photo from ' + name : 'No buyer photo available') + '"' + (hasPhoto ? '' : ' disabled') + '>' + buyerPhoto + '</button>'
+      +       '<div class="review-customer">'
+      +         '<span class="review-customer-name' + nameLanguageClass + '" dir="auto">' + esc(customerLabel) + '</span>'
+      +         '<span class="review-stars" aria-label="' + esc('Five gold stars. Customer rating: ' + ratingValue + ' out of 5.') + '">★★★★★</span>'
+      +       '</div>'
+      +     '</div>'
+      +     '<p class="review-quote' + commentLanguageClass + '" dir="auto" title="' + esc(comment) + '">' + esc(comment) + '</p>'
+      +     '<button class="review-photo-flip-btn" type="button" data-review-flip="photo"' + (hasPhoto ? '' : ' disabled') + '>📷 View Photo 🔄</button>'
+      +     socialBarTemplate.innerHTML
+      +   '</div>'
+      +     '<div class="review-card-face review-card-back" inert>'
+      +     photoBack
+      +     '<button class="review-photo-flip-btn review-photo-back-btn" type="button" data-review-flip="review">↩️ Back to Review</button>'
       +   '</div>'
       + '</div>'
-      + '<p class="review-quote' + commentLanguageClass + '" dir="auto" title="' + esc(comment) + '">' + esc(comment) + '</p>'
-      + socialBarTemplate.innerHTML
-      + '<span class="review-card-index review-card-index-bottom" aria-hidden="true">' + cardMark + '</span>'
       + '</article>';
   }
 
@@ -3050,7 +3110,8 @@
     if(!interactionApiReady){ toast('تفاعلات المراجعات غير مفعّلة حالياً.'); return; }
     activeCommentReviewId = reviewId;
     commentsReturnFocus = trigger;
-    commentsList.textContent = 'كنحمّلو التعليقات...';
+    commentsList.textContent = 'Loading comments…';
+    commentsList.hidden = false;
     commentsNote.textContent = '';
     commentsNote.className = 'review-form-note';
     commentsBackdrop.classList.add('open');
@@ -3062,7 +3123,10 @@
       if(activeCommentReviewId === reviewId && commentsModal.classList.contains('open')) showApprovedComments(data.comments);
     }, error => {
       console.error(error);
-      if(activeCommentReviewId === reviewId && commentsModal.classList.contains('open')) commentsList.textContent = 'تعذر تحميل التعليقات. حاول مرة أخرى.';
+      if(activeCommentReviewId === reviewId && commentsModal.classList.contains('open')){
+        commentsList.textContent = 'Could not load comments. Try again.';
+        commentsList.hidden = false;
+      }
     });
   }
 
@@ -3077,9 +3141,11 @@
 
   function showApprovedComments(comments){
     if(!comments.length){
-      commentsList.textContent = 'ما كاين حتى تعليق موافَق عليه دابا. كتب أول تعليق!';
+      commentsList.replaceChildren();
+      commentsList.hidden = true;
       return;
     }
+    commentsList.hidden = false;
     commentsList.innerHTML = comments.map(item =>
       '<article class="review-comment-item"><strong>' + esc(item.name || 'Customer') + '</strong><p>' +
       esc(item.comment || '') + '</p>' + (item.date ? '<time>' + esc(item.date) + '</time>' : '') + '</article>'
@@ -3253,6 +3319,25 @@
       event.stopPropagation();
       return;
     }
+    const flipButton = event.target.closest('[data-review-flip]');
+    if(flipButton && carousel.contains(flipButton) && !flipButton.disabled){
+      event.preventDefault();
+      event.stopPropagation();
+      const card = flipButton.closest('.review-card');
+      if(!card) return;
+      const flipped = flipButton.getAttribute('data-review-flip') === 'photo';
+      const back = card.querySelector('.review-card-back');
+      const front = card.querySelector('.review-card-front');
+      card.classList.toggle('is-flipped', flipped);
+      if(back) back.inert = !flipped;
+      if(front) front.inert = flipped;
+      card.querySelectorAll('[data-review-flip]').forEach(button => {
+        button.setAttribute('aria-expanded', String(flipped));
+      });
+      carouselManuallyPaused = true;
+      syncCarouselAutoScroll();
+      return;
+    }
     const photo = event.target.closest('img[data-review-photo]');
     if(!photo || !carousel.contains(photo)) return;
     lightboxReturnFocus = photo;
@@ -3363,7 +3448,7 @@
     const name = commentsName.value.trim();
     const comment = commentsText.value.trim();
     if(name.length < 2 || comment.length < 2){
-      commentsNote.textContent = 'دخل الاسم وتعليق فيه جوج حروف على الأقل.';
+      commentsNote.textContent = 'Enter your name and a comment with at least 2 characters.';
       commentsNote.className = 'review-form-note err';
       return;
     }
@@ -3377,7 +3462,7 @@
         comment:comment
       });
       commentsForm.reset();
-      commentsNote.textContent = 'شكراً! التعليق تسيفط، وغادي يبان من بعد الموافقة عليه.';
+      commentsNote.textContent = 'Thanks! Your comment was submitted and will appear after approval.';
       commentsNote.className = 'review-form-note ok';
       const submittedReviewId = activeCommentReviewId;
       setTimeout(() => refreshReviewInteractions(submittedReviewId, data => {
@@ -3385,7 +3470,7 @@
       }), 700);
     } catch(error){
       console.error(error);
-      commentsNote.textContent = 'تعذر إرسال التعليق: ' + (error && error.message ? error.message : 'حاول مرة أخرى.');
+      commentsNote.textContent = 'Could not post your comment: ' + (error && error.message ? error.message : 'Please try again.');
       commentsNote.className = 'review-form-note err';
     } finally{
       commentsSubmit.disabled = !interactionApiReady;
