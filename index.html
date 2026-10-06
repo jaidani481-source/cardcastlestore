@@ -1322,6 +1322,29 @@
     font:700 12.5px 'Manrope',sans-serif;
     cursor:pointer;
   }
+  #review-modal,
+  #review-modal *{
+    direction:ltr !important;
+    text-align:left !important;
+  }
+  #review-form{direction:ltr !important;text-align:left !important;}
+  #review-modal .review-modal-head h3{font:700 24px/1.25 'Manrope',sans-serif;direction:ltr !important;text-align:left !important;}
+  #review-modal .review-modal-head p{max-width:48ch;font:500 13px/1.6 'Manrope',sans-serif;direction:ltr !important;text-align:left !important;}
+  #review-form .review-field{direction:ltr;text-align:left;font:600 13px/1.45 'Manrope',sans-serif;letter-spacing:0;}
+  #review-form .review-field-label{display:block;width:100%;margin-bottom:6px;color:var(--parchment);text-align:left !important;}
+  #review-form .label-row{display:block;margin:0 0 6px;text-align:left !important;}
+  #review-form .review-field input[type="text"],
+  #review-form .review-field input[type="tel"],
+  #review-form .review-field select,
+  #review-form .review-field textarea{margin-top:0;direction:ltr;text-align:left;font:15px 'Manrope',sans-serif;}
+  #review-form .review-field .field-error,
+  #review-form .field-error{display:block;width:100%;text-align:left !important;}
+  #review-form .review-stars-field{direction:ltr;text-align:left;}
+  #review-form .review-stars-field legend{width:100%;margin-bottom:8px;text-align:left !important;font:600 13px/1.45 'Manrope',sans-serif;}
+  #review-form .star-input{justify-content:flex-start;}
+  #review-form .review-upload input[type="file"]{border:1px solid rgba(232,189,74,.68);background:rgba(24,20,15,.86);text-align:left;}
+  #review-form .review-upload input[type="file"]::file-selector-button{border-color:rgba(232,189,74,.75);background:rgba(229,184,66,.2);color:#ffe39a;}
+  #review-form .review-upload-hint{direction:ltr;text-align:left !important;}
   #review-image-preview{
     display:block;width:100%;max-height:190px;
     object-fit:cover;
@@ -2024,43 +2047,51 @@
 
       <!-- ===== REVIEW SUBMISSION MODAL (dark glassmorphism) ===== -->
       <div class="review-modal-backdrop" id="review-modal-backdrop"></div>
-      <div class="review-modal" id="review-modal" role="dialog" aria-modal="true" aria-labelledby="review-modal-title" aria-hidden="true">
+      <div class="review-modal" id="review-modal" dir="ltr" role="dialog" aria-modal="true" aria-labelledby="review-modal-title" aria-hidden="true">
         <div class="review-modal-head">
           <div>
-            <h3 id="review-modal-title">خلّي رأيك فـ اللعبة</h3>
-            <p>شارك التقييم ديالك وصورة من بعد التوصيل. كل مراجعة كنراجعوها قبل النشر.</p>
+            <h3 id="review-modal-title">Leave a Review</h3>
+            <p>Share your feedback and gameplay photo to claim your 10% – 20% cashback reward.</p>
           </div>
-          <button class="icon-button" id="review-modal-close" type="button" aria-label="إغلاق النافذة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+          <button class="icon-button" id="review-modal-close" type="button" aria-label="Close review form"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         </div>
 
-        <form id="review-form" novalidate>
-          <label class="review-field"><div class="label-row"><span>الاسم الكامل</span><span class="en-label">Full Name *</span></div>
-            <input id="review-name" name="name" type="text" autocomplete="name" placeholder="مثال: أيوب" required>
+        <form id="review-form" dir="ltr" novalidate>
+          <label class="review-field" for="review-name">
+            <span class="review-field-label">Full Name *</span>
+            <input id="review-name" name="name" type="text" autocomplete="name" placeholder="e.g. Yassine" required>
             <span class="field-error" id="review-name-error"></span>
           </label>
 
-          <label class="review-field"><div class="label-row"><span>رقم الهاتف</span><span class="en-label">Phone Number *</span></div>
-            <input id="review-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0612345678" required>
-            <span class="review-upload-hint">كايتبقى مخفي — للتحقق من الطلب فقط وما كايبانش للعموم.</span>
+          <label class="review-field" for="review-city">
+            <span class="review-field-label">Your City *</span>
+            <input id="review-city" name="city" type="text" autocomplete="address-level2" placeholder="e.g. Casablanca" maxlength="80" required>
+            <span class="field-error" id="review-city-error"></span>
+          </label>
+
+          <label class="review-field" for="review-phone">
+            <span class="review-field-label">Phone Number *</span>
+            <input id="review-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="06XXXXXXXX" required>
+            <span class="review-upload-hint">Kept private — strictly for order verification.</span>
             <span class="field-error" id="review-phone-error"></span>
           </label>
 
           <fieldset class="review-stars-field">
-            <legend><div class="label-row"><span>التقييم ديالك</span><span class="en-label">Your Rating *</span></div></legend>
-            <div class="star-input" id="review-stars" role="radiogroup" aria-label="التقييم من 5 نجوم">
-              <button class="star" type="button" data-value="1" role="radio" aria-checked="false" aria-label="نجمة 1">★</button>
-              <button class="star" type="button" data-value="2" role="radio" aria-checked="false" aria-label="نجمة 2">★</button>
-              <button class="star" type="button" data-value="3" role="radio" aria-checked="false" aria-label="نجمة 3">★</button>
-              <button class="star" type="button" data-value="4" role="radio" aria-checked="false" aria-label="نجمة 4">★</button>
-              <button class="star" type="button" data-value="5" role="radio" aria-checked="false" aria-label="نجمة 5">★</button>
+            <legend>Your Rating *</legend>
+            <div class="star-input" id="review-stars" role="radiogroup" aria-label="Your rating out of five stars">
+              <button class="star" type="button" data-value="1" role="radio" aria-checked="false" aria-label="1 star">★</button>
+              <button class="star" type="button" data-value="2" role="radio" aria-checked="false" aria-label="2 stars">★</button>
+              <button class="star" type="button" data-value="3" role="radio" aria-checked="false" aria-label="3 stars">★</button>
+              <button class="star" type="button" data-value="4" role="radio" aria-checked="false" aria-label="4 stars">★</button>
+              <button class="star" type="button" data-value="5" role="radio" aria-checked="false" aria-label="5 stars">★</button>
             </div>
             <span class="field-error" id="review-stars-error"></span>
           </fieldset>
 
           <label class="review-field">
-            <div class="label-row"><span>شنو اللعبة اللي خديتي؟</span><span class="en-label">Purchased Deck *</span></div>
+            <span class="review-field-label">Purchased Game / Deck *</span>
             <select id="review-product" name="product" required>
-              <option value="" disabled selected>اختار اللعبة / Select Game</option>
+              <option value="" disabled selected>Select your game...</option>
               <option value="Couples Chat">Couples Chat</option>
               <option value="Love Memories">Love Memories</option>
               <option value="Love Whispers">Love Whispers</option>
@@ -2077,20 +2108,22 @@
             <span class="field-error" id="review-product-error"></span>
           </label>
 
-          <label class="review-field"><div class="label-row"><span>الرأي ديالك</span><span class="en-label">Your Review *</span></div>
-            <textarea id="review-comment" name="comment" placeholder="كيفاش كانت التجربة؟ واش وصلاتك بالوقت؟ شكون لعب معاك؟" required></textarea>
+          <label class="review-field" for="review-comment">
+            <span class="review-field-label">Your Review *</span>
+            <textarea id="review-comment" name="comment" placeholder="How was your experience? How did the game night go?..." required></textarea>
             <span class="field-error" id="review-comment-error"></span>
           </label>
 
-          <label class="review-field review-upload"><div class="label-row"><span>صورة ديالك</span><span class="en-label">Order Photo *</span></div>
-            <input id="review-image" name="photo" type="file" accept="image/*" multiple required>
+          <label class="review-field review-upload" for="review-image">
+            <span class="review-field-label">Order Photo *</span>
+            <input id="review-image" name="photo" type="file" accept="image/jpeg,image/png,image/webp" multiple required>
             <span id="review-image-count" class="review-upload-hint" aria-live="polite"></span>
-            <span class="review-upload-hint">خاصة صورة ديال الطلب (JPG / PNG / WEBP — الحد الأقصى 1.5MB) باش نتحققو ونتفعلو مكافأة بين 10 و20 DH.</span>
+            <span class="review-upload-hint">Upload your order or game night photo (JPG / PNG / WEBP — Max 1.5MB) to claim 10% – 20% cashback.</span>
           </label>
-          <img id="review-image-preview" alt="معاينة الصورة" hidden>
+          <img id="review-image-preview" alt="Selected order photo preview" hidden>
           <span class="field-error" id="review-image-error"></span>
 
-          <button class="btn btn-primary review-submit" type="submit">نشر المراجعة</button>
+          <button class="btn btn-primary review-submit" type="submit">Submit Review</button>
           <p class="review-form-note" id="review-form-note"></p>
         </form>
       </div>
@@ -2653,7 +2686,7 @@
   'use strict';
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4C7mu7ZSrOKVPVCRLgXKcdJOq7gb3OdoRW5VUzXNLCAkbINd4nptTb1X-yzjjNdKT/exec";
-  const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
+  const MAX_PHOTO_BYTES = 1.5 * 1024 * 1024;
   const PHONE_PATTERN = /^0[567]\d{8}$/;
 
   /* Everything user-written goes through this before it lands in innerHTML */
@@ -2682,10 +2715,11 @@
   const commentsSubmit = document.getElementById('review-comment-submit');
   const commentsNote = document.getElementById('review-comments-note');
   const submitButton = form ? form.querySelector('[type="submit"]') : null;
-  const submitButtonLabel = submitButton ? submitButton.textContent : 'نشر المراجعة';
+  const submitButtonLabel = submitButton ? submitButton.textContent : 'Submit Review';
   const note         = document.getElementById('review-form-note');
   const toastEl      = document.getElementById('reviews-toast');
   const nameInput    = document.getElementById('review-name');
+  const cityInput    = document.getElementById('review-city');
   const phoneInput   = document.getElementById('review-phone');
   const productInput = document.getElementById('review-product');
   const commentInput = document.getElementById('review-comment');
@@ -2693,6 +2727,7 @@
   const ratingGroup  = document.getElementById('review-stars');
   const preview      = document.getElementById('review-image-preview');
   const nameError    = document.getElementById('review-name-error');
+  const cityError    = document.getElementById('review-city-error');
   const phoneError   = document.getElementById('review-phone-error');
   const productError = document.getElementById('review-product-error');
   const starsError   = document.getElementById('review-stars-error');
@@ -3427,8 +3462,8 @@
     if(imageCount) imageCount.textContent = '';
     starButtons.forEach(star => { star.classList.remove('active'); star.setAttribute('aria-checked','false'); });
     if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
-    [nameInput,phoneInput,productInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
-    [nameError,phoneError,productError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
+    [nameInput,cityInput,phoneInput,productInput,commentInput].forEach(input => { if(input) input.classList.remove('invalid'); });
+    [nameError,cityError,phoneError,productError,starsError,commentError,imageError].forEach(el => { if(el) el.textContent = ''; });
   }
 
   /* Bind the cashback CTA explicitly alongside other review-open controls. */
@@ -3569,17 +3604,17 @@
     imageInput.addEventListener('change', () => {
       const files = Array.from(imageInput.files || []);
       const file = files[0];
-      if(imageCount){ const count = files.length; imageCount.textContent = count ? count + (count === 1 ? ' photo choisie' : ' photos choisies') : ''; }
+      if(imageCount){ const count = files.length; imageCount.textContent = count ? count + (count === 1 ? ' photo selected' : ' photos selected') : ''; }
       if(imageError) imageError.textContent = '';
       if(preview){ preview.hidden = true; preview.removeAttribute('src'); }
       if(!file) return;
-      if(files.some(item => !/^image\//.test(item.type))){
-        if(imageError) imageError.textContent = 'خاص الصورة تكون JPG ولا PNG ولا WEBP.';
+      if(files.some(item => !/^image\/(jpeg|png|webp)$/i.test(item.type))){
+        if(imageError) imageError.textContent = 'Please upload JPG, PNG, or WEBP images only.';
         imageInput.value = '';
         return;
       }
       if(files.some(item => item.size > MAX_PHOTO_BYTES)){
-        if(imageError) imageError.textContent = 'الصورة كبيرة بزاف — الحد الأقصى 12MB للصورة الواحدة.';
+        if(imageError) imageError.textContent = 'Each photo must be 1.5MB or smaller.';
         imageInput.value = '';
         return;
       }
@@ -3592,9 +3627,9 @@
     e.preventDefault();
     try{
       const requiredElements = [
-        ['#review-form', form], ['#review-name', nameInput], ['#review-phone', phoneInput], ['#review-product', productInput],
+        ['#review-form', form], ['#review-name', nameInput], ['#review-city', cityInput], ['#review-phone', phoneInput], ['#review-product', productInput],
         ['#review-stars', ratingGroup], ['#review-comment', commentInput], ['#review-image', imageInput],
-        ['#review-form-note', note], ['#review-name-error', nameError], ['#review-phone-error', phoneError], ['#review-product-error', productError],
+        ['#review-form-note', note], ['#review-name-error', nameError], ['#review-city-error', cityError], ['#review-phone-error', phoneError], ['#review-product-error', productError],
         ['#review-stars-error', starsError], ['#review-comment-error', commentError],
         ['#review-image-error', imageError], ['#review-form [type="submit"]', submitButton]
       ];
@@ -3603,10 +3638,11 @@
       });
       if(!starButtons.length) throw new Error('No rating buttons were found inside #review-stars.');
 
-      if(submitButton){ submitButton.disabled = true; submitButton.textContent = 'جاري الإرسال... / Submitting...'; }
+      if(submitButton){ submitButton.disabled = true; submitButton.textContent = 'Submitting...'; }
       if(note){ note.textContent = ''; note.className = 'review-form-note'; }
 
       const name = nameInput.value.trim();
+      const city = cityInput.value.trim();
       const digits = phoneInput.value.replace(/[\s\-.()]/g,'').replace(/^\+212/,'0');
       const product = productInput.value;
       const comment = commentInput.value.trim();
@@ -3615,29 +3651,32 @@
       const files = Array.from(imageInput.files || []);
 
       const okName = name.length >= 2;
+      const okCity = city.length > 0;
       const okPhone = PHONE_PATTERN.test(digits);
       const okProduct = Boolean(product);
       const okStars = Number.isInteger(selectedRating) && selectedRating >= 1 && selectedRating <= 5;
       const okComment = comment.length >= 10;
       const okPhoto = files.length > 0;
 
-      nameError.textContent = okName ? '' : 'عافاك كتب الاسم الكامل ديالك.';
-      phoneError.textContent = okPhone ? '' : 'عافاك دخل رقم مغربي صحيح (05 أو 06 أو 07 و10 أرقام).';
-      productError.textContent = okProduct ? '' : 'عافاك اختار اللعبة اللي خديتي.';
-      starsError.textContent = okStars ? '' : 'عافاك اختار التقييم ديالك من 5 نجوم.';
-      commentError.textContent = okComment ? '' : 'كتب على الأقل 10 حروف فـ الرأي ديالك.';
-      imageError.textContent = okPhoto ? '' : 'خاصك تحمل صورة ديال الطلب باش نتحققو ونتفعلو 15 DH.';
+      nameError.textContent = okName ? '' : 'Please enter your full name.';
+      cityError.textContent = okCity ? '' : 'Please enter your city.';
+      phoneError.textContent = okPhone ? '' : 'Enter a valid Moroccan phone number (05, 06, or 07 followed by 8 digits).';
+      productError.textContent = okProduct ? '' : 'Please select the game or deck you purchased.';
+      starsError.textContent = okStars ? '' : 'Please choose a rating from 1 to 5 stars.';
+      commentError.textContent = okComment ? '' : 'Please write at least 10 characters.';
+      imageError.textContent = okPhoto ? '' : 'Please upload an order or game night photo to claim your cashback reward.';
       nameInput.classList.toggle('invalid', !okName);
+      cityInput.classList.toggle('invalid', !okCity);
       phoneInput.classList.toggle('invalid', !okPhone);
       productInput.classList.toggle('invalid', !okProduct);
       commentInput.classList.toggle('invalid', !okComment);
 
-      if(!(okName && okPhone && okProduct && okStars && okComment && okPhoto)){
-        if(note){ note.textContent = 'راجع الحقول المعلَّمة بالحمر قبل النشر.'; note.className = 'review-form-note err'; }
+      if(!(okName && okCity && okPhone && okProduct && okStars && okComment && okPhoto)){
+        if(note){ note.textContent = 'Please review the highlighted fields before submitting.'; note.className = 'review-form-note err'; }
         return;
       }
-      if(files.some(file => !/^image\//.test(file.type))) throw new Error('Only image files can be uploaded.');
-      if(files.some(file => file.size > MAX_PHOTO_BYTES)) throw new Error('Each photo must be 12MB or smaller.');
+      if(files.some(file => !/^image\/(jpeg|png|webp)$/i.test(file.type))) throw new Error('Only JPG, PNG, or WEBP images can be uploaded.');
+      if(files.some(file => file.size > MAX_PHOTO_BYTES)) throw new Error('Each photo must be 1.5MB or smaller.');
       if(!usingBackend) throw new Error('Google Apps Script URL is missing or invalid.');
 
       const compressedPhotos = [];
@@ -3647,6 +3686,7 @@
       const newReview = {
         id: 'guest-' + Date.now(),
         name,
+        city,
         phone: digits,
         product,
         rating: selectedRating,
@@ -3663,7 +3703,7 @@
         body: JSON.stringify(newReview)
       });
 
-      const successMessage = 'شكراً لك! 🌟 تم إرسال مراجعتك بنجاح، وستظهر في الموقع فور مراجعتها.';
+      const successMessage = 'Thank you! Your review has been submitted and will appear on the site after moderation.';
       resetForm();
       closeModal();
       alert(successMessage);
@@ -3671,7 +3711,7 @@
       const errorMessage = error && error.message ? error.message : String(error);
       alert('Error: ' + errorMessage);
       console.error(error);
-      if(note){ note.textContent = 'تعذر إرسال المراجعة: ' + errorMessage; note.className = 'review-form-note err'; }
+      if(note){ note.textContent = 'Could not submit your review: ' + errorMessage; note.className = 'review-form-note err'; }
     } finally {
       if(submitButton){ submitButton.disabled = false; submitButton.textContent = submitButtonLabel; }
     }

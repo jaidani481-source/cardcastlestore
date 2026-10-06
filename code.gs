@@ -11,7 +11,7 @@ const PHOTO_FOLDER_NAME = 'CardCastle Review Photos';
 const MEDIA_PREVIEW_COUNT = 10;
 const INTERACTION_HEADERS = ['Created At', 'Review ID', 'Type', 'Actor ID', 'Name', 'Comment', 'Status'];
 const HEADERS = [
-  'Created At', 'Name', 'Phone', 'Rating', 'Comment', 'Photo URLs', 'Status', 'Review ID', 'Product', 'Video URLs', 'Group', 'Customer Media', 'Watch Videos',
+  'Created At', 'Name', 'City', 'Phone', 'Rating', 'Comment', 'Photo URLs', 'Status', 'Review ID', 'Product', 'Video URLs', 'Group', 'Customer Media', 'Watch Videos',
   ...Array.from({ length: MEDIA_PREVIEW_COUNT }, (_, i) => 'Media ' + (i + 1) + ' Preview'),
   ...Array.from({ length: MEDIA_PREVIEW_COUNT }, (_, i) => 'Media ' + (i + 1) + ' Open')
 ];
@@ -57,12 +57,13 @@ function doPost(e) {
       return output_(JSON.stringify(Object.assign({ status: 'success' }, result)), ContentService.MimeType.JSON);
     }
     const name = cleanText_(review.name, 120);
+    const city = cleanText_(review.city, 80);
     const phone = cleanText_(review.phone, 40);
     const comment = cleanText_(review.comment, 3000);
     const product = cleanText_(review.product || review.deck || review.game, 160);
     const rating = Number(review.rating);
-    if (!name || !phone || !comment || !Number.isInteger(rating) || rating < 1 || rating > 5) {
-      throw new Error('Please provide a name, phone, comment, and a rating from 1 to 5.');
+    if (!name || !city || !phone || !comment || !Number.isInteger(rating) || rating < 1 || rating > 5) {
+      throw new Error('Please provide a name, city, phone, comment, and a rating from 1 to 5.');
     }
 
     const photos = asArray_(review.photo);
@@ -75,7 +76,7 @@ function doPost(e) {
     lock.waitLock(10000);
     try {
       const rowValues = {
-        'Created At': new Date(), Name: name, Phone: phone, Rating: rating, Comment: comment,
+        'Created At': new Date(), Name: name, City: city, Phone: phone, Rating: rating, Comment: comment,
         'Photo URLs': JSON.stringify(photoUrls), 'Video URLs': JSON.stringify(videoUrls), Status: 'Pending',
         'Review ID': cleanText_(review.id, 100) || Utilities.getUuid(), Product: product
       };
@@ -118,7 +119,7 @@ function getApprovedReviews_() {
       return {
         id: String(id).trim(),
         name: String(row[col.Name != null ? col.Name : 1] || ''),
-        city: String(row[col.City != null ? col.City : 2] || ''),
+        city: String(col.City != null ? row[col.City] || '' : ''),
         phone: String(col.Phone != null ? row[col.Phone] || '' : ''),
         rating: Number(row[col.Rating != null ? col.Rating : 3]) || 0,
         comment: String(row[col.Comment != null ? col.Comment : 4] || ''),
