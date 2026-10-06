@@ -959,6 +959,9 @@
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
     mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
   }
+  .reviews-carousel-shell{position:relative;}
+  .reviews-carousel-toggle{position:absolute;right:22px;bottom:8px;z-index:120;display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:36px;padding:0 12px;border:1px solid rgba(232,189,74,.4);border-radius:999px;background:rgba(18,18,18,.9);color:#e8bd4a;font:700 15px/1 'Manrope',sans-serif;cursor:pointer;pointer-events:auto;}
+  .reviews-carousel-toggle:hover,.reviews-carousel-toggle:focus-visible{border-color:#e8bd4a;background:#211a0e;outline:2px solid rgba(232,189,74,.3);outline-offset:2px;}
   .reviews-carousel-viewport.is-dragging{cursor:grabbing;user-select:none;}
   #reviews-3d-carousel{
     display:flex;
@@ -996,6 +999,7 @@
   }
   .review-card::before,.review-card::after,.card-overlay{pointer-events:none!important;}
   .review-card::before{position:absolute;inset:8px;border:1px solid rgba(232,189,74,.12);border-radius:12px;content:"";pointer-events:none!important;}
+  @media(hover:hover) and (pointer:fine){.review-card{transform:none;transform-style:flat;}}
   .review-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:56px;}
   .review-card-index{display:flex;flex-direction:column;align-items:center;color:#e8bd4a;font:700 16px/1.05 'Playfair Display','Cairo',serif;}
   .review-card-index-bottom{position:absolute;right:20px;bottom:14px;transform:rotate(180deg);}
@@ -1032,6 +1036,7 @@
   .review-customer-name.is-arabic{font-family:'Cairo','Alexandria',sans-serif!important;}
   .review-verified{color:#cbbfa8;font:600 10px/1.25 'Manrope',sans-serif;white-space:nowrap;}
   .review-verified .check{color:#e8bd4a;}
+  #review-comments-form .review-field input,#review-comments-form .review-field textarea{direction:ltr;text-align:left;font-family:'Manrope',sans-serif;}
 
   /* ===== FOOTER ===== */
   footer{padding:64px 0 28px;border-top:1px solid var(--hairline);background:rgba(19,16,12,.6);}
@@ -1972,8 +1977,11 @@
         </div>
       </template>
 
-      <div class="reviews-carousel-viewport" id="reviews-carousel-viewport" hidden>
-        <div id="reviews-3d-carousel" aria-label="Customer reviews" aria-live="off"></div>
+      <div class="reviews-carousel-shell">
+        <div class="reviews-carousel-viewport" id="reviews-carousel-viewport" hidden>
+          <div id="reviews-3d-carousel" aria-label="Customer reviews" aria-live="off"></div>
+        </div>
+        <button class="reviews-carousel-toggle" id="reviews-carousel-toggle" type="button" aria-label="Pause reviews" title="Pause reviews">Ⅱ</button>
       </div>
 
       <!-- ===== REVIEW SUBMISSION MODAL (dark glassmorphism) ===== -->
@@ -2060,8 +2068,8 @@
         </div>
         <div class="review-comments-list" id="review-comments-list" aria-live="polite"></div>
         <form id="review-comments-form" novalidate>
-          <label class="review-field"><span>الاسم ديالك</span><input id="review-comment-name" type="text" maxlength="80" required></label>
-          <label class="review-field"><span>التعليق ديالك</span><textarea id="review-comment-text" maxlength="500" required></textarea></label>
+          <label class="review-field"><span>Your name</span><input id="review-comment-name" type="text" lang="en" dir="ltr" autocomplete="name" placeholder="Enter your name" maxlength="80" required></label>
+          <label class="review-field"><span>Your comment</span><textarea id="review-comment-text" lang="en" dir="ltr" placeholder="Write your comment in English..." maxlength="500" required></textarea></label>
           <button class="btn btn-primary review-submit" id="review-comment-submit" type="submit">إرسال التعليق</button>
           <p class="review-form-note" id="review-comments-note" role="status" aria-live="polite"></p>
         </form>
@@ -2619,6 +2627,7 @@
   const section      = document.getElementById('reviews');
   const carousel     = document.getElementById('reviews-3d-carousel');
   const carouselViewport = document.getElementById('reviews-carousel-viewport');
+  const carouselToggle = document.getElementById('reviews-carousel-toggle');
   const socialBarTemplate = document.getElementById('review-social-bar-template');
   if(!section || !carousel || !carouselViewport || !socialBarTemplate) return;
   const emptyState   = document.getElementById('reviews-empty-state');
@@ -3155,22 +3164,35 @@
 
   let carouselDrag = null;
   let suppressCarouselClickUntil = 0;
-  function setCarouselAutoScrollPaused(paused){
+  let carouselManuallyPaused = false;
+  function syncCarouselAutoScroll(){
+    const paused = carouselManuallyPaused || !!carouselDrag ||
+      carouselViewport.matches(':hover') || carouselViewport.contains(document.activeElement);
     carousel.classList.toggle('is-paused', paused);
+    if(carouselToggle){
+      carouselToggle.textContent = carouselManuallyPaused ? '▶' : 'Ⅱ';
+      carouselToggle.setAttribute('aria-label', carouselManuallyPaused ? 'Resume reviews' : 'Pause reviews');
+      carouselToggle.title = carouselManuallyPaused ? 'Resume reviews' : 'Pause reviews';
+      carouselToggle.setAttribute('aria-pressed', String(carouselManuallyPaused));
+    }
     const animation = carousel.getAnimations().find(item => item.effect && item.effect.target === carousel);
     if(!animation) return;
     if(paused) animation.pause();
     else animation.play();
   }
-  carouselViewport.addEventListener('pointerenter', () => setCarouselAutoScrollPaused(true));
+  carouselViewport.addEventListener('pointerenter', syncCarouselAutoScroll);
   carouselViewport.addEventListener('pointerleave', event => {
     if(carouselDrag || (event.relatedTarget && carouselViewport.contains(event.relatedTarget))) return;
-    setCarouselAutoScrollPaused(carouselViewport.contains(document.activeElement));
+    syncCarouselAutoScroll();
   });
-  carouselViewport.addEventListener('focusin', () => setCarouselAutoScrollPaused(true));
+  carouselViewport.addEventListener('focusin', syncCarouselAutoScroll);
   carouselViewport.addEventListener('focusout', event => {
     if(event.relatedTarget && carouselViewport.contains(event.relatedTarget)) return;
-    if(!carouselViewport.matches(':hover')) setCarouselAutoScrollPaused(false);
+    syncCarouselAutoScroll();
+  });
+  if(carouselToggle) carouselToggle.addEventListener('click', () => {
+    carouselManuallyPaused = !carouselManuallyPaused;
+    syncCarouselAutoScroll();
   });
   carouselViewport.addEventListener('pointerdown', event => {
     if(event.button !== 0 || !event.isPrimary || event.target.closest('button,a,input,textarea,select,[data-review-photo]')) return;
@@ -3189,7 +3211,7 @@
       travelDistance:travelDistance,
       moved:false
     };
-    animation.pause();
+    syncCarouselAutoScroll();
     carouselViewport.classList.add('is-dragging');
     carouselViewport.setPointerCapture(event.pointerId);
   });
@@ -3207,7 +3229,7 @@
     carouselViewport.classList.remove('is-dragging');
     if(drag.moved) suppressCarouselClickUntil = Date.now() + 350;
     if(event && carouselViewport.hasPointerCapture(event.pointerId)) carouselViewport.releasePointerCapture(event.pointerId);
-    setCarouselAutoScrollPaused(carouselViewport.matches(':hover') || carouselViewport.contains(document.activeElement));
+    syncCarouselAutoScroll();
   }
   carouselViewport.addEventListener('pointerup', finishCarouselDrag);
   carouselViewport.addEventListener('pointercancel', finishCarouselDrag);
@@ -3218,6 +3240,8 @@
         event.preventDefault();
         event.stopPropagation();
         if(Date.now() < suppressCarouselClickUntil) return;
+        carouselManuallyPaused = true;
+        syncCarouselAutoScroll();
         handleReviewAction(button);
       });
     });
@@ -3259,17 +3283,21 @@
     const visible = source.slice().reverse();
     const cards = visible.map(cardMarkup).join('');
     carousel.innerHTML = visible.length
-      ? '<div class="reviews-carousel-group">' + cards + '</div><div class="reviews-carousel-group" aria-hidden="true" inert>' + cards + '</div>'
+      ? '<div class="reviews-carousel-group">' + cards + '</div><div class="reviews-carousel-group" aria-hidden="true">' + cards + '</div>'
       : '';
+    const visualDuplicate = carousel.querySelector('.reviews-carousel-group[aria-hidden="true"]');
+    if(visualDuplicate) visualDuplicate.querySelectorAll('button,a,[tabindex]').forEach(element => element.setAttribute('tabindex', '-1'));
     bindReviewActionButtons();
     carousel.style.animationDuration = Math.max(24, visible.length * 5) + 's';
     carouselViewport.hidden = visible.length === 0;
+    if(carouselToggle) carouselToggle.hidden = visible.length === 0;
     if(emptyState){
       emptyState.hidden = visible.length > 0;
       if(!visible.length) emptyState.textContent = 'No reviews yet. Be the first to share your experience.';
     }
     setInteractionButtonsEnabled(interactionApiReady);
     if(interactionApiReady) refreshAllInteractions();
+    syncCarouselAutoScroll();
     const sharedReview = window.location.hash.match(/^#review-(.+)$/);
     if(sharedReview){
       let targetReviewId = sharedReview[1];
